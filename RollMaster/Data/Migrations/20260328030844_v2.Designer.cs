@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RollMaster.Data;
 
@@ -11,9 +12,11 @@ using RollMaster.Data;
 namespace RollMaster.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260328030844_v2")]
+    partial class v2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -262,9 +265,6 @@ namespace RollMaster.Data.Migrations
                     b.Property<string>("Ekwipunek")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("GameId")
-                        .HasColumnType("int");
 
                     b.Property<string>("HelmNazwa")
                         .HasColumnType("nvarchar(max)");
@@ -579,32 +579,9 @@ namespace RollMaster.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GameId");
-
                     b.HasIndex("UserId");
 
                     b.ToTable("Character");
-                });
-
-            modelBuilder.Entity("RollMaster.Models.Game", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Game");
                 });
 
             modelBuilder.Entity("RollMaster.Models.User", b =>
@@ -667,22 +644,11 @@ namespace RollMaster.Data.Migrations
 
             modelBuilder.Entity("RollMaster.Models.Character", b =>
                 {
-                    b.HasOne("RollMaster.Models.Game", "Game")
-                        .WithMany("Characters")
-                        .HasForeignKey("GameId");
-
                     b.HasOne("RollMaster.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
 
-                    b.Navigation("Game");
-
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("RollMaster.Models.Game", b =>
-                {
-                    b.Navigation("Characters");
                 });
 #pragma warning restore 612, 618
         }

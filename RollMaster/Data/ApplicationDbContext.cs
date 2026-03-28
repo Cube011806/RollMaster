@@ -8,6 +8,7 @@ namespace RollMaster.Data
     {
         public DbSet<User> User { get; set; }
         public DbSet<Character> Character { get; set; }
+        public DbSet<Game> Game { get; set; }
     }
 
 }
