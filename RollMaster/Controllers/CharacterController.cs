@@ -65,9 +65,19 @@ namespace RollMaster.Controllers
         {
             throw new NotImplementedException();
         }
-        public IActionResult DeleteCharacter()
+        public IActionResult DeleteCharacter(int id)
         {
-            throw new NotImplementedException();
+            Character character = _dbContext.Character.Find(id);
+            if(character!= null)
+            {
+                _dbContext.Remove(character);
+                _dbContext.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
         }
     }
 }
