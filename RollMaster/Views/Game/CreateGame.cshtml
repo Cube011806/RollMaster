@@ -1,0 +1,38 @@
+﻿@using RollMaster.ViewModels
+@model CreateGameViewModel
+
+@{
+    ViewData["Title"] = "Utwórz grę";
+}
+
+<h1>Utwórz nową grę</h1>
+<h2 style="color:red;">PROTOTYP</h2>
+<form asp-action="CreateGame" method="post">
+
+    <h3>Informacje podstawowe</h3>
+
+    <div class="form-group">
+        <label asp-for="Game.Name"></label>
+        <input asp-for="Game.Name" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Game.Description"></label>
+        <textarea asp-for="Game.Description" class="form-control"></textarea>
+    </div>
+
+    <h3>Wybierz postacie do gry</h3>
+
+    @foreach (var character in Model.Characters)
+    {
+        <div>
+            <input type="checkbox"
+                   name="SelectedCharacterIds"
+                   value="@character.Id" />
+
+            @character.Imie (@character.Powolanie)
+        </div>
+    }
+
+
+    <button type="submit" class="btn btn-primary mt-3">Zapisz</button>
+</form>

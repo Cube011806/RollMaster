@@ -30,8 +30,11 @@
                         @item.Powolanie
                     </td>
                     <td>
+                        @item.GameId
+                    </td>
+                    <td>
                         <a asp-action="EditCharacter" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-action="DetailsCharacter" asp-route-id="@item.Id">Details</a> |
+                        <a asp-action="CharacterDashboard" asp-route-id="@item.Id">Karta postaci</a> |
                         <a asp-action="DeleteCharacter" asp-route-id="@item.Id">Delete</a> |
                         <a asp-action="DownloadJsonCharacter" asp-route-id="@item.Id">Pobierz postać</a>
                     </td>

@@ -2,82 +2,65 @@
 using Microsoft.AspNetCore.Mvc;
 using RollMaster.Data;
 using RollMaster.Models;
+using RollMaster.Services.Character;
 using System.Data.Common;
 
 namespace RollMaster.Controllers
 {
     public class CharacterController : Controller
     {
-        ApplicationDbContext _dbContext;
-        UserManager<User> _userManager;
-        public CharacterController(ApplicationDbContext DbContext, UserManager<User> UserManager) {
-            _dbContext = DbContext;
-            _userManager = UserManager;
+        private readonly CharacterService _CharacterService;
+        private readonly UserManager<User> _userManager;
+        public CharacterController(CharacterService service, UserManager<User> userManager)
+        {
+            _CharacterService = service;
+            _userManager = userManager;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var characters = _dbContext.Character.ToList();
-            return View(characters);
+            return View(await _CharacterService.GetAllAsync());
         }
         public IActionResult DownloadJsonCharacter(int id)
         {
-            var character = _dbContext.Character
-                .FirstOrDefault(c => c.Id == id);
+            var character = _CharacterService.GetById(id);
 
             if (character == null)
                 return NotFound();
 
-            var json = System.Text.Json.JsonSerializer.Serialize(
-                character,
-                new System.Text.Json.JsonSerializerOptions
-                {
-                    WriteIndented = true
-                });
-
-            var bytes = System.Text.Encoding.UTF8.GetBytes(json);
+            var bytes = _CharacterService.ExportToJson(character);
 
             return File(bytes, "application/json", $"character_{id}.json");
         }
-
         public IActionResult CreateCharacter()
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult CreateCharacter(Character character)
+        public async Task<IActionResult> CreateCharacter(Character character)
         {
-            character.UserId = _userManager.GetUserId(User);
-            _dbContext.Character.Add(character);
-            _dbContext.SaveChanges();
+            string userId = _userManager.GetUserId(User);
+            await _CharacterService.CreateCharacterAsync(character, userId);
             return RedirectToAction("Index");
+        }
+        public async Task<IActionResult> CharacterDashboard(int id)
+        {
+            return View(await _CharacterService.GetByIdAsync(id));
         }
         public IActionResult ImportCharacter()
         {
             throw new NotImplementedException();
         }
-        public IActionResult DetailsCharacter()
-        {
-            throw new NotImplementedException();
-        }
+        
         public IActionResult EditCharacter()
         {
             throw new NotImplementedException();
         }
-        public IActionResult DeleteCharacter(int id)
+        public async Task<IActionResult> DeleteCharacter(int id)
         {
-            Character character = _dbContext.Character.Find(id);
-            if(character!= null)
-            {
-                _dbContext.Remove(character);
-                _dbContext.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            else
-            {
-                return RedirectToAction("Index");
-            }
+            await _CharacterService.DeleteAsync(id);    
+            return RedirectToAction("Index");
         }
     }
 }

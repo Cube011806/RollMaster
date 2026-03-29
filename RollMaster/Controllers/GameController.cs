@@ -1,20 +1,51 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RollMaster.Data;
+using RollMaster.Models;
+using RollMaster.Services.Character;
+using RollMaster.Services.Game;
+using RollMaster.ViewModels;
 
 namespace RollMaster.Controllers
 {
     public class GameController : Controller
     {
-        ApplicationDbContext _dbContext;
-        public GameController(ApplicationDbContext DbContext)
+        private readonly GameService _gameService;
+        private readonly CharacterService _characterService;
+        private readonly UserManager<User> _userManager;
+        public GameController(GameService GameService, CharacterService CharacterService, UserManager<User> userManager)
         {
-            _dbContext = DbContext;
+            _gameService = GameService;
+            _characterService = CharacterService;
+            _userManager = userManager;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var games = _dbContext.Game.ToList();
-            return View(games);
+            return View(await _gameService.GetAllAsync());
         }
+
+        public async Task<IActionResult> CreateGame()
+        {
+            var vm = new CreateGameViewModel
+            {
+                Characters = await _characterService.GetAllAsync()
+            };
+
+            return View(vm);
+        }
+
+        [HttpPost]
+        public IActionResult CreateGame(CreateGameViewModel vm)
+        {
+            _gameService.CreateGame(vm.Game, vm.SelectedCharacterIds);
+            return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> PlayerDashboardAsync(int id)
+        {
+            return View(await _gameService.GetGameByIdAsync(id));
+        }
+
     }
 }

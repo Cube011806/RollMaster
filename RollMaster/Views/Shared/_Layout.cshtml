@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/RollMaster.styles.css" asp-append-version="true" />
 </head>
-<body>
+<body class="@ViewBag.DarkMode">
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
@@ -31,6 +31,7 @@
                         </li>
                     </ul>
                     <partial name="_LoginPartial" />
+                    <button id="toggleDarkMode" class="btn btn-secondary">🌙</button>
                 </div>
             </div>
         </nav>
@@ -49,6 +50,22 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        const body = document.body;
+
+        // wczytaj zapisany tryb
+        if (localStorage.getItem("darkMode") === "true") {
+            body.classList.add("dark-mode");
+        }
+
+        document.getElementById("toggleDarkMode").addEventListener("click", () => {
+            body.classList.toggle("dark-mode");
+
+            // zapisz stan
+            localStorage.setItem("darkMode", body.classList.contains("dark-mode"));
+        });
+    </script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
