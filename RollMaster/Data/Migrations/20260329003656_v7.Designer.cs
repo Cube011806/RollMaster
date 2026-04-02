@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RollMaster.Data;
 
@@ -11,9 +12,11 @@ using RollMaster.Data;
 namespace RollMaster.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260329003656_v7")]
+    partial class v7
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -471,7 +474,7 @@ namespace RollMaster.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Character", (string)null);
+                    b.ToTable("Character");
                 });
 
             modelBuilder.Entity("RollMaster.Models.Game", b =>
@@ -492,7 +495,7 @@ namespace RollMaster.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Game", (string)null);
+                    b.ToTable("Game");
                 });
 
             modelBuilder.Entity("RollMaster.Models.Skill", b =>
@@ -503,7 +506,7 @@ namespace RollMaster.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CharacterId")
+                    b.Property<int?>("CharacterId")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsEnhanced")
@@ -520,7 +523,7 @@ namespace RollMaster.Data.Migrations
 
                     b.HasIndex("CharacterId");
 
-                    b.ToTable("Skills", (string)null);
+                    b.ToTable("Skill");
                 });
 
             modelBuilder.Entity("RollMaster.Models.User", b =>
@@ -601,13 +604,9 @@ namespace RollMaster.Data.Migrations
 
             modelBuilder.Entity("RollMaster.Models.Skill", b =>
                 {
-                    b.HasOne("RollMaster.Models.Character", "Character")
+                    b.HasOne("RollMaster.Models.Character", null)
                         .WithMany("skills")
-                        .HasForeignKey("CharacterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Character");
+                        .HasForeignKey("CharacterId");
                 });
 
             modelBuilder.Entity("RollMaster.Models.Character", b =>

@@ -31,53 +31,55 @@
         public int PTRozum { get; set; }
         public int Obrona { get; set; }
 
-        //Umiejetnosci Siły
-        public int Czujnosc { get; set; } = 0;
-        public int Piesni { get; set; } = 0;
-        public int Polowanie { get; set; } = 0;
-        public int Respekt { get; set; } = 0;
-        public int Rzemioslo { get; set; } = 0;
-        public int Zwinnosc { get; set; } = 0;
+        public IList<Skill> skills { get; set; } = new List<Skill>();
 
-        //Wzmocnienia Umiejetnosci Siły
-        public bool WCzujnosc { get; set; } = false;
-        public bool WPiesni { get; set; } = false;
-        public bool WPolowanie { get; set; } = false;
-        public bool WRespekt { get; set; } = false;
-        public bool WRzemioslo { get; set; } = false;
-        public bool WZwinnosc { get; set; } = false;
+        //Umiejetnosci Siły (LEGACY)
+        //public int Czujnosc { get; set; } = 0;
+        //public int Piesni { get; set; } = 0;
+        //public int Polowanie { get; set; } = 0;
+        //public int Respekt { get; set; } = 0;
+        //public int Rzemioslo { get; set; } = 0;
+        //public int Zwinnosc { get; set; } = 0;
 
-        //Umiejetnosci Serca
-        public int Przenikliwosc { get; set; } = 0;
-        public int Uprzejmosc { get; set; } = 0;
-        public int Uzdrawianie { get; set; } = 0;
-        public int Inspiracja { get; set; } = 0;
-        public int Wojaczka { get; set; } = 0;
-        public int Wedrowka { get; set; } = 0;
+        //Wzmocnienia Umiejetnosci Siły (LEGACY)
+        //public bool WCzujnosc { get; set; } = false;
+        //public bool WPiesni { get; set; } = false;
+        //public bool WPolowanie { get; set; } = false;
+        //public bool WRespekt { get; set; } = false;
+        //public bool WRzemioslo { get; set; } = false;
+        //public bool WZwinnosc { get; set; } = false;
 
-        //Wzmocnienia Umiejetnosci Serca
-        public bool WPrzenikliwosc { get; set; } = false;
-        public bool WUprzejmosc { get; set; } = false;
-        public bool WUzdrawianie { get; set; } = false;
-        public bool WInspiracja { get; set; } = false;
-        public bool WWojaczka { get; set; } = false;
-        public bool WWedrowka { get; set; } = false;
+        //Umiejetnosci Serca (LEGACY)
+        //public int Przenikliwosc { get; set; } = 0;
+        //public int Uprzejmosc { get; set; } = 0;
+        //public int Uzdrawianie { get; set; } = 0;
+        //public int Inspiracja { get; set; } = 0;
+        //public int Wojaczka { get; set; } = 0;
+        //public int Wedrowka { get; set; } = 0;
 
-        //Umiejetnosci Rozumu
-        public int Szukanie { get; set; } = 0;
-        public int Zagadki { get; set; } = 0;
-        public int Rekonesans { get; set; } = 0;
-        public int Przekonywanie { get; set; } = 0;
-        public int Wiedza { get; set; } = 0;
-        public int Skradanie { get; set; } = 0;
+        //Wzmocnienia Umiejetnosci Serca (LEGACY)
+        //public bool WPrzenikliwosc { get; set; } = false;
+        //public bool WUprzejmosc { get; set; } = false;
+        //public bool WUzdrawianie { get; set; } = false;
+        //public bool WInspiracja { get; set; } = false;
+        //public bool WWojaczka { get; set; } = false;
+        //public bool WWedrowka { get; set; } = false;
 
-        //Wzmocnienia Umiejetnosci Rozumu
-        public bool WSzukanie { get; set; } = false;
-        public bool WZagadki { get; set; } = false;
-        public bool WRekonesans { get; set; } = false;
-        public bool WPrzekonywanie { get; set; } = false;
-        public bool WWiedza { get; set; } = false;
-        public bool WSkradanie { get; set; } = false;
+        //Umiejetnosci Rozumu (LEGACY)
+        //public int Szukanie { get; set; } = 0;
+        //public int Zagadki { get; set; } = 0;
+        //public int Rekonesans { get; set; } = 0;
+        //public int Przekonywanie { get; set; } = 0;
+        //public int Wiedza { get; set; } = 0;
+        //public int Skradanie { get; set; } = 0;
+
+        //Wzmocnienia Umiejetnosci Rozumu (LEGACY)
+        //public bool WSzukanie { get; set; } = false;
+        //public bool WZagadki { get; set; } = false;
+        //public bool WRekonesans { get; set; } = false;
+        //public bool WPrzekonywanie { get; set; } = false;
+        //public bool WWiedza { get; set; } = false;
+        //public bool WSkradanie { get; set; } = false;
 
         //Biegłosci Bojowe
         public int BBLuki { get; set; } = 0;

@@ -26,7 +26,10 @@ namespace RollMaster.Services.Character
 
         public async Task<Models.Character?> GetByIdAsync(int id)
         {
-            return await _context.Character.FirstOrDefaultAsync(c => c.Id == id);
+            var character = await _context.Character
+                .Include(c => c.skills)
+                .FirstOrDefaultAsync(c => c.Id == id);
+            return character;
         }
         public Models.Character? GetById(int id)
         {
@@ -44,13 +47,14 @@ namespace RollMaster.Services.Character
             var json = JsonSerializer.Serialize(character, options);
             return Encoding.UTF8.GetBytes(json);
         }
-        public async Task CreateCharacterAsync(Models.Character model, string userId)
+        public async Task CreateCharacterAsync(Models.Character character, string userId)
         {
-            model.UserId = userId;
+            character.UserId = userId;
 
-            _context.Character.Add(model);
+            _context.Character.Add(character);
             await _context.SaveChangesAsync();
         }
+
 
         public async Task DeleteAsync(int id)
         {

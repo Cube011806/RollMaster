@@ -34,7 +34,33 @@ namespace RollMaster.Controllers
         }
         public IActionResult CreateCharacter()
         {
-            return View();
+            var model = new Character();
+
+            model.skills = new List<Skill>
+            {
+                new Skill("Czujność", 0, false),
+                new Skill("Pieśni", 0, false),
+                new Skill("Polowanie", 0, false),
+                new Skill("Respekt", 0, false),
+                new Skill("Rzemioslo", 0, false),
+                new Skill("Zwinnosc", 0, false),
+
+                new Skill("Przenikliwość", 0, false),
+                new Skill("Uprzejmość", 0, false),
+                new Skill("Uzdrawianie", 0, false),
+                new Skill("Inspiracja", 0, false),
+                new Skill("Wojaczka", 0, false),
+                new Skill("Wędrówka", 0, false),
+
+                new Skill("Szukanie", 0, false),
+                new Skill("Zagadki", 0, false),
+                new Skill("Rekonesans", 0, false),
+                new Skill("Przekonywanie", 0, false),
+                new Skill("Wiedza", 0, false),
+                new Skill("Skradanie", 0, false)
+            };
+
+            return View(model);
         }
 
         [HttpPost]
