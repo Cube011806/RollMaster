@@ -6,10 +6,11 @@ namespace RollMaster.Data
 {
     public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext(options)
     {
-        public DbSet<User> User { get; set; }
-        public DbSet<Character> Character { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Character> Characters { get; set; }
         public DbSet<Skill> Skills { get; set; }
-        public DbSet<Game> Game { get; set; }
+        public DbSet<Weapon> Weapons { get; set; }
+        public DbSet<Game> Games { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -19,6 +20,12 @@ namespace RollMaster.Data
                 .HasOne(s => s.Character)
                 .WithMany(c => c.skills)
                 .HasForeignKey(s => s.CharacterId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Weapon>()
+                .HasOne(w => w.Character)
+                .WithMany(c => c.weapons)
+                .HasForeignKey(w => w.CharacterId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

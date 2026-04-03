@@ -21,19 +21,20 @@ namespace RollMaster.Services.Character
 
         public async Task<List<Models.Character>> GetAllAsync()
         {
-            return await _context.Character.ToListAsync();
+            return await _context.Characters.ToListAsync();
         }
 
         public async Task<Models.Character?> GetByIdAsync(int id)
         {
-            var character = await _context.Character
+            var character = await _context.Characters
                 .Include(c => c.skills)
+                .Include(c => c.weapons)
                 .FirstOrDefaultAsync(c => c.Id == id);
             return character;
         }
         public Models.Character? GetById(int id)
         {
-            return _context.Character.FirstOrDefault(c => c.Id == id);
+            return _context.Characters.FirstOrDefault(c => c.Id == id);
         }
 
         public byte[] ExportToJson(Models.Character character)
@@ -51,17 +52,17 @@ namespace RollMaster.Services.Character
         {
             character.UserId = userId;
 
-            _context.Character.Add(character);
+            _context.Characters.Add(character);
             await _context.SaveChangesAsync();
         }
 
 
         public async Task DeleteAsync(int id)
         {
-            var character = await _context.Character.FindAsync(id);
+            var character = await _context.Characters.FindAsync(id);
             if (character == null) return;
 
-            _context.Character.Remove(character);
+            _context.Characters.Remove(character);
             await _context.SaveChangesAsync();
         }
     }

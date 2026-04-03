@@ -9,11 +9,11 @@ using RollMaster.Data;
 
 #nullable disable
 
-namespace RollMaster.Data.Migrations
+namespace RollMaster.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260328144238_v4")]
-    partial class v4
+    [Migration("20260402234554_v1")]
+    partial class v1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -259,9 +259,6 @@ namespace RollMaster.Data.Migrations
                     b.Property<int>("Cien")
                         .HasColumnType("int");
 
-                    b.Property<int>("Czujnosc")
-                        .HasColumnType("int");
-
                     b.Property<string>("Ekwipunek")
                         .HasColumnType("nvarchar(max)");
 
@@ -280,9 +277,6 @@ namespace RollMaster.Data.Migrations
                     b.Property<string>("Imie")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Inspiracja")
-                        .HasColumnType("int");
 
                     b.Property<int>("Madrosc")
                         .HasColumnType("int");
@@ -320,13 +314,7 @@ namespace RollMaster.Data.Migrations
                     b.Property<string>("Patron")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Piesni")
-                        .HasColumnType("int");
-
                     b.Property<int>("PietnoCienia")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Polowanie")
                         .HasColumnType("int");
 
                     b.Property<string>("Powolanie")
@@ -336,12 +324,6 @@ namespace RollMaster.Data.Migrations
                     b.Property<string>("PoziomZycia")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Przekonywanie")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Przenikliwosc")
-                        .HasColumnType("int");
 
                     b.Property<bool>("Przygnebienie")
                         .HasColumnType("bit");
@@ -361,81 +343,12 @@ namespace RollMaster.Data.Migrations
                     b.Property<int>("PunktyZazylosci")
                         .HasColumnType("int");
 
-                    b.Property<string>("R1Nazwa")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("R1Obciazenie")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("R1Obrazenia")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("R1Przebicie")
-                        .HasColumnType("int");
-
-                    b.Property<string>("R1Uwagi")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("R2Nazwa")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("R2Obciazenie")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("R2Obrazenia")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("R2Przebicie")
-                        .HasColumnType("int");
-
-                    b.Property<string>("R2Uwagi")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("R3Nazwa")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("R3Obciazenie")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("R3Obrazenia")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("R3Przebicie")
-                        .HasColumnType("int");
-
-                    b.Property<string>("R3Uwagi")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("R4Nazwa")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("R4Obciazenie")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("R4Obrazenia")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("R4Przebicie")
-                        .HasColumnType("int");
-
-                    b.Property<string>("R4Uwagi")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("Rana")
                         .HasColumnType("bit");
-
-                    b.Property<int>("Rekonesans")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Respekt")
-                        .HasColumnType("int");
 
                     b.Property<string>("RodzimaKultura")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Rzemioslo")
-                        .HasColumnType("int");
 
                     b.Property<string>("SciezkaCienia")
                         .IsRequired()
@@ -444,17 +357,11 @@ namespace RollMaster.Data.Migrations
                     b.Property<int>("Skarb")
                         .HasColumnType("int");
 
-                    b.Property<int>("Skradanie")
-                        .HasColumnType("int");
-
                     b.Property<string>("StopienRany")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SzczegolnaSympatia")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Szukanie")
-                        .HasColumnType("int");
 
                     b.Property<string>("TarczaNazwa")
                         .HasColumnType("nvarchar(max)");
@@ -465,68 +372,8 @@ namespace RollMaster.Data.Migrations
                     b.Property<int?>("TarczaObrona")
                         .HasColumnType("int");
 
-                    b.Property<int>("Uprzejmosc")
-                        .HasColumnType("int");
-
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("Uzdrawianie")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("WCzujnosc")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("WInspiracja")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("WPiesni")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("WPolowanie")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("WPrzekonywanie")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("WPrzenikliwosc")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("WRekonesans")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("WRespekt")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("WRzemioslo")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("WSkradanie")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("WSzukanie")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("WUprzejmosc")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("WUzdrawianie")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("WWedrowka")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("WWiedza")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("WWojaczka")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("WZagadki")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("WZwinnosc")
-                        .HasColumnType("bit");
 
                     b.Property<int>("WartoscRozum")
                         .HasColumnType("int");
@@ -537,16 +384,7 @@ namespace RollMaster.Data.Migrations
                     b.Property<int>("WartoscSila")
                         .HasColumnType("int");
 
-                    b.Property<int>("Wedrowka")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Wiedza")
-                        .HasColumnType("int");
-
                     b.Property<int>("Wiek")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Wojaczka")
                         .HasColumnType("int");
 
                     b.Property<bool>("Wyczerpanie")
@@ -556,9 +394,6 @@ namespace RollMaster.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Wytrzymalosc")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Zagadki")
                         .HasColumnType("int");
 
                     b.Property<string>("ZbrojaNazwa")
@@ -573,16 +408,13 @@ namespace RollMaster.Data.Migrations
                     b.Property<int>("Znuzenie")
                         .HasColumnType("int");
 
-                    b.Property<int>("Zwinnosc")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("GameId");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Character");
+                    b.ToTable("Characters");
                 });
 
             modelBuilder.Entity("RollMaster.Models.Game", b =>
@@ -603,12 +435,77 @@ namespace RollMaster.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Game");
+                    b.ToTable("Games");
+                });
+
+            modelBuilder.Entity("RollMaster.Models.Skill", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CharacterId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsEnhanced")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Value")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CharacterId");
+
+                    b.ToTable("Skills");
+                });
+
+            modelBuilder.Entity("RollMaster.Models.Weapon", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CharacterId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Damage")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Injury")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Load")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CharacterId");
+
+                    b.ToTable("Weapons");
                 });
 
             modelBuilder.Entity("RollMaster.Models.User", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+
+                    b.Property<int>("AccessLevel")
+                        .HasColumnType("int");
 
                     b.HasDiscriminator().HasValue("User");
                 });
@@ -677,6 +574,35 @@ namespace RollMaster.Data.Migrations
                     b.Navigation("Game");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("RollMaster.Models.Skill", b =>
+                {
+                    b.HasOne("RollMaster.Models.Character", "Character")
+                        .WithMany("skills")
+                        .HasForeignKey("CharacterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Character");
+                });
+
+            modelBuilder.Entity("RollMaster.Models.Weapon", b =>
+                {
+                    b.HasOne("RollMaster.Models.Character", "Character")
+                        .WithMany("weapons")
+                        .HasForeignKey("CharacterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Character");
+                });
+
+            modelBuilder.Entity("RollMaster.Models.Character", b =>
+                {
+                    b.Navigation("skills");
+
+                    b.Navigation("weapons");
                 });
 
             modelBuilder.Entity("RollMaster.Models.Game", b =>

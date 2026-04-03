@@ -46,6 +46,18 @@ namespace RollMaster.Controllers
         {
             return View(await _gameService.GetGameByIdAsync(id));
         }
+        public async Task<IActionResult> GMDashboard(int id)
+        {
+            var game = await _gameService.GetGameWithCharactersAsync(id);
+            return View(game);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GMDashboard(Game model)
+        {
+            await _gameService.UpdateGameAsync(model);
+            return RedirectToAction("Dashboard", new { id = model.Id });
+        }
 
     }
 }

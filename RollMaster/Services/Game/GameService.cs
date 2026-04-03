@@ -18,21 +18,21 @@ namespace RollMaster.Services.Game
         }
         public async Task<List<Models.Game>> GetAllAsync()
         {
-            return await _context.Game.ToListAsync();
+            return await _context.Games.ToListAsync();
         }
         public async Task<Models.Game> GetGameByIdAsync(int id)
         {
-            return await _context.Game.FirstOrDefaultAsync(c => c.Id == id);
+            return await _context.Games.FirstOrDefaultAsync(c => c.Id == id);
         }
 
         public void CreateGame(Models.Game game, List<int> characterIds)
         {
-            _context.Game.Add(game);
+            _context.Games.Add(game);
             _context.SaveChanges();
 
             foreach (var id in characterIds)
             {
-                var character = _context.Character.FirstOrDefault(c => c.Id == id);
+                var character = _context.Characters.FirstOrDefault(c => c.Id == id);
                 if (character != null)
                 {
                     character.GameId = game.Id;
@@ -41,6 +41,52 @@ namespace RollMaster.Services.Game
 
             _context.SaveChanges();
         }
+        public async Task<Models.Game> GetGameWithCharactersAsync(int id)
+        {
+            return await _context.Games
+                .Include(g => g.Characters)
+                .ThenInclude(c => c.skills)
+                .Include(g => g.Characters)
+                .ThenInclude(c => c.weapons) 
+                .FirstOrDefaultAsync(g => g.Id == id);
+        }
+        public async Task UpdateGameAsync(Models.Game model)
+        {
+            var game = await _context.Games
+                .Include(g => g.Characters)
+                .FirstOrDefaultAsync(g => g.Id == model.Id);
 
+            if (game == null) return;
+
+            game.Name = model.Name;
+            game.Description = model.Description;
+
+            foreach (var chModel in model.Characters)
+            {
+                var ch = game.Characters.FirstOrDefault(c => c.Id == chModel.Id);
+                if (ch != null)
+                {
+                    ch.Wiek = chModel.Wiek;
+                    ch.PoziomZycia = chModel.PoziomZycia;
+                    ch.Skarb = chModel.Skarb;
+
+                    ch.WartoscSila = chModel.WartoscSila;
+                    ch.WartoscSerce = chModel.WartoscSerce;
+                    ch.WartoscRozum = chModel.WartoscRozum;
+
+                    ch.ObecnaWytrzymalosc = chModel.ObecnaWytrzymalosc;
+                    ch.ObecnaNadzieja = chModel.ObecnaNadzieja;
+
+                    ch.Wyczerpanie = chModel.Wyczerpanie;
+                    ch.Przygnebienie = chModel.Przygnebienie;
+                    ch.Rana = chModel.Rana;
+                    ch.StopienRany = chModel.StopienRany;
+
+                    ch.Ekwipunek = chModel.Ekwipunek;
+                }
+            }
+
+            await _context.SaveChangesAsync();
+        }
     }
 }
