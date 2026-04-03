@@ -20,6 +20,8 @@ namespace RollMaster.Models
         public string Name { get; set; } = String.Empty;
         public int Value { get; set; }
         public bool IsEnhanced { get; set; }
+
+        //Relacja z postacią
         public int CharacterId { get; set; }
         public Character Character { get; set; }
     }

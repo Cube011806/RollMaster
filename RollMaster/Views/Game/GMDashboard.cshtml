@@ -1,0 +1,58 @@
+﻿@model RollMaster.Models.Game
+
+@{
+    ViewData["Title"] = "Game Dashboard";
+}
+
+<h1>Game Dashboard – @Model.Name</h1>
+
+<form asp-action="SaveGame" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    @for (int i = 0; i < Model.Characters.Count; i++)
+    {
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3>@Model.Characters[i].Imie</h3>
+            </div>
+
+            <div class="card-body">
+                <input type="hidden" asp-for="Characters[i].Id" />
+
+                <div class="form-group">
+                    <label asp-for="Characters[i].Wiek"></label>
+                    <input asp-for="Characters[i].Wiek" class="form-control" type="number" />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Characters[i].PoziomZycia"></label>
+                    <input asp-for="Characters[i].PoziomZycia" class="form-control" />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Characters[i].Skarb"></label>
+                    <input asp-for="Characters[i].Skarb" class="form-control" type="number" />
+                </div>
+
+                <h5>Atrybuty</h5>
+
+                <div class="form-group">
+                    <label asp-for="Characters[i].WartoscSila"></label>
+                    <input asp-for="Characters[i].WartoscSila" class="form-control" type="number" />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Characters[i].WartoscSerce"></label>
+                    <input asp-for="Characters[i].WartoscSerce" class="form-control" type="number" />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Characters[i].WartoscRozum"></label>
+                    <input asp-for="Characters[i].WartoscRozum" class="form-control" type="number" />
+                </div>
+            </div>
+        </div>
+    }
+
+    <button type="submit" class="btn btn-primary">Zapisz wszystko</button>
+</form>

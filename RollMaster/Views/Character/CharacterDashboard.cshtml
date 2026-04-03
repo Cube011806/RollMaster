@@ -1,616 +1,230 @@
 ﻿@model RollMaster.Models.Character
 
-@{
-    ViewData["Title"] = "Dashboard";
-}
+<link rel="stylesheet" href="~/css/character.css" />
 
-<h1>Player Dashboard</h1>
-<h2 style="color:red;">PROTOTYP</h2>
-<form asp-action="" method="post">
+<div class="tor-sheet">
 
-    <h3>Informacje podstawowe</h3>
-
-    <div class="row mb-3">
-        <div class="col-4 fw-bold">Imię:</div>
-        <div class="col-8">@Model.Imie</div>
+    <!-- HEADER -->
+    <div class="header">
+        <div class="name">@Model.Imie</div>
     </div>
 
-    <div class="row mb-3">
-        <div class="col-4 fw-bold">Rodzima kultura:</div>
-        <div class="col-8">@Model.RodzimaKultura</div>
+    <!-- TOP INFO -->
+    <div class="top-info">
+        <div>Rodzima kultura: @Model.RodzimaKultura</div>
+        <div>Powołanie: @Model.Powolanie</div>
+        <div>Wiek: <input asp-for="Wiek" /></div>
+        <div>Patron: <input asp-for="Patron" /></div>
+        <div>Skarb: <input asp-for="Skarb" /></div>
     </div>
 
-    <div class="row mb-3">
-        <div class="col-4 fw-bold">Powołanie:</div>
-        <div class="col-8">@Model.Powolanie</div>
-    </div>
+    <!-- MAIN GRID -->
+    <div class="main">
 
+        <!-- SIŁA -->
+        <div class="column">
+            <h3>SIŁA</h3>
+            <div class="attr-block">
+                <label>Wartość</label>
+                <input asp-for="WartoscSila" />
+                <label>PT</label>
+                <input asp-for="PTSila" />
+                <label>Wytrzymałość</label>
+                <input asp-for="Wytrzymalosc" />
+            </div>
 
-    <div class="form-group">
-        <label asp-for="Wiek"></label>
-        <input asp-for="Wiek" class="form-control" type="number" />
-    </div>
+            <div class="skills">
+                @for (int i = 0; i < 6; i++)
+                {
+                    var skill = Model.skills[i];
+                    <div class="skill-row">
+                        <label class="enhance-checkbox">
+                            <input type="checkbox" name="skills[@i].IsEnhanced" value="true" @(skill.IsEnhanced ? "checked" : "") />
+                        </label>
 
-    <div class="form-group">
-        <label asp-for="PoziomZycia"></label>
-        <input asp-for="PoziomZycia" class="form-control" />
-    </div>
+                        <span class="skill-name">@skill.Name</span>
 
-    <div class="form-group">
-        <label asp-for="Patron"></label>
-        <input asp-for="Patron" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label asp-for="SciezkaCienia"></label>
-        <input asp-for="SciezkaCienia" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label asp-for="Skarb"></label>
-        <input asp-for="Skarb" class="form-control" type="number" />
-    </div>
+                        <input type="hidden" name="skills[@i].Value" value="0" />
 
-    <div class="form-group">
-        <label asp-for="Wyrozniki"></label>
-        <textarea asp-for="Wyrozniki" class="form-control"></textarea>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Przywary"></label>
-        <textarea asp-for="Przywary" class="form-control"></textarea>
-    </div>
-
-    <hr />
-
-    <h3>Atrybuty</h3>
-
-    <div class="form-group">
-        <label asp-for="WartoscSila"></label>
-        <input asp-for="WartoscSila" class="form-control" type="number" />
-    </div>
-    <div class="form-group">
-        <label asp-for="PTSila"></label>
-        <input asp-for="PTSila" class="form-control" type="number" />
-    </div>
-    <div class="form-group">
-        <label asp-for="Wytrzymalosc"></label>
-        <input asp-for="Wytrzymalosc" class="form-control" type="number" />
-    </div>
-
-    <div class="form-group">
-        <label asp-for="WartoscSerce"></label>
-        <input asp-for="WartoscSerce" class="form-control" type="number" />
-    </div>
-    <div class="form-group">
-        <label asp-for="PTSerce"></label>
-        <input asp-for="PTSerce" class="form-control" type="number" />
-    </div>    
-    <div class="form-group">
-        <label asp-for="Nadzieja"></label>
-        <input asp-for="Nadzieja" class="form-control" type="number" />
-    </div>
-    <div class="form-group">
-        <label asp-for="WartoscRozum"></label>
-        <input asp-for="WartoscRozum" class="form-control" type="number" />
-    </div>
-    <div class="form-group">
-        <label asp-for="PTRozum"></label>
-        <input asp-for="PTRozum" class="form-control" type="number" />
-    </div>
-    <div class="form-group">
-        <label asp-for="Obrona"></label>
-        <input asp-for="Obrona" class="form-control" type="number" />
-    </div>
-    <hr />
-    <h3>Umiejętności</h3>
-
-    @for (int i = 0; i < Model.skills.Count; i++)
-    {
-        <div class="form-group mb-3">
-            <label class="fw-bold">@Model.skills[i].Name</label>
-
-            <div class="input-group">
-                <span class="form-control-plaintext">
-                    @Model.skills[i].Value
-                </span>
-
-                <div class="input-group-text">
-                    @(Model.skills[i].IsEnhanced ? "✔" : "—")
-                </div>
+                        <div class="skill-values">
+                            @for (int val = 1; val <= 6; val++)
+                            {
+                                <label>
+                                    <input type="radio" name="skills[@i].Value" value="@val" @(skill.Value == val ? "checked" : "") />
+                                    @val
+                                </label>
+                            }
+                        </div>
+                    </div>
+                }
             </div>
         </div>
-    }
 
+        <!-- SERCE -->
+        <div class="column">
+            <h3>SERCE</h3>
+            <div class="attr-block">
+                <label>Wartość</label>
+                <input asp-for="WartoscSerce" />
+                <label>PT</label>
+                <input asp-for="PTSerce" />
+                <label>Nadzieja</label>
+                <input asp-for="Nadzieja" />
+            </div>
 
-  @*   <h3>Umiejętności (Siła)</h3>
+            <div class="skills">
+                @for (int i = 6; i < 12; i++)
+                {
+                    var skill = Model.skills[i];
+                    <div class="skill-row">
+                        <label class="enhance-checkbox">
+                            <input type="checkbox" name="skills[@i].IsEnhanced" value="true" @(skill.IsEnhanced ? "checked" : "") />
+                        </label>
 
-    <div class="form-group">
-        <label asp-for="Czujnosc"></label>
-        <div class="input-group">
-            <input asp-for="Czujnosc" class="form-control" type="number" />
+                        <span class="skill-name">@skill.Name</span>
 
-            <div class="input-group-text">
-                <input asp-for="WCzujnosc" type="checkbox" class="form-check-input" />
-                <label asp-for="WCzujnosc" class="ms-1 mb-0">Wzmocnione</label>
+                        <input type="hidden" name="skills[@i].Value" value="0" />
+
+                        <div class="skill-values">
+                            @for (int val = 1; val <= 6; val++)
+                            {
+                                <label>
+                                    <input type="radio" name="skills[@i].Value" value="@val" @(skill.Value == val ? "checked" : "") />
+                                    @val
+                                </label>
+                            }
+                        </div>
+                    </div>
+                }
             </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label asp-for="Piesni"></label>
-        <div class="input-group">
-            <input asp-for="Piesni" class="form-control" type="number" />
 
-            <div class="input-group-text">
-                <input asp-for="WPiesni" type="checkbox" class="form-check-input" />
-                <label asp-for="WPiesni" class="ms-1 mb-0">Wzmocnione</label>
+        <!-- ROZUM -->
+        <div class="column">
+            <h3>ROZUM</h3>
+            <div class="attr-block">
+                <label>Wartość</label>
+                <input asp-for="WartoscRozum" />
+                <label>PT</label>
+                <input asp-for="PTRozum" />
+                <label>Obrona</label>
+                <input asp-for="Obrona" />
+            </div>
+
+            <div class="skills">
+                @for (int i = 12; i < Model.skills.Count; i++)
+                {
+                    var skill = Model.skills[i];
+                    <div class="skill-row">
+                        <label class="enhance-checkbox">
+                            <input type="checkbox" name="skills[@i].IsEnhanced" value="true" @(skill.IsEnhanced ? "checked" : "") />
+                        </label>
+
+                        <span class="skill-name">@skill.Name</span>
+
+                        <input type="hidden" name="skills[@i].Value" value="0" />
+
+                        <div class="skill-values">
+                            @for (int val = 1; val <= 6; val++)
+                            {
+                                <label>
+                                    <input type="radio" name="skills[@i].Value" value="@val" @(skill.Value == val ? "checked" : "") />
+                                    @val
+                                </label>
+                            }
+                        </div>
+                    </div>
+                }
             </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label asp-for="Polowanie"></label>
-        <div class="input-group">
-            <input asp-for="Polowanie" class="form-control" type="number" />
 
-            <div class="input-group-text">
-                <input asp-for="WPolowanie" type="checkbox" class="form-check-input" />
-                <label asp-for="WPolowanie" class="ms-1 mb-0">Wzmocnione</label>
+        <!-- PRAWA KOLUMNA -->
+        <div class="side">
+
+            <div class="box">
+                <h4>Punkty</h4>
+
+                <label>Punkty Przygody</label>
+                <input asp-for="PunktyPrzygody" />
+
+                <label>Punkty Umiejętności</label>
+                <input asp-for="PunktyUmiejetnosci" />
+
+                <label>Poziom Zażyłości</label>
+                <input asp-for="PunktyZazylosci" />
             </div>
-        </div>
-    </div>
-    <div class="form-group">
-        <label asp-for="Respekt"></label>
-        <div class="input-group">
-            <input asp-for="Respekt" class="form-control" type="number" />
 
-            <div class="input-group-text">
-                <input asp-for="WRespekt" type="checkbox" class="form-check-input" />
-                <label asp-for="WRespekt" class="ms-1 mb-0">Wzmocnione</label>
+            <div class="box">
+                <h4>Stan</h4>
+
+                <label>Obecna Wytrzymałość</label>
+                <input asp-for="ObecnaWytrzymalosc" />
+
+                <label>Obecna Nadzieja</label>
+                <input asp-for="ObecnaNadzieja" />
+
+                <label>Cień</label>
+                <input asp-for="Cien" />
+
+                <label>Piętno Cienia</label>
+                <input asp-for="PietnoCienia" />
             </div>
-        </div>
-    </div>
-    <div class="form-group">
-        <label asp-for="Rzemioslo"></label>
-        <div class="input-group">
-            <input asp-for="Rzemioslo" class="form-control" type="number" />
 
-            <div class="input-group-text">
-                <input asp-for="WRzemioslo" type="checkbox" class="form-check-input" />
-                <label asp-for="WRzemioslo" class="ms-1 mb-0">Wzmocnione</label>
+            <div class="box">
+                <h4>Stan</h4>
+                <input asp-for="ObecnaWytrzymalosc" placeholder="Wytrzymałość" />
+                <input asp-for="ObecnaNadzieja" placeholder="Nadzieja" />
+                <input asp-for="Cien" placeholder="Cień" />
             </div>
-        </div>
-    </div>
-    <div class="form-group">
-        <label asp-for="Zwinnosc"></label>
-        <div class="input-group">
-            <input asp-for="Zwinnosc" class="form-control" type="number" />
 
-            <div class="input-group-text">
-                <input asp-for="WZwinnosc" type="checkbox" class="form-check-input" />
-                <label asp-for="WZwinnosc" class="ms-1 mb-0">Wzmocnione</label>
+            <div class="box">
+                <h4>Ograniczenia</h4>
+                <label><input asp-for="Wyczerpanie" /> Wyczerpanie</label>
+                <label><input asp-for="Przygnebienie" /> Przygnębienie</label>
+                <label><input asp-for="Rana" /> Rana</label>
             </div>
-        </div>
-    </div>
-    <hr />
-    
-    <h3>Umiejętności (Serce)</h3>
 
-    <div class="form-group">
-        <label asp-for="Przenikliwosc"></label>
-        <div class="input-group">
-            <input asp-for="Przenikliwosc" class="form-control" type="number" />
-
-            <div class="input-group-text">
-                <input asp-for="WPrzenikliwosc" type="checkbox" class="form-check-input" />
-                <label asp-for="WPrzenikliwosc" class="ms-1 mb-0">Wzmocnione</label>
+            <div class="box">
+                <h4>Ekwipunek</h4>
+                <textarea asp-for="Ekwipunek"></textarea>
             </div>
-        </div>
-    </div>
-    <div class="form-group">
-        <label asp-for="Uprzejmosc"></label>
-        <div class="input-group">
-            <input asp-for="Uprzejmosc" class="form-control" type="number" />
 
-            <div class="input-group-text">
-                <input asp-for="WUprzejmosc" type="checkbox" class="form-check-input" />
-                <label asp-for="WUprzejmosc" class="ms-1 mb-0">Wzmocnione</label>
+        </div>
+
+    </div>
+
+    <!-- RYNSZTUNEK -->
+    <div class="equipment">
+        <h3>Rynsztunek</h3>
+
+        @for (int i = 0; i < 4; i++)
+        {
+            <div class="weapon-row">
+                <input type="hidden" name="weapons[@i].Id" value="@(i<Model.weapons.Count? Model.weapons[i].Id : 0)" />
+                <input type="hidden" name="weapons[@i].CharacterId" value="@Model.Id" />
+
+                <input name="weapons[@i].Name" value="@(i<Model.weapons.Count? Model.weapons[i].Name : "")" placeholder="Nazwa" />
+                <input name="weapons[@i].Damage" value="@(i<Model.weapons.Count? Model.weapons[i].Damage : 0)" />
+                <input name="weapons[@i].Injury" value="@(i<Model.weapons.Count? Model.weapons[i].Injury : 0)" />
+                <input name="weapons[@i].Load" value="@(i<Model.weapons.Count? Model.weapons[i].Load : 0)" />
+                <input name="weapons[@i].Notes" value="@(i<Model.weapons.Count? Model.weapons[i].Notes : "")" />
             </div>
-        </div>
+        }
     </div>
-    <div class="form-group">
-        <label asp-for="Uzdrawianie"></label>
-        <div class="input-group">
-            <input asp-for="Uzdrawianie" class="form-control" type="number" />
+    <div class="armor-section">
+        <h4>Zbroja</h4>
+        <input asp-for="ZbrojaNazwa" placeholder="Nazwa" />
+        <input asp-for="ZbrojaPancerz" placeholder="Pancerz" />
+        <input asp-for="ZbrojaObciazenie" placeholder="Obciążenie" />
 
-            <div class="input-group-text">
-                <input asp-for="WUzdrawianie" type="checkbox" class="form-check-input" />
-                <label asp-for="WUzdrawianie" class="ms-1 mb-0">Wzmocnione</label>
-            </div>
-        </div>
-    </div>
-    <div class="form-group">
-        <label asp-for="Inspiracja"></label>
-        <div class="input-group">
-            <input asp-for="Inspiracja" class="form-control" type="number" />
+        <h4>Hełm</h4>
+        <input asp-for="HelmNazwa" placeholder="Nazwa" />
+        <input asp-for="HelmPancerz" placeholder="Pancerz" />
+        <input asp-for="HelmObciazenie" placeholder="Obciążenie" />
 
-            <div class="input-group-text">
-                <input asp-for="WInspiracja" type="checkbox" class="form-check-input" />
-                <label asp-for="WInspiracja" class="ms-1 mb-0">Wzmocnione</label>
-            </div>
-        </div>
+        <h4>Tarcza</h4>
+        <input asp-for="TarczaNazwa" placeholder="Nazwa" />
+        <input asp-for="TarczaObrona" placeholder="Obrona" />
+        <input asp-for="TarczaObciazenie" placeholder="Obciążenie" />
     </div>
-    <div class="form-group">
-        <label asp-for="Wojaczka"></label>
-        <div class="input-group">
-            <input asp-for="Wojaczka" class="form-control" type="number" />
-
-            <div class="input-group-text">
-                <input asp-for="WWojaczka" type="checkbox" class="form-check-input" />
-                <label asp-for="WWojaczka" class="ms-1 mb-0">Wzmocnione</label>
-            </div>
-        </div>
-    </div>
-    <div class="form-group">
-        <label asp-for="Wedrowka"></label>
-        <div class="input-group">
-            <input asp-for="Wedrowka" class="form-control" type="number" />
-
-            <div class="input-group-text">
-                <input asp-for="WWedrowka" type="checkbox" class="form-check-input" />
-                <label asp-for="WWedrowka" class="ms-1 mb-0">Wzmocnione</label>
-            </div>
-        </div>
-    </div>
-    <hr />
-    <h3>Umiejętności (Rozum)</h3>
-
-    <div class="form-group">
-        <label asp-for="Szukanie"></label>
-        <div class="input-group">
-            <input asp-for="Szukanie" class="form-control" type="number" />
-
-            <div class="input-group-text">
-                <input asp-for="WSzukanie" type="checkbox" class="form-check-input" />
-                <label asp-for="WSzukanie" class="ms-1 mb-0">Wzmocnione</label>
-            </div>
-        </div>
-    </div>
-    <div class="form-group">
-        <label asp-for="Zagadki"></label>
-        <div class="input-group">
-            <input asp-for="Zagadki" class="form-control" type="number" />
-
-            <div class="input-group-text">
-                <input asp-for="WZagadki" type="checkbox" class="form-check-input" />
-                <label asp-for="WZagadki" class="ms-1 mb-0">Wzmocnione</label>
-            </div>
-        </div>
-    </div>
-    <div class="form-group">
-        <label asp-for="Rekonesans"></label>
-        <div class="input-group">
-            <input asp-for="Rekonesans" class="form-control" type="number" />
-
-            <div class="input-group-text">
-                <input asp-for="WRekonesans" type="checkbox" class="form-check-input" />
-                <label asp-for="WRekonesans" class="ms-1 mb-0">Wzmocnione</label>
-            </div>
-        </div>
-    </div>
-    <div class="form-group">
-        <label asp-for="Przekonywanie"></label>
-        <div class="input-group">
-            <input asp-for="Przekonywanie" class="form-control" type="number" />
-
-            <div class="input-group-text">
-                <input asp-for="WPrzekonywanie" type="checkbox" class="form-check-input" />
-                <label asp-for="WPrzekonywanie" class="ms-1 mb-0">Wzmocnione</label>
-            </div>
-        </div>
-    </div>
-    <div class="form-group">
-        <label asp-for="Wiedza"></label>
-        <div class="input-group">
-            <input asp-for="Wiedza" class="form-control" type="number" />
-
-            <div class="input-group-text">
-                <input asp-for="WWiedza" type="checkbox" class="form-check-input" />
-                <label asp-for="WWiedza" class="ms-1 mb-0">Wzmocnione</label>
-            </div>
-        </div>
-    </div>
-    <div class="form-group">
-        <label asp-for="Skradanie"></label>
-        <div class="input-group">
-            <input asp-for="Skradanie" class="form-control" type="number" />
-
-            <div class="input-group-text">
-                <input asp-for="WSkradanie" type="checkbox" class="form-check-input" />
-                <label asp-for="WSkradanie" class="ms-1 mb-0">Wzmocnione</label>
-            </div>
-        </div>
-    </div>
-
-    <hr /> *@
-    <h3>Biegłości bojowe</h3>
-    <div class="form-group">
-        <label asp-for="BBLuki"></label>
-        <input asp-for="BBLuki" class="form-control" type="number" />
-    </div>
-    <div class="form-group">
-        <label asp-for="BBMiecze"></label>
-        <input asp-for="BBMiecze" class="form-control" type="number" />
-    </div>
-    <div class="form-group">
-        <label asp-for="BBTopory"></label>
-        <input asp-for="BBTopory" class="form-control" type="number" />
-    </div>
-    <div class="form-group">
-        <label asp-for="BBWlocznie"></label>
-        <input asp-for="BBWlocznie" class="form-control" type="number" />
-    </div>
-    <hr />
-
-    <h3>Nagrody</h3>
-    <div class="form-group">
-        <label asp-for="Mestwo"></label>
-        <input asp-for="Mestwo" class="form-control" type="number" />
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Nagrody"></label>
-        <textarea asp-for="Nagrody" class="form-control"></textarea>
-    </div>
-    <hr />
-    <h3>Przymioty</h3>
-    <div class="form-group">
-        <label asp-for="Madrosc"></label>
-        <input asp-for="Madrosc" class="form-control" type="number" />
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Przymioty"></label>
-        <textarea asp-for="Przymioty" class="form-control"></textarea>
-    </div>
-    <hr />
-
-    <h3>Rynsztunek — Broń 1</h3>
-
-    <div class="form-group">
-        <label asp-for="R1Nazwa"></label>
-        <input asp-for="R1Nazwa" class="form-control" />
-    </div>
-
-    <div class="form-group">
-        <label asp-for="R1Obrazenia"></label>
-        <input asp-for="R1Obrazenia" class="form-control" type="number" />
-    </div>
-
-    <div class="form-group">
-        <label asp-for="R1Przebicie"></label>
-        <input asp-for="R1Przebicie" class="form-control" type="number" />
-    </div>
-    <div class="form-group">
-        <label asp-for="R1Obciazenie"></label>
-        <input asp-for="R1Obciazenie" class="form-control" type="number" />
-    </div>
-    <div class="form-group">
-        <label asp-for="R1Uwagi"></label>
-        <textarea asp-for="R1Uwagi" class="form-control"></textarea>
-    </div>
-    <hr />
-    <h3>Rynsztunek — Broń 2</h3>
-
-    <div class="form-group">
-        <label asp-for="R2Nazwa"></label>
-        <input asp-for="R2Nazwa" class="form-control" />
-    </div>
-
-    <div class="form-group">
-        <label asp-for="R2Obrazenia"></label>
-        <input asp-for="R2Obrazenia" class="form-control" type="number" />
-    </div>
-
-    <div class="form-group">
-        <label asp-for="R2Przebicie"></label>
-        <input asp-for="R2Przebicie" class="form-control" type="number" />
-    </div>
-    <div class="form-group">
-        <label asp-for="R2Obciazenie"></label>
-        <input asp-for="R2Obciazenie" class="form-control" type="number" />
-    </div>
-    <div class="form-group">
-        <label asp-for="R2Uwagi"></label>
-        <textarea asp-for="R2Uwagi" class="form-control"></textarea>
-    </div>
-    <hr />
-    <h3>Rynsztunek — Broń 3</h3>
-
-    <div class="form-group">
-        <label asp-for="R3Nazwa"></label>
-        <input asp-for="R3Nazwa" class="form-control" />
-    </div>
-
-    <div class="form-group">
-        <label asp-for="R3Obrazenia"></label>
-        <input asp-for="R3Obrazenia" class="form-control" type="number" />
-    </div>
-
-    <div class="form-group">
-        <label asp-for="R3Przebicie"></label>
-        <input asp-for="R3Przebicie" class="form-control" type="number" />
-    </div>
-    <div class="form-group">
-        <label asp-for="R3Obciazenie"></label>
-        <input asp-for="R3Obciazenie" class="form-control" type="number" />
-    </div>
-    <div class="form-group">
-        <label asp-for="R3Uwagi"></label>
-        <textarea asp-for="R3Uwagi" class="form-control"></textarea>
-    </div>
-    <hr />
-    <h3>Rynsztunek — Broń 4</h3>
-
-    <div class="form-group">
-        <label asp-for="R4Nazwa"></label>
-        <input asp-for="R4Nazwa" class="form-control" />
-    </div>
-
-    <div class="form-group">
-        <label asp-for="R4Obrazenia"></label>
-        <input asp-for="R4Obrazenia" class="form-control" type="number" />
-    </div>
-
-    <div class="form-group">
-        <label asp-for="R4Przebicie"></label>
-        <input asp-for="R4Przebicie" class="form-control" type="number" />
-    </div>
-    <div class="form-group">
-        <label asp-for="R4Obciazenie"></label>
-        <input asp-for="R4Obciazenie" class="form-control" type="number" />
-    </div>
-    <div class="form-group">
-        <label asp-for="R4Uwagi"></label>
-        <textarea asp-for="R4Uwagi" class="form-control"></textarea>
-    </div>
-    <hr />
-    <h3>Rynsztunek — Zbroja</h3>
-
-    <div class="form-group">
-        <label asp-for="ZbrojaNazwa"></label>
-        <input asp-for="ZbrojaNazwa" class="form-control" />
-    </div>
-
-    <div class="form-group">
-        <label asp-for="ZbrojaPancerz"></label>
-        <input asp-for="ZbrojaPancerz" class="form-control" type="number" />
-    </div>
-
-    <div class="form-group">
-        <label asp-for="ZbrojaObciazenie"></label>
-        <input asp-for="ZbrojaObciazenie" class="form-control" type="number" />
-    </div>
-    <hr />
-    <h3>Rynsztunek — Hełm</h3>
-
-    <div class="form-group">
-        <label asp-for="HelmNazwa"></label>
-        <input asp-for="HelmNazwa" class="form-control" />
-    </div>
-
-    <div class="form-group">
-        <label asp-for="HelmPancerz"></label>
-        <input asp-for="HelmPancerz" class="form-control" type="number" />
-    </div>
-
-    <div class="form-group">
-        <label asp-for="HelmObciazenie"></label>
-        <input asp-for="HelmObciazenie" class="form-control" type="number" />
-    </div>
-    <hr />
-    <h3>Rynsztunek — Tarcza</h3>
-
-    <div class="form-group">
-        <label asp-for="TarczaNazwa"></label>
-        <input asp-for="TarczaNazwa" class="form-control" />
-    </div>
-
-    <div class="form-group">
-        <label asp-for="TarczaObrona"></label>
-        <input asp-for="TarczaObrona" class="form-control" type="number" />
-    </div>
-
-    <div class="form-group">
-        <label asp-for="TarczaObciazenie"></label>
-        <input asp-for="TarczaObciazenie" class="form-control" type="number" />
-    </div>
-    <hr />
-    <h3>Rozwój</h3>
-
-    <div class="form-group">
-        <label asp-for="PunktyPrzygody"></label>
-        <input asp-for="PunktyPrzygody" class="form-control" type="number" />
-    </div>
-
-    <div class="form-group">
-        <label asp-for="PunktyUmiejetnosci"></label>
-        <input asp-for="PunktyUmiejetnosci" class="form-control" type="number" />
-    </div>
-
-    <div class="form-group">
-        <label asp-for="PunktyZazylosci"></label>
-        <input asp-for="PunktyZazylosci" class="form-control" type="number" />
-    </div>
-    <hr />
-
-    <h3>Obecna wytrzymałość</h3>
-
-    <div class="form-group">
-        <label asp-for="ObecnaWytrzymalosc"></label>
-        <input asp-for="ObecnaWytrzymalosc" class="form-control" type="number" />
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Obciazenie"></label>
-        <input asp-for="Obciazenie" class="form-control" type="number" />
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Znuzenie"></label>
-        <input asp-for="Znuzenie" class="form-control" type="number" />
-    </div>
-    <hr />
-    <h3>Obecna nadzieja</h3>
-
-    <div class="form-group">
-        <label asp-for="ObecnaNadzieja"></label>
-        <input asp-for="ObecnaNadzieja" class="form-control" type="number" />
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Cien"></label>
-        <input asp-for="Cien" class="form-control" type="number" />
-    </div>
-
-    <div class="form-group">
-        <label asp-for="PietnoCienia"></label>
-        <input asp-for="PietnoCienia" class="form-control" type="number" />
-    </div>
-    <hr />
-    <h3>Ograniczenia</h3>
-
-    <div class="form-check mb-2">
-        <input asp-for="Wyczerpanie" class="form-check-input" type="checkbox" />
-        <label asp-for="Wyczerpanie" class="form-check-label"></label>
-    </div>
-
-    <div class="form-check mb-2">
-        <input asp-for="Przygnebienie" class="form-check-input" type="checkbox" />
-        <label asp-for="Przygnebienie" class="form-check-label"></label>
-    </div>
-
-    <div class="form-check mb-2">
-        <input asp-for="Rana" class="form-check-input" type="checkbox" />
-        <label asp-for="Rana" class="form-check-label"></label>
-    </div>
-
-    <div class="form-group mt-2">
-        <label asp-for="StopienRany"></label>
-        <input asp-for="StopienRany" class="form-control" placeholder="TEST" />
-    </div>
-    <hr />
-
-    <h3>Ekwipunek</h3>
-
-    <div class="form-group">
-        <label asp-for="Ekwipunek"></label>
-        <textarea asp-for="Ekwipunek" class="form-control"></textarea>
-    </div>
-    <hr />
-
-    <h3>Dodatkowe</h3>
-    <div class="form-group">
-        <label asp-for="SzczegolnaSympatia"></label>
-        <textarea asp-for="SzczegolnaSympatia" class="form-control"></textarea>
-    </div>
-
-    <button type="submit" class="btn btn-primary mt-3">Zapisz</button>
-</form>
+</div>

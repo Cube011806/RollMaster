@@ -59,6 +59,13 @@ namespace RollMaster.Controllers
                 new Skill("Wiedza", 0, false),
                 new Skill("Skradanie", 0, false)
             };
+            model.weapons = new List<Weapon>
+            {
+                new Weapon(),
+                new Weapon(),
+                new Weapon(),
+                new Weapon()
+            };
 
             return View(model);
         }
@@ -67,6 +74,7 @@ namespace RollMaster.Controllers
         public async Task<IActionResult> CreateCharacter(Character character)
         {
             string userId = _userManager.GetUserId(User);
+
             await _CharacterService.CreateCharacterAsync(character, userId);
             return RedirectToAction("Index");
         }
