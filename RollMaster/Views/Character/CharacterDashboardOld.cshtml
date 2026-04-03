@@ -1,29 +1,30 @@
 ﻿@model RollMaster.Models.Character
 
 @{
-    ViewData["Title"] = "Utwórz postać";
+    ViewData["Title"] = "Dashboard";
 }
 
-<h1>Utwórz nową postać</h1>
+<h1>Player Dashboard</h1>
 <h2 style="color:red;">PROTOTYP</h2>
-<form asp-action="CreateCharacter" method="post">
+<form asp-action="" method="post">
 
     <h3>Informacje podstawowe</h3>
 
-    <div class="form-group">
-        <label asp-for="Imie"></label>
-        <input asp-for="Imie" class="form-control" />
+    <div class="row mb-3">
+        <div class="col-4 fw-bold">Imię:</div>
+        <div class="col-8">@Model.Imie</div>
     </div>
 
-    <div class="form-group">
-        <label asp-for="RodzimaKultura"></label>
-        <input asp-for="RodzimaKultura" class="form-control" />
+    <div class="row mb-3">
+        <div class="col-4 fw-bold">Rodzima kultura:</div>
+        <div class="col-8">@Model.RodzimaKultura</div>
     </div>
 
-    <div class="form-group">
-        <label asp-for="Powolanie"></label>
-        <input asp-for="Powolanie" class="form-control" />
+    <div class="row mb-3">
+        <div class="col-4 fw-bold">Powołanie:</div>
+        <div class="col-8">@Model.Powolanie</div>
     </div>
+
 
     <div class="form-group">
         <label asp-for="Wiek"></label>
@@ -82,7 +83,7 @@
     <div class="form-group">
         <label asp-for="PTSerce"></label>
         <input asp-for="PTSerce" class="form-control" type="number" />
-    </div>    
+    </div>
     <div class="form-group">
         <label asp-for="Nadzieja"></label>
         <input asp-for="Nadzieja" class="form-control" type="number" />
@@ -100,17 +101,20 @@
         <input asp-for="Obrona" class="form-control" type="number" />
     </div>
     <hr />
+    <h3>Umiejętności</h3>
+
     @for (int i = 0; i < Model.skills.Count; i++)
     {
         <div class="form-group mb-3">
-            <label>@Model.skills[i].Name</label>
-            <input asp-for="skills[i].Name" type="hidden" />
+            <label class="fw-bold">@Model.skills[i].Name</label>
+
             <div class="input-group">
-                <input asp-for="skills[i].Value" class="form-control" type="number" />
+                <span class="form-control-plaintext">
+                    @Model.skills[i].Value
+                </span>
 
                 <div class="input-group-text">
-                    <input asp-for="skills[i].IsEnhanced" type="checkbox" class="form-check-input" />
-                    <label class="ms-1 mb-0">Wzmocnione</label>
+                    @(Model.skills[i].IsEnhanced ? "✔" : "—")
                 </div>
             </div>
         </div>
@@ -160,38 +164,39 @@
 
     <h3>Rynsztunek</h3>
 
-    @for (int i = 0; i < 4; i++)
+    @for (int i = 0; i < Model.weapons.Count; i++)
     {
         <div class="border p-2 mb-2">
+            <input asp-for="weapons[i].Id" type="hidden" />
             <input asp-for="weapons[i].CharacterId" type="hidden" />
 
-            <div class="form-group">
+            <div>
                 <label>Nazwa</label>
                 <input asp-for="weapons[i].Name" class="form-control" />
             </div>
 
-            <div class="form-group">
+            <div>
                 <label>Obrażenia</label>
-                <input asp-for="weapons[i].Damage" type="number" class="form-control" />
+                <input asp-for="weapons[i].Damage" class="form-control" />
             </div>
 
-            <div class="form-group">
+            <div>
                 <label>Rana</label>
-                <input asp-for="weapons[i].Injury" type="number" class="form-control" />
+                <input asp-for="weapons[i].Injury" class="form-control" />
             </div>
 
-            <div class="form-group">
+            <div>
                 <label>Obciążenie</label>
-                <input asp-for="weapons[i].Load" type="number" class="form-control" />
+                <input asp-for="weapons[i].Load" class="form-control" />
             </div>
 
-            <div class="form-group">
+            <div>
                 <label>Notatki</label>
                 <input asp-for="weapons[i].Notes" class="form-control" />
             </div>
         </div>
     }
-    <hr />
+    <h3 style="color: red">DORÓB BY MOŻNA BYŁO DODAĆ DO MAX 4 BRONI</h3>
     <h3>Rynsztunek — Zbroja</h3>
 
     <div class="form-group">

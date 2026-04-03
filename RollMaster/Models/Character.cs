@@ -49,7 +49,7 @@
         public string? Przymioty { get; set; } = String.Empty;
 
         //Relacja z broniami
-        public IList<Weapon> weapons { get; set; } = new List<Weapon>();
+        public List<Weapon> weapons { get; set; } = new List<Weapon>();
 
         //Zbroja
         public string? ZbrojaNazwa { get; set; }

@@ -52,6 +52,13 @@ namespace RollMaster.Services.Character
         {
             character.UserId = userId;
 
+            if (character.weapons != null)
+            {
+                character.weapons = character.weapons
+                    .Where(w => !string.IsNullOrWhiteSpace(w.Name))
+                    .ToList();
+            }
+
             _context.Characters.Add(character);
             await _context.SaveChangesAsync();
         }
