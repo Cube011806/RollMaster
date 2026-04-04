@@ -57,7 +57,12 @@ namespace RollMaster.Controllers
                 new Skill("Rekonesans", 0, false),
                 new Skill("Przekonywanie", 0, false),
                 new Skill("Wiedza", 0, false),
-                new Skill("Skradanie", 0, false)
+                new Skill("Skradanie", 0, false),
+
+                new Skill("Łuki", 0, false),
+                new Skill("Miecze", 0, false),
+                new Skill("Topory", 0, false),
+                new Skill("Włócznie", 0, false)
             };
             model.weapons = new List<Weapon>
             {

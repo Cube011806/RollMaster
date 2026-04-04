@@ -100,7 +100,7 @@
         <input asp-for="Obrona" class="form-control" type="number" />
     </div>
     <hr />
-    @for (int i = 0; i < Model.skills.Count; i++)
+    @for (int i = 0; i < 18; i++)
     {
         <div class="form-group mb-3">
             <label>@Model.skills[i].Name</label>
@@ -115,8 +115,23 @@
             </div>
         </div>
     }
-
     <h3>Biegłości bojowe</h3>
+    @for (int i = 18; i < Model.skills.Count; i++)
+    {
+        <div class="form-group mb-3">
+            <label>@Model.skills[i].Name</label>
+            <input asp-for="skills[i].Name" type="hidden" />
+            <div class="input-group">
+                <input asp-for="skills[i].Value" class="form-control" type="number" />
+
+                @* <div class="input-group-text">
+                    <input asp-for="skills[i].IsEnhanced" type="checkbox" class="form-check-input" />
+                    <label class="ms-1 mb-0">Wzmocnione</label>
+                </div> *@
+            </div>
+        </div>
+    }
+    @* <h3>Biegłości bojowe</h3>
     <div class="form-group">
         <label asp-for="BBLuki"></label>
         <input asp-for="BBLuki" class="form-control" type="number" />
@@ -132,7 +147,7 @@
     <div class="form-group">
         <label asp-for="BBWlocznie"></label>
         <input asp-for="BBWlocznie" class="form-control" type="number" />
-    </div>
+    </div> *@
     <hr />
 
     <h3>Nagrody</h3>

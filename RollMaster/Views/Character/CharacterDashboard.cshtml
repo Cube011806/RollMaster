@@ -58,6 +58,32 @@
                     </div>
                 }
             </div>
+            <div class="horizontal-separator"></div>
+            <div class="combat-skills">
+                <h4>Biegłości bojowe</h4>
+                @for (int i = 18; i <= 21; i++)
+                {
+                    var skill = Model.skills[i];
+                    <div class="skill-row">
+                        <!-- Nazwa biegłości -->
+                        <span class="skill-name">@skill.Name</span>
+
+                        <!-- Ukryty input dla wartości 0 -->
+                        <input type="hidden" name="skills[@i].Value" value="0" />
+
+                        <!-- Radio 1-6 -->
+                        <div class="skill-values">
+                            @for (int val = 1; val <= 6; val++)
+                            {
+                                <label>
+                                    <input type="radio" name="skills[@i].Value" value="@val" @(skill.Value == val ? "checked" : "") />
+                                    @val
+                                </label>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
         </div>
 
         <!-- SERCE -->
@@ -96,9 +122,9 @@
                         </div>
                     </div>
                 }
-            </div>
+            </div>        
+            <div class="horizontal-separator"></div>
         </div>
-
         <!-- ROZUM -->
         <div class="column">
             <h3>ROZUM</h3>
@@ -112,7 +138,7 @@
             </div>
 
             <div class="skills">
-                @for (int i = 12; i < Model.skills.Count; i++)
+                @for (int i = 12; i < 18; i++)
                 {
                     var skill = Model.skills[i];
                     <div class="skill-row">
@@ -136,8 +162,8 @@
                     </div>
                 }
             </div>
+            <div class="horizontal-separator"></div>
         </div>
-
         <!-- PRAWA KOLUMNA -->
         <div class="side">
 
