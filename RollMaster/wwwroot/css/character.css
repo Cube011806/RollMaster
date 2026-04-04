@@ -38,9 +38,9 @@
     padding-right: 10px;
 }
 
-    .column h3 {
-        text-align: center;
-    }
+.column h3 {
+    text-align: center;
+}
 
 .attr-block {
     border: 1px solid #aaa;
@@ -131,4 +131,22 @@ input, textarea {
     height: 2px; 
     background-color: #000000;
     margin: 10px 0; 
+}
+
+.field-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 5px;
+}
+
+.field-row label {
+    width: 80px; 
+}
+
+.field-row input {
+    width: 40px; 
+    text-align: right; 
+    flex-shrink: 0; 
 }

@@ -25,12 +25,18 @@
         <div class="column">
             <h3>SIŁA</h3>
             <div class="attr-block">
-                <label>Wartość</label>
-                <input asp-for="WartoscSila" />
-                <label>PT</label>
-                <input asp-for="PTSila" />
-                <label>Wytrzymałość</label>
-                <input asp-for="Wytrzymalosc" />
+                <div class="field-row">
+                    <label for="WartoscSila">Wartość</label>
+                    <input asp-for="WartoscSila" />
+                </div>
+                <div class="field-row">
+                    <label for="PTSila">PT</label>
+                    <input asp-for="PTSila" />
+                </div>
+                <div class="field-row">
+                    <label for="Wytrzymalosc">Wytrzymałość</label>
+                    <input asp-for="Wytrzymalosc" />
+                </div>
             </div>
 
             <div class="skills">
@@ -60,7 +66,7 @@
             </div>
             <div class="horizontal-separator"></div>
             <div class="combat-skills">
-                <h4>Biegłości bojowe</h4>
+                <h5 style="text-align: center">Biegłości bojowe</h5>
                 @for (int i = 18; i <= 21; i++)
                 {
                     var skill = Model.skills[i];
@@ -90,14 +96,19 @@
         <div class="column">
             <h3>SERCE</h3>
             <div class="attr-block">
-                <label>Wartość</label>
-                <input asp-for="WartoscSerce" />
-                <label>PT</label>
-                <input asp-for="PTSerce" />
-                <label>Nadzieja</label>
-                <input asp-for="Nadzieja" />
+                <div class="field-row">
+                    <label for="WartoscSerce">Wartość</label>
+                    <input asp-for="WartoscSila" />
+                </div>
+                <div class="field-row">
+                    <label for="PTSerce">PT</label>
+                    <input asp-for="PTSerce" />
+                </div>
+                <div class="field-row">
+                    <label for="Nadzieja">Nadzieja</label>
+                    <input asp-for="Nadzieja" />
+                </div>
             </div>
-
             <div class="skills">
                 @for (int i = 6; i < 12; i++)
                 {
@@ -124,17 +135,33 @@
                 }
             </div>        
             <div class="horizontal-separator"></div>
+            <h5 style="text-align: center">Nagrody</h5>
+            <div class="attr-block">
+                <div class="field-row">
+                    <label for="Mestwo">Męstwo</label>
+                    <input asp-for="Mestwo" />
+                </div>
+
+                <label>Nagrody</label>
+                <textarea asp-for="Nagrody" rows="3" placeholder="Wpisz nagrody"></textarea>
+            </div>
         </div>
         <!-- ROZUM -->
         <div class="column">
             <h3>ROZUM</h3>
             <div class="attr-block">
-                <label>Wartość</label>
-                <input asp-for="WartoscRozum" />
-                <label>PT</label>
-                <input asp-for="PTRozum" />
-                <label>Obrona</label>
-                <input asp-for="Obrona" />
+                <div class="field-row">
+                    <label for="WartoscRozum">Wartość</label>
+                    <input asp-for="WartoscRozum" />
+                </div>
+                <div class="field-row">
+                    <label for="PTSerce">PT</label>
+                    <input asp-for="PTRozum" />
+                </div>
+                <div class="field-row">
+                    <label for="Obrona">Obrona</label>
+                    <input asp-for="Obrona" />
+                </div>
             </div>
 
             <div class="skills">
@@ -163,6 +190,16 @@
                 }
             </div>
             <div class="horizontal-separator"></div>
+            <h5 style="text-align: center">Przymioty</h5>
+            <div class="attr-block">
+                <div class="field-row">
+                    <label for="Madrosc">Mądrość</label>
+                    <input asp-for="Madrosc" />
+                </div>
+
+                <label>Przymioty</label>
+                <textarea asp-for="Przymioty" rows="3" placeholder="Wpisz przymioty"></textarea>
+            </div>
         </div>
         <!-- PRAWA KOLUMNA -->
         <div class="side">
@@ -195,14 +232,6 @@
                 <label>Piętno Cienia</label>
                 <input asp-for="PietnoCienia" />
             </div>
-
-            <div class="box">
-                <h4>Stan</h4>
-                <input asp-for="ObecnaWytrzymalosc" placeholder="Wytrzymałość" />
-                <input asp-for="ObecnaNadzieja" placeholder="Nadzieja" />
-                <input asp-for="Cien" placeholder="Cień" />
-            </div>
-
             <div class="box">
                 <h4>Ograniczenia</h4>
                 <label><input asp-for="Wyczerpanie" /> Wyczerpanie</label>
