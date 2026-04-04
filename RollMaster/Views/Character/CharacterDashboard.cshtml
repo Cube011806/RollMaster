@@ -11,11 +11,16 @@
 
     <!-- TOP INFO -->
     <div class="top-info">
-        <div>Rodzima kultura: @Model.RodzimaKultura</div>
+        <div>Rodzima Kultura: @Model.RodzimaKultura</div>
+        <div>Rodzima Korzyść: @Model.RodzimaKorzysc</div>
         <div>Powołanie: @Model.Powolanie</div>
         <div>Wiek: <input asp-for="Wiek" /></div>
         <div>Patron: <input asp-for="Patron" /></div>
+        <div>Ścieżka Cienia: <input asp-for="SciezkaCienia" /></div>
         <div>Skarb: <input asp-for="Skarb" /></div>
+        <div>PoziomZycia: <input asp-for="PoziomZycia" /></div>
+        <div>Wyróżniki: <input asp-for="Wyrozniki" /></div>
+        <div>Przywary: <input asp-for="Przywary" /></div>
     </div>
 
     <!-- MAIN GRID -->
@@ -66,7 +71,7 @@
             </div>
             <div class="horizontal-separator"></div>
             <div class="combat-skills">
-                <h5 style="text-align: center">Biegłości bojowe</h5>
+                <h5 style="text-align: center; margin-bottom: 25px;">Biegłości bojowe</h5>
                 @for (int i = 18; i <= 21; i++)
                 {
                     var skill = Model.skills[i];
@@ -143,7 +148,7 @@
                 </div>
 
                 <label>Nagrody</label>
-                <textarea asp-for="Nagrody" rows="3" placeholder="Wpisz nagrody"></textarea>
+                <textarea class="rew" asp-for="Nagrody" rows="4" placeholder="Wpisz nagrody"></textarea>
             </div>
         </div>
         <!-- ROZUM -->
@@ -198,7 +203,7 @@
                 </div>
 
                 <label>Przymioty</label>
-                <textarea asp-for="Przymioty" rows="3" placeholder="Wpisz przymioty"></textarea>
+                <textarea class="rew" asp-for="Przymioty" rows="4" placeholder="Wpisz przymioty"></textarea>
             </div>
         </div>
         <!-- PRAWA KOLUMNA -->
@@ -207,41 +212,69 @@
             <div class="box">
                 <h4>Punkty</h4>
 
-                <label>Punkty Przygody</label>
-                <input asp-for="PunktyPrzygody" />
+                <div class="field-row">
+                    <label for="PunktyPrzygody">Punkty Przygody</label>
+                    <input asp-for="PunktyPrzygody" />
+                </div>
 
-                <label>Punkty Umiejętności</label>
-                <input asp-for="PunktyUmiejetnosci" />
+                <div class="field-row">
+                    <label for="PunktyUmiejetnosci">Punkty Umiejętności</label>
+                    <input asp-for="PunktyUmiejetnosci" />
+                </div>
 
-                <label>Poziom Zażyłości</label>
-                <input asp-for="PunktyZazylosci" />
+                <div class="field-row">
+                    <label for="PunktyZazylosci">Poziom Zażyłości</label>
+                    <input asp-for="PunktyZazylosci" />
+                </div>
             </div>
 
             <div class="box">
                 <h4>Stan</h4>
 
-                <label>Obecna Wytrzymałość</label>
-                <input asp-for="ObecnaWytrzymalosc" />
+                <div class="field-row">
+                    <label for="ObecnaWytrzymalosc">Obecna Wytrzymałość</label>
+                    <input asp-for="ObecnaWytrzymalosc" />
+                </div>
 
-                <label>Obecna Nadzieja</label>
-                <input asp-for="ObecnaNadzieja" />
+                <div class="field-row">
+                    <label for="ObecnaNadzieja">Obecna Nadzieja</label>
+                    <input asp-for="ObecnaNadzieja" />
+                </div>
 
-                <label>Cień</label>
-                <input asp-for="Cien" />
+                <div class="field-row">
+                    <label for="Cien">Cień</label>
+                    <input asp-for="Cien" />
+                </div>
 
-                <label>Piętno Cienia</label>
-                <input asp-for="PietnoCienia" />
+                <div class="field-row">
+                    <label for="PietnoCienia">Piętno Cienia</label>
+                    <input asp-for="PietnoCienia" />
+                </div>
             </div>
             <div class="box">
                 <h4>Ograniczenia</h4>
-                <label><input asp-for="Wyczerpanie" /> Wyczerpanie</label>
-                <label><input asp-for="Przygnebienie" /> Przygnębienie</label>
-                <label><input asp-for="Rana" /> Rana</label>
+
+                <div class="field-row">
+                    <label><input asp-for="Wyczerpanie" /> Wyczerpanie</label>
+                </div>
+
+                <div class="field-row">
+                    <label><input asp-for="Przygnebienie" /> Przygnębienie</label>
+                </div>
+
+                <div class="field-row">
+                    <label><input asp-for="Rana" /> Rana</label>
+                </div>
+
+                <div class="field-row">
+                    <label for="StopienRany">Stopień rany:</label>
+                    <input asp-for="StopienRany" style="width: 150px"/>
+                </div>
             </div>
 
             <div class="box">
                 <h4>Ekwipunek</h4>
-                <textarea asp-for="Ekwipunek"></textarea>
+                <textarea class="eq" asp-for="Ekwipunek" placeholder="Wpisz ekwipunek"></textarea>
             </div>
 
         </div>
@@ -262,7 +295,7 @@
                 <input name="weapons[@i].Damage" value="@(i<Model.weapons.Count? Model.weapons[i].Damage : 0)" />
                 <input name="weapons[@i].Injury" value="@(i<Model.weapons.Count? Model.weapons[i].Injury : 0)" />
                 <input name="weapons[@i].Load" value="@(i<Model.weapons.Count? Model.weapons[i].Load : 0)" />
-                <input name="weapons[@i].Notes" value="@(i<Model.weapons.Count? Model.weapons[i].Notes : "")" />
+                <input name="weapons[@i].Notes" placeholder="Uwagi" value="@(i<Model.weapons.Count? Model.weapons[i].Notes : "")" />
             </div>
         }
     </div>

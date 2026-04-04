@@ -77,7 +77,7 @@
 
 .weapon-row {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 5px;
     margin-bottom: 5px;
 }
@@ -139,14 +139,38 @@ input, textarea {
     justify-content: space-between;
     gap: 10px;
     margin-bottom: 5px;
+    border-bottom: 1px dotted #aaa;
 }
 
 .field-row label {
-    width: 80px; 
+    width: 160px; 
 }
 
 .field-row input {
     width: 40px; 
     text-align: right; 
     flex-shrink: 0; 
+}
+
+.box .field-row label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.box .field-row input {
+    width: 50px;
+    text-align: right;
+}
+
+textarea.eq {
+    resize: none;
+    field-sizing: content;
+    max-height: 125px;
+}
+
+textarea.rew {
+    resize: none;
+    field-sizing: content;
+    max-height: 200px;
 }

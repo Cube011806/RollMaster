@@ -7,6 +7,7 @@
         //Informacje podstawowe
         public string Imie { get; set; } = String.Empty;
         public string RodzimaKultura { get; set; } = String.Empty;
+        public string RodzimaKorzysc { get; set; } = String.Empty;
         public string Powolanie { get; set; } = String.Empty;
         public int Wiek { get; set; }
         public string PoziomZycia { get; set; } = String.Empty;
