@@ -35,10 +35,10 @@
         public IList<Skill> skills { get; set; } = new List<Skill>();
 
         //Biegłosci Bojowe
-        public int BBLuki { get; set; } = 0;
-        public int BBMiecze { get; set; } = 0;
-        public int BBTopory { get; set; } = 0;
-        public int BBWlocznie { get; set; } = 0;
+        //public int BBLuki { get; set; } = 0;
+        //public int BBMiecze { get; set; } = 0;
+        //public int BBTopory { get; set; } = 0;
+        //public int BBWlocznie { get; set; } = 0;
 
         //Nagrody
         public int Mestwo { get; set; } = 0;
