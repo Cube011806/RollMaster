@@ -18,29 +18,29 @@
         public string? Przywary { get; set; }
 
         //Sekcja Siła
-        public int WartoscSila { get; set; }
-        public int PTSila { get; set; }
-        public int Wytrzymalosc { get; set; }
+        public int? WartoscSila { get; set; }
+        public int? PTSila { get; set; }
+        public int? Wytrzymalosc { get; set; }
 
         //Sekcja Serce
-        public int WartoscSerce { get; set; }
-        public int PTSerce { get; set; }
-        public int Nadzieja { get; set; }
+        public int? WartoscSerce { get; set; }
+        public int? PTSerce { get; set; }
+        public int? Nadzieja { get; set; }
 
         //Sekcja Rozum
-        public int WartoscRozum { get; set; }
-        public int PTRozum { get; set; }
-        public int Obrona { get; set; }
+        public int? WartoscRozum { get; set; }
+        public int? PTRozum { get; set; }
+        public int? Obrona { get; set; }
 
         //Relacja z umiejętnościami
         public IList<Skill> skills { get; set; } = new List<Skill>();
 
         //Nagrody
-        public int Mestwo { get; set; } = 0;
+        public int? Mestwo { get; set; } = 0;
         public string? Nagrody { get; set; } = String.Empty;
 
         //Przymioty
-        public int Madrosc { get; set; } = 0;
+        public int? Madrosc { get; set; } = 0;
         public string? Przymioty { get; set; } = String.Empty;
 
         //Relacja z broniami
@@ -49,19 +49,19 @@
         public Helmet? Helm { get; set; }
         public Shield? Tarcza { get; set; }
         //Rozwój
-        public int PunktyPrzygody { get; set; } = 0;
-        public int PunktyUmiejetnosci { get; set; } = 0;
-        public int PunktyZazylosci { get; set; } = 0;
+        public int? PunktyPrzygody { get; set; } = 0;
+        public int? PunktyUmiejetnosci { get; set; } = 0;
+        public int? PunktyZazylosci { get; set; } = 0;
 
         //Obecna wytrzymałość
-        public int ObecnaWytrzymalosc { get; set; } = 0;
-        public int Obciazenie { get; set; } = 0;
-        public int Znuzenie { get; set; } = 0;
+        public int? ObecnaWytrzymalosc { get; set; } = 0;
+        public int? Obciazenie { get; set; } = 0;
+        public int? Znuzenie { get; set; } = 0;
 
         //Obecna nadzieja
-        public int ObecnaNadzieja { get; set; } = 0;
-        public int Cien { get; set; } = 0;
-        public int PietnoCienia { get; set; } = 0;
+        public int? ObecnaNadzieja { get; set; } = 0;
+        public int? Cien { get; set; } = 0;
+        public int? PietnoCienia { get; set; } = 0;
 
         //Ograniczenia
         public bool Wyczerpanie { get; set; } = false;
@@ -73,7 +73,7 @@
         public string? Ekwipunek { get; set; } = String.Empty;
 
         //Dodatkowe
-        public string? SzczegolnaSympatia { get; set; }
+        public string? Notatki { get; set; }
 
         /*----------------
         -----RELACJE-----

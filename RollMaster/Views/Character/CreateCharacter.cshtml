@@ -21,6 +21,11 @@
     </div>
 
     <div class="form-group">
+        <label asp-for="RodzimaKorzysc"></label>
+        <input asp-for="RodzimaKorzysc" class="form-control" />
+    </div>
+
+    <div class="form-group">
         <label asp-for="Powolanie"></label>
         <input asp-for="Powolanie" class="form-control" />
     </div>
@@ -123,31 +128,10 @@
             <input asp-for="skills[i].Name" type="hidden" />
             <div class="input-group">
                 <input asp-for="skills[i].Value" class="form-control" type="number" />
-
-                @* <div class="input-group-text">
-                    <input asp-for="skills[i].IsEnhanced" type="checkbox" class="form-check-input" />
-                    <label class="ms-1 mb-0">Wzmocnione</label>
-                </div> *@
             </div>
         </div>
     }
-    @* <h3>Biegłości bojowe</h3>
-    <div class="form-group">
-        <label asp-for="BBLuki"></label>
-        <input asp-for="BBLuki" class="form-control" type="number" />
-    </div>
-    <div class="form-group">
-        <label asp-for="BBMiecze"></label>
-        <input asp-for="BBMiecze" class="form-control" type="number" />
-    </div>
-    <div class="form-group">
-        <label asp-for="BBTopory"></label>
-        <input asp-for="BBTopory" class="form-control" type="number" />
-    </div>
-    <div class="form-group">
-        <label asp-for="BBWlocznie"></label>
-        <input asp-for="BBWlocznie" class="form-control" type="number" />
-    </div> *@
+
     <hr />
 
     <h3>Nagrody</h3>
@@ -345,8 +329,8 @@
 
     <h3>Dodatkowe</h3>
     <div class="form-group">
-        <label asp-for="SzczegolnaSympatia"></label>
-        <textarea asp-for="SzczegolnaSympatia" class="form-control"></textarea>
+        <label asp-for="Notatki"></label>
+        <textarea asp-for="Notatki" class="form-control"></textarea>
     </div>
 
     <button type="submit" class="btn btn-primary mt-3">Zapisz</button>

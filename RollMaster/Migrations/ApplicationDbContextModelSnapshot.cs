@@ -288,6 +288,9 @@ namespace RollMaster.Migrations
                     b.Property<string>("Nagrody")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Notatki")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Obciazenie")
                         .HasColumnType("int");
 
@@ -360,9 +363,6 @@ namespace RollMaster.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("StopienRany")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SzczegolnaSympatia")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
