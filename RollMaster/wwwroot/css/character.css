@@ -187,7 +187,7 @@ textarea.rew {
     flex-direction: column;
 }
 
-.armor-row {
+.weapon-row, .armor-row {
     display: grid;
     grid-template-columns: repeat(5, 1fr); /* dla broni 5 pól, dla zbroi 3 pola */
     gap: 5px;
@@ -216,4 +216,105 @@ textarea.rew {
     .weapon-row input[name*="Load"] {
         width: 60px; /* małe pole liczbowe */
         text-align: center;
+    }
+.skill-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 3px 0;
+    border-bottom: 1px dotted #aaa;
+    width: 100%;
+}
+
+.skill-name {
+    flex: 1; /* To sprawi, że nazwa zajmie całą wolną przestrzeń i wypchnie kółka na prawo */
+    font-size: 14px;
+    text-align: left;
+}
+
+.skill-values {
+    display: flex;
+    gap: 2px;
+    flex-shrink: 0; /* Kółka nie mogą się zwężać */
+}
+
+/* Poprawka dla rynsztunku na dole, żeby wypełnił całą szerokość 3 kolumn */
+.equipment-armor-grid {
+    grid-column: 1 / span 3;
+    display: grid;
+    grid-template-columns: 1.8fr 1.2fr; /* Proporcje lewa/prawa wewnątrz sekcji */
+    gap: 30px;
+    width: 100%;
+}
+
+.radio-val {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+}
+
+    .radio-val span {
+        font-size: 9px;
+        color: #666;
+    }
+
+    .radio-val input {
+        margin: 0;
+        width: 14px;
+        height: 14px;
+    }
+
+/* Kontener umiejętności */
+.skills {
+    margin-top: 10px;
+}
+
+/* Wiersz umiejętności */
+.skill-row {
+    display: flex;
+    align-items: center; /* Wyrównanie w pionie (środek) */
+    gap: 8px; /* Odstęp między elementami */
+    padding: 3px 0;
+    border-bottom: 1px dotted #aaa;
+    width: 100%;
+}
+
+    /* Checkbox wzmocnienia */
+    .skill-row input[type="checkbox"] {
+        width: 14px;
+        height: 14px;
+        margin: 0;
+        flex-shrink: 0; /* Nie pozwala checkboxowi się zgnieść */
+    }
+
+/* Nazwa umiejętności */
+.skill-name {
+    flex: 1; /* Zajmuje całą wolną przestrzeń, spychając kółka w prawo */
+    font-size: 13px;
+    text-align: left; /* Tekst zawsze do lewej */
+    color: #333;
+}
+
+/* Kontener kółek (Radio) */
+.skill-values {
+    display: flex;
+    gap: 2px;
+    flex-shrink: 0; /* Zapobiega nachodzeniu kółek na siebie */
+}
+
+    /* Styl pojedynczego kółka */
+    .skill-values label {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-size: 9px; /* Cyferki pod kółkami */
+        line-height: 1;
+        cursor: pointer;
+    }
+
+    .skill-values input[type="radio"] {
+        width: 12px;
+        height: 12px;
+        margin: 0;
     }
