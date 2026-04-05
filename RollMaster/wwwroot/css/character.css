@@ -174,3 +174,46 @@ textarea.rew {
     field-sizing: content;
     max-height: 200px;
 }
+
+.equipment-armor-grid {
+    display: grid;
+    grid-template-columns: 1fr 250px; /* lewa: bronie, prawa: zbroja/helm/tarcza */
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.weapons-column, .armor-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.armor-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* dla broni 5 pól, dla zbroi 3 pola */
+    gap: 5px;
+    margin-bottom: 5px;
+}
+
+    .armor-row input {
+        width: 100%;
+        box-sizing: border-box;
+    }
+.weapon-row {
+    display: grid;
+    grid-template-columns: 2fr 0.7fr 0.7fr 0.7fr 2fr; /* nazwa | obrażenia | przebicie | obciążenie | uwagi */
+    gap: 5px;
+    margin-bottom: 5px;
+}
+
+    .weapon-row input[name*="Name"],
+    .weapon-row input[name*="Notes"] {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .weapon-row input[name*="Damage"],
+    .weapon-row input[name*="Injury"],
+    .weapon-row input[name*="Load"] {
+        width: 60px; /* małe pole liczbowe */
+        text-align: center;
+    }

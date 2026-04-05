@@ -276,15 +276,50 @@
                 <h4>Ekwipunek</h4>
                 <textarea class="eq" asp-for="Ekwipunek" placeholder="Wpisz ekwipunek"></textarea>
             </div>
+            <!-- PRAWA: Zbroja -->
+            <div class="armor-column">
+                <h4>Zbroja</h4>
+                <div class="armor-row">
+                    <input asp-for="Zbroja.Nazwa" placeholder="Nazwa" />
+                    <input asp-for="Zbroja.Pancerz" placeholder="Pancerz" />
+                    <input asp-for="Zbroja.Obciazenie" placeholder="Obciążenie" />
+                </div>
 
+                <h4>Hełm</h4>
+                <div class="armor-row">
+                    <input asp-for="Helm.Nazwa" placeholder="Nazwa" />
+                    <input asp-for="Helm.Pancerz" placeholder="Pancerz" />
+                    <input asp-for="Helm.Obciazenie" placeholder="Obciążenie" />
+                </div>
+
+                <h4>Tarcza</h4>
+                <div class="armor-row">
+                    <input asp-for="Tarcza.Nazwa" placeholder="Nazwa" />
+                    <input asp-for="Tarcza.Obrona" placeholder="Obrona" />
+                    <input asp-for="Tarcza.Obciazenie" placeholder="Obciążenie" />
+                </div>
+            </div>
         </div>
+        <div class="weapons-row">
+            @for (int i = 0; i < 4; i++)
+            {
+                <div class="weapon-row">
+                    <input type="hidden" name="weapons[@i].Id" value="@(i<Model.weapons.Count? Model.weapons[i].Id : 0)" />
+                    <input type="hidden" name="weapons[@i].CharacterId" value="@Model.Id" />
 
+                    <input name="weapons[@i].Name" value="@(i<Model.weapons.Count? Model.weapons[i].Name : "")" placeholder="Nazwa" />
+                    <input name="weapons[@i].Damage" value="@(i<Model.weapons.Count? Model.weapons[i].Damage : 0)" placeholder="Obrażenia" />
+                    <input name="weapons[@i].Injury" value="@(i<Model.weapons.Count? Model.weapons[i].Injury : 0)" placeholder="Przebicie" />
+                    <input name="weapons[@i].Load" value="@(i<Model.weapons.Count? Model.weapons[i].Load : 0)" placeholder="Obciążenie" />
+                    <input name="weapons[@i].Notes" value="@(i<Model.weapons.Count? Model.weapons[i].Notes : "")" placeholder="Uwagi" />
+                </div>
+            }
+        </div>
     </div>
-
-    <!-- RYNSZTUNEK -->
-    <div class="equipment">
-        <h3>Rynsztunek</h3>
-
+    <div class="equipment-armor-grid">
+    <!-- LEWA: Bronie -->
+    <div class="weapons-column">
+        <h4>Rynsztunek</h4>
         @for (int i = 0; i < 4; i++)
         {
             <div class="weapon-row">
@@ -292,27 +327,13 @@
                 <input type="hidden" name="weapons[@i].CharacterId" value="@Model.Id" />
 
                 <input name="weapons[@i].Name" value="@(i<Model.weapons.Count? Model.weapons[i].Name : "")" placeholder="Nazwa" />
-                <input name="weapons[@i].Damage" value="@(i<Model.weapons.Count? Model.weapons[i].Damage : 0)" />
-                <input name="weapons[@i].Injury" value="@(i<Model.weapons.Count? Model.weapons[i].Injury : 0)" />
-                <input name="weapons[@i].Load" value="@(i<Model.weapons.Count? Model.weapons[i].Load : 0)" />
-                <input name="weapons[@i].Notes" placeholder="Uwagi" value="@(i<Model.weapons.Count? Model.weapons[i].Notes : "")" />
+                <input name="weapons[@i].Damage" value="@(i<Model.weapons.Count? Model.weapons[i].Damage : 0)" placeholder="Obrażenia" />
+                <input name="weapons[@i].Injury" value="@(i<Model.weapons.Count? Model.weapons[i].Injury : 0)" placeholder="Przebicie" />
+                <input name="weapons[@i].Load" value="@(i<Model.weapons.Count? Model.weapons[i].Load : 0)" placeholder="Obciążenie" />
+                <input name="weapons[@i].Notes" value="@(i<Model.weapons.Count? Model.weapons[i].Notes : "")" placeholder="Uwagi" />
             </div>
         }
     </div>
-    <div class="armor-section">
-        <h4>Zbroja</h4>
-        <input asp-for="ZbrojaNazwa" placeholder="Nazwa" />
-        <input asp-for="ZbrojaPancerz" placeholder="Pancerz" />
-        <input asp-for="ZbrojaObciazenie" placeholder="Obciążenie" />
+</div>
 
-        <h4>Hełm</h4>
-        <input asp-for="HelmNazwa" placeholder="Nazwa" />
-        <input asp-for="HelmPancerz" placeholder="Pancerz" />
-        <input asp-for="HelmObciazenie" placeholder="Obciążenie" />
-
-        <h4>Tarcza</h4>
-        <input asp-for="TarczaNazwa" placeholder="Nazwa" />
-        <input asp-for="TarczaObrona" placeholder="Obrona" />
-        <input asp-for="TarczaObciazenie" placeholder="Obciążenie" />
-    </div>
 </div>

@@ -29,7 +29,11 @@ namespace RollMaster.Services.Character
             var character = await _context.Characters
                 .Include(c => c.skills)
                 .Include(c => c.weapons)
+                .Include(c => c.Zbroja)
+                .Include(c => c.Helm)
+                .Include(c => c.Tarcza)
                 .FirstOrDefaultAsync(c => c.Id == id);
+
             return character;
         }
         public Models.Character? GetById(int id)
@@ -58,6 +62,15 @@ namespace RollMaster.Services.Character
                     .Where(w => !string.IsNullOrWhiteSpace(w.Name))
                     .ToList();
             }
+
+            if (character.Zbroja?.Nazwa == null)
+                character.Zbroja = null;
+
+            if (character.Helm?.Nazwa == null)
+                character.Helm = null;
+
+            if (character.Tarcza?.Nazwa == null)
+                character.Tarcza = null;
 
             _context.Characters.Add(character);
             await _context.SaveChangesAsync();

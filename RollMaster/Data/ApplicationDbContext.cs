@@ -11,7 +11,10 @@ namespace RollMaster.Data
         public DbSet<Skill> Skills { get; set; }
         public DbSet<Weapon> Weapons { get; set; }
         public DbSet<Game> Games { get; set; }
-
+        public DbSet<Armor> Armors { get; set; }
+        public DbSet<BodyArmor> BodyArmors { get; set; }
+        public DbSet<Helmet> Helmets { get; set; }
+        public DbSet<Shield> Shields { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -27,6 +30,23 @@ namespace RollMaster.Data
                 .WithMany(c => c.weapons)
                 .HasForeignKey(w => w.CharacterId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Armor>().UseTptMappingStrategy();
+
+            modelBuilder.Entity<Character>()
+                .HasOne(c => c.Zbroja)
+                .WithOne(a => a.Character)
+                .HasForeignKey<BodyArmor>(a => a.CharacterId);
+
+            modelBuilder.Entity<Character>()
+                .HasOne(c => c.Helm)
+                .WithOne(h => h.Character)
+                .HasForeignKey<Helmet>(h => h.CharacterId);
+
+            modelBuilder.Entity<Character>()
+                .HasOne(c => c.Tarcza)
+                .WithOne(s => s.Character)
+                .HasForeignKey<Shield>(s => s.CharacterId);
         }
     }
 

@@ -35,12 +35,6 @@
         //Relacja z umiejętnościami
         public IList<Skill> skills { get; set; } = new List<Skill>();
 
-        //Biegłosci Bojowe
-        //public int BBLuki { get; set; } = 0;
-        //public int BBMiecze { get; set; } = 0;
-        //public int BBTopory { get; set; } = 0;
-        //public int BBWlocznie { get; set; } = 0;
-
         //Nagrody
         public int Mestwo { get; set; } = 0;
         public string? Nagrody { get; set; } = String.Empty;
@@ -51,20 +45,9 @@
 
         //Relacja z broniami
         public List<Weapon> weapons { get; set; } = new List<Weapon>();
-
-        //Zbroja
-        public string? ZbrojaNazwa { get; set; }
-        public int? ZbrojaPancerz { get; set; }
-        public int? ZbrojaObciazenie { get; set; }
-        //Hełm
-        public string? HelmNazwa { get; set; }
-        public int? HelmPancerz { get; set; }
-        public int? HelmObciazenie { get; set; }
-        //Tarcza
-        public string? TarczaNazwa { get; set; }
-        public int? TarczaObrona { get; set; }
-        public int? TarczaObciazenie { get; set; }
-
+        public BodyArmor? Zbroja { get; set; }
+        public Helmet? Helm { get; set; }
+        public Shield? Tarcza { get; set; }
         //Rozwój
         public int PunktyPrzygody { get; set; } = 0;
         public int PunktyUmiejetnosci { get; set; } = 0;

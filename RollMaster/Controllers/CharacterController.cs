@@ -71,7 +71,9 @@ namespace RollMaster.Controllers
                 new Weapon(),
                 new Weapon()
             };
-
+            model.Zbroja = new BodyArmor();
+            model.Helm = new Helmet();
+            model.Tarcza = new Shield();
             return View(model);
         }
 

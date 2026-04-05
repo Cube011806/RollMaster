@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RollMaster.Data;
 
@@ -11,9 +12,11 @@ using RollMaster.Data;
 namespace RollMaster.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260404230714_v4")]
+    partial class v4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -241,6 +244,14 @@ namespace RollMaster.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("CharacterId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(13)
+                        .HasColumnType("nvarchar(13)");
+
                     b.Property<string>("Nazwa")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -252,7 +263,9 @@ namespace RollMaster.Migrations
 
                     b.ToTable("Armors");
 
-                    b.UseTptMappingStrategy();
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Armor");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("RollMaster.Models.Character", b =>
@@ -498,51 +511,45 @@ namespace RollMaster.Migrations
                 {
                     b.HasBaseType("RollMaster.Models.Armor");
 
-                    b.Property<int>("CharacterId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Pancerz")
                         .HasColumnType("int");
 
                     b.HasIndex("CharacterId")
-                        .IsUnique()
-                        .HasFilter("[CharacterId] IS NOT NULL");
+                        .IsUnique();
 
-                    b.ToTable("BodyArmors");
+                    b.HasDiscriminator().HasValue("BodyArmor");
                 });
 
             modelBuilder.Entity("RollMaster.Models.Helmet", b =>
                 {
                     b.HasBaseType("RollMaster.Models.Armor");
 
-                    b.Property<int>("CharacterId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Pancerz")
                         .HasColumnType("int");
 
                     b.HasIndex("CharacterId")
-                        .IsUnique()
-                        .HasFilter("[CharacterId] IS NOT NULL");
+                        .IsUnique();
 
-                    b.ToTable("Helmets");
+                    b.ToTable("Armors", t =>
+                        {
+                            t.Property("Pancerz")
+                                .HasColumnName("Helmet_Pancerz");
+                        });
+
+                    b.HasDiscriminator().HasValue("Helmet");
                 });
 
             modelBuilder.Entity("RollMaster.Models.Shield", b =>
                 {
                     b.HasBaseType("RollMaster.Models.Armor");
 
-                    b.Property<int>("CharacterId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Obrona")
                         .HasColumnType("int");
 
                     b.HasIndex("CharacterId")
-                        .IsUnique()
-                        .HasFilter("[CharacterId] IS NOT NULL");
+                        .IsUnique();
 
-                    b.ToTable("Shields");
+                    b.HasDiscriminator().HasValue("Shield");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -641,12 +648,6 @@ namespace RollMaster.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RollMaster.Models.Armor", null)
-                        .WithOne()
-                        .HasForeignKey("RollMaster.Models.BodyArmor", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Character");
                 });
 
@@ -658,12 +659,6 @@ namespace RollMaster.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RollMaster.Models.Armor", null)
-                        .WithOne()
-                        .HasForeignKey("RollMaster.Models.Helmet", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Character");
                 });
 
@@ -672,12 +667,6 @@ namespace RollMaster.Migrations
                     b.HasOne("RollMaster.Models.Character", "Character")
                         .WithOne("Tarcza")
                         .HasForeignKey("RollMaster.Models.Shield", "CharacterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("RollMaster.Models.Armor", null)
-                        .WithOne()
-                        .HasForeignKey("RollMaster.Models.Shield", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
