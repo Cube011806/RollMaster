@@ -6,11 +6,25 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace RollMaster.Migrations
 {
     /// <inheritdoc />
-    public partial class v1 : Migration
+    public partial class v2 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Armors",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nazwa = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Obciazenie = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Armors", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -180,6 +194,7 @@ namespace RollMaster.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Imie = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RodzimaKultura = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RodzimaKorzysc = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Powolanie = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Wiek = table.Column<int>(type: "int", nullable: false),
                     PoziomZycia = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -197,23 +212,10 @@ namespace RollMaster.Migrations
                     WartoscRozum = table.Column<int>(type: "int", nullable: false),
                     PTRozum = table.Column<int>(type: "int", nullable: false),
                     Obrona = table.Column<int>(type: "int", nullable: false),
-                    BBLuki = table.Column<int>(type: "int", nullable: false),
-                    BBMiecze = table.Column<int>(type: "int", nullable: false),
-                    BBTopory = table.Column<int>(type: "int", nullable: false),
-                    BBWlocznie = table.Column<int>(type: "int", nullable: false),
                     Mestwo = table.Column<int>(type: "int", nullable: false),
                     Nagrody = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Madrosc = table.Column<int>(type: "int", nullable: false),
                     Przymioty = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ZbrojaNazwa = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ZbrojaPancerz = table.Column<int>(type: "int", nullable: true),
-                    ZbrojaObciazenie = table.Column<int>(type: "int", nullable: true),
-                    HelmNazwa = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    HelmPancerz = table.Column<int>(type: "int", nullable: true),
-                    HelmObciazenie = table.Column<int>(type: "int", nullable: true),
-                    TarczaNazwa = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TarczaObrona = table.Column<int>(type: "int", nullable: true),
-                    TarczaObciazenie = table.Column<int>(type: "int", nullable: true),
                     PunktyPrzygody = table.Column<int>(type: "int", nullable: false),
                     PunktyUmiejetnosci = table.Column<int>(type: "int", nullable: false),
                     PunktyZazylosci = table.Column<int>(type: "int", nullable: false),
@@ -228,7 +230,7 @@ namespace RollMaster.Migrations
                     Rana = table.Column<bool>(type: "bit", nullable: false),
                     StopienRany = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Ekwipunek = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SzczegolnaSympatia = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Notatki = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     GameId = table.Column<int>(type: "int", nullable: true)
                 },
@@ -245,6 +247,81 @@ namespace RollMaster.Migrations
                         column: x => x.GameId,
                         principalTable: "Games",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BodyArmors",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    Pancerz = table.Column<int>(type: "int", nullable: false),
+                    CharacterId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BodyArmors", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BodyArmors_Armors_Id",
+                        column: x => x.Id,
+                        principalTable: "Armors",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BodyArmors_Characters_CharacterId",
+                        column: x => x.CharacterId,
+                        principalTable: "Characters",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Helmets",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    Pancerz = table.Column<int>(type: "int", nullable: false),
+                    CharacterId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Helmets", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Helmets_Armors_Id",
+                        column: x => x.Id,
+                        principalTable: "Armors",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Helmets_Characters_CharacterId",
+                        column: x => x.CharacterId,
+                        principalTable: "Characters",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Shields",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    Obrona = table.Column<int>(type: "int", nullable: false),
+                    CharacterId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Shields", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Shields_Armors_Id",
+                        column: x => x.Id,
+                        principalTable: "Armors",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Shields_Characters_CharacterId",
+                        column: x => x.CharacterId,
+                        principalTable: "Characters",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -333,6 +410,13 @@ namespace RollMaster.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_BodyArmors_CharacterId",
+                table: "BodyArmors",
+                column: "CharacterId",
+                unique: true,
+                filter: "[CharacterId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Characters_GameId",
                 table: "Characters",
                 column: "GameId");
@@ -341,6 +425,20 @@ namespace RollMaster.Migrations
                 name: "IX_Characters_UserId",
                 table: "Characters",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Helmets_CharacterId",
+                table: "Helmets",
+                column: "CharacterId",
+                unique: true,
+                filter: "[CharacterId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Shields_CharacterId",
+                table: "Shields",
+                column: "CharacterId",
+                unique: true,
+                filter: "[CharacterId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Skills_CharacterId",
@@ -372,6 +470,15 @@ namespace RollMaster.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "BodyArmors");
+
+            migrationBuilder.DropTable(
+                name: "Helmets");
+
+            migrationBuilder.DropTable(
+                name: "Shields");
+
+            migrationBuilder.DropTable(
                 name: "Skills");
 
             migrationBuilder.DropTable(
@@ -379,6 +486,9 @@ namespace RollMaster.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Armors");
 
             migrationBuilder.DropTable(
                 name: "Characters");

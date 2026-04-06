@@ -21,10 +21,15 @@
     </div>
 
     <div class="form-group">
+        <label asp-for="RodzimaKorzysc"></label>
+        <input asp-for="RodzimaKorzysc" class="form-control" />
+    </div>
+
+    <div class="form-group">
         <label asp-for="Powolanie"></label>
         <input asp-for="Powolanie" class="form-control" />
     </div>
-
+    @* 
     <div class="form-group">
         <label asp-for="Wiek"></label>
         <input asp-for="Wiek" class="form-control" type="number" />
@@ -99,55 +104,34 @@
         <label asp-for="Obrona"></label>
         <input asp-for="Obrona" class="form-control" type="number" />
     </div>
-    <hr />
+    <hr />*@
     @for (int i = 0; i < 18; i++)
     {
         <div class="form-group mb-3">
-            <label>@Model.skills[i].Name</label>
-            <input asp-for="skills[i].Name" type="hidden" />
+            <label>@Model.Skills[i].Name</label>
+            <input asp-for="Skills[i].Name" type="hidden" />
             <div class="input-group">
-                <input asp-for="skills[i].Value" class="form-control" type="number" />
+                <input asp-for="Skills[i].Value" class="form-control" type="hidden" />
 
                 <div class="input-group-text">
-                    <input asp-for="skills[i].IsEnhanced" type="checkbox" class="form-check-input" />
-                    <label class="ms-1 mb-0">Wzmocnione</label>
+                    <input asp-for="Skills[i].IsEnhanced" type="hidden" class="form-check-input" />
+                    @* <label class="ms-1 mb-0">Wzmocnione</label> *@
                 </div>
             </div>
         </div>
     }
-    <h3>Biegłości bojowe</h3>
-    @for (int i = 18; i < Model.skills.Count; i++)
+@*     <h3>Biegłości bojowe</h3> *@
+    @for (int i = 18; i < Model.Skills.Count; i++)
     {
         <div class="form-group mb-3">
-            <label>@Model.skills[i].Name</label>
-            <input asp-for="skills[i].Name" type="hidden" />
+            @* <label>@Model.skills[i].Name</label> *@
+            <input asp-for="Skills[i].Name" type="hidden" />
             <div class="input-group">
-                <input asp-for="skills[i].Value" class="form-control" type="number" />
-
-                @* <div class="input-group-text">
-                    <input asp-for="skills[i].IsEnhanced" type="checkbox" class="form-check-input" />
-                    <label class="ms-1 mb-0">Wzmocnione</label>
-                </div> *@
+                <input asp-for="Skills[i].Value" class="form-control" type="hidden" />
             </div>
         </div>
     }
-    @* <h3>Biegłości bojowe</h3>
-    <div class="form-group">
-        <label asp-for="BBLuki"></label>
-        <input asp-for="BBLuki" class="form-control" type="number" />
-    </div>
-    <div class="form-group">
-        <label asp-for="BBMiecze"></label>
-        <input asp-for="BBMiecze" class="form-control" type="number" />
-    </div>
-    <div class="form-group">
-        <label asp-for="BBTopory"></label>
-        <input asp-for="BBTopory" class="form-control" type="number" />
-    </div>
-    <div class="form-group">
-        <label asp-for="BBWlocznie"></label>
-        <input asp-for="BBWlocznie" class="form-control" type="number" />
-    </div> *@
+    @*
     <hr />
 
     <h3>Nagrody</h3>
@@ -210,52 +194,54 @@
     <h3>Rynsztunek — Zbroja</h3>
 
     <div class="form-group">
-        <label asp-for="ZbrojaNazwa"></label>
-        <input asp-for="ZbrojaNazwa" class="form-control" />
+        <label>Nazwa</label>
+        <input asp-for="Zbroja.Nazwa" class="form-control" />
     </div>
 
     <div class="form-group">
-        <label asp-for="ZbrojaPancerz"></label>
-        <input asp-for="ZbrojaPancerz" class="form-control" type="number" />
+        <label>Pancerz</label>
+        <input asp-for="Zbroja.Pancerz" class="form-control" type="number" />
     </div>
 
     <div class="form-group">
-        <label asp-for="ZbrojaObciazenie"></label>
-        <input asp-for="ZbrojaObciazenie" class="form-control" type="number" />
+        <label>Obciążenie</label>
+        <input asp-for="Zbroja.Obciazenie" class="form-control" type="number" />
     </div>
+
     <hr />
     <h3>Rynsztunek — Hełm</h3>
 
     <div class="form-group">
-        <label asp-for="HelmNazwa"></label>
-        <input asp-for="HelmNazwa" class="form-control" />
+        <label>Nazwa</label>
+        <input asp-for="Helm.Nazwa" class="form-control" />
     </div>
 
     <div class="form-group">
-        <label asp-for="HelmPancerz"></label>
-        <input asp-for="HelmPancerz" class="form-control" type="number" />
+        <label>Pancerz</label>
+        <input asp-for="Helm.Pancerz" class="form-control" type="number" />
     </div>
 
     <div class="form-group">
-        <label asp-for="HelmObciazenie"></label>
-        <input asp-for="HelmObciazenie" class="form-control" type="number" />
+        <label>Obciążenie</label>
+        <input asp-for="Helm.Obciazenie" class="form-control" type="number" />
     </div>
+
     <hr />
     <h3>Rynsztunek — Tarcza</h3>
 
     <div class="form-group">
-        <label asp-for="TarczaNazwa"></label>
-        <input asp-for="TarczaNazwa" class="form-control" />
+        <label>Nazwa</label>
+        <input asp-for="Tarcza.Nazwa" class="form-control" />
     </div>
 
     <div class="form-group">
-        <label asp-for="TarczaObrona"></label>
-        <input asp-for="TarczaObrona" class="form-control" type="number" />
+        <label>Obrona</label>
+        <input asp-for="Tarcza.Obrona" class="form-control" type="number" />
     </div>
 
     <div class="form-group">
-        <label asp-for="TarczaObciazenie"></label>
-        <input asp-for="TarczaObciazenie" class="form-control" type="number" />
+        <label>Obciążenie</label>
+        <input asp-for="Tarcza.Obciazenie" class="form-control" type="number" />
     </div>
     <hr />
     <h3>Rozwój</h3>
@@ -343,9 +329,9 @@
 
     <h3>Dodatkowe</h3>
     <div class="form-group">
-        <label asp-for="SzczegolnaSympatia"></label>
-        <textarea asp-for="SzczegolnaSympatia" class="form-control"></textarea>
-    </div>
+        <label asp-for="Notatki"></label>
+        <textarea asp-for="Notatki" class="form-control"></textarea>
+    </div> *@
 
     <button type="submit" class="btn btn-primary mt-3">Zapisz</button>
 </form>

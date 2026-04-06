@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RollMaster.Data;
 
@@ -11,9 +12,11 @@ using RollMaster.Data;
 namespace RollMaster.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260405224158_v2")]
+    partial class v2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -242,9 +245,10 @@ namespace RollMaster.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Nazwa")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Obciazenie")
+                    b.Property<int>("Obciazenie")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -262,7 +266,7 @@ namespace RollMaster.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("Cien")
+                    b.Property<int>("Cien")
                         .HasColumnType("int");
 
                     b.Property<string>("Ekwipunek")
@@ -275,13 +279,13 @@ namespace RollMaster.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Madrosc")
+                    b.Property<int>("Madrosc")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Mestwo")
+                    b.Property<int>("Mestwo")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Nadzieja")
+                    b.Property<int>("Nadzieja")
                         .HasColumnType("int");
 
                     b.Property<string>("Nagrody")
@@ -290,37 +294,39 @@ namespace RollMaster.Migrations
                     b.Property<string>("Notatki")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Obciazenie")
+                    b.Property<int>("Obciazenie")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ObecnaNadzieja")
+                    b.Property<int>("ObecnaNadzieja")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ObecnaWytrzymalosc")
+                    b.Property<int>("ObecnaWytrzymalosc")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Obrona")
+                    b.Property<int>("Obrona")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PTRozum")
+                    b.Property<int>("PTRozum")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PTSerce")
+                    b.Property<int>("PTSerce")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PTSila")
+                    b.Property<int>("PTSila")
                         .HasColumnType("int");
 
                     b.Property<string>("Patron")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PietnoCienia")
+                    b.Property<int>("PietnoCienia")
                         .HasColumnType("int");
 
                     b.Property<string>("Powolanie")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PoziomZycia")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Przygnebienie")
@@ -332,28 +338,31 @@ namespace RollMaster.Migrations
                     b.Property<string>("Przywary")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PunktyPrzygody")
+                    b.Property<int>("PunktyPrzygody")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PunktyUmiejetnosci")
+                    b.Property<int>("PunktyUmiejetnosci")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PunktyZazylosci")
+                    b.Property<int>("PunktyZazylosci")
                         .HasColumnType("int");
 
                     b.Property<bool>("Rana")
                         .HasColumnType("bit");
 
                     b.Property<string>("RodzimaKorzysc")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RodzimaKultura")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SciezkaCienia")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Skarb")
+                    b.Property<int>("Skarb")
                         .HasColumnType("int");
 
                     b.Property<string>("StopienRany")
@@ -362,13 +371,13 @@ namespace RollMaster.Migrations
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int?>("WartoscRozum")
+                    b.Property<int>("WartoscRozum")
                         .HasColumnType("int");
 
-                    b.Property<int?>("WartoscSerce")
+                    b.Property<int>("WartoscSerce")
                         .HasColumnType("int");
 
-                    b.Property<int?>("WartoscSila")
+                    b.Property<int>("WartoscSila")
                         .HasColumnType("int");
 
                     b.Property<int>("Wiek")
@@ -380,10 +389,10 @@ namespace RollMaster.Migrations
                     b.Property<string>("Wyrozniki")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Wytrzymalosc")
+                    b.Property<int>("Wytrzymalosc")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Znuzenie")
+                    b.Property<int>("Znuzenie")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -455,16 +464,17 @@ namespace RollMaster.Migrations
                     b.Property<int>("CharacterId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Damage")
+                    b.Property<int>("Damage")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Injury")
+                    b.Property<int>("Injury")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Load")
+                    b.Property<int>("Load")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Notes")
@@ -494,7 +504,7 @@ namespace RollMaster.Migrations
                     b.Property<int>("CharacterId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Pancerz")
+                    b.Property<int>("Pancerz")
                         .HasColumnType("int");
 
                     b.HasIndex("CharacterId")
@@ -511,7 +521,7 @@ namespace RollMaster.Migrations
                     b.Property<int>("CharacterId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Pancerz")
+                    b.Property<int>("Pancerz")
                         .HasColumnType("int");
 
                     b.HasIndex("CharacterId")
@@ -528,7 +538,7 @@ namespace RollMaster.Migrations
                     b.Property<int>("CharacterId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Obrona")
+                    b.Property<int>("Obrona")
                         .HasColumnType("int");
 
                     b.HasIndex("CharacterId")
@@ -681,13 +691,13 @@ namespace RollMaster.Migrations
                 {
                     b.Navigation("Helm");
 
-                    b.Navigation("Skills");
-
                     b.Navigation("Tarcza");
 
-                    b.Navigation("Weapons");
-
                     b.Navigation("Zbroja");
+
+                    b.Navigation("Skills");
+
+                    b.Navigation("Weapons");
                 });
 
             modelBuilder.Entity("RollMaster.Models.Game", b =>

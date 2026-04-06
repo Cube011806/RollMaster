@@ -1,318 +1,247 @@
 ﻿@model RollMaster.Models.Character
 
-<link rel="stylesheet" href="~/css/character.css" />
+<form id="characterForm">
+    <input type="hidden" asp-for="Id" />
+    <link rel="stylesheet" href="~/css/character.css" />
 
-<div class="tor-sheet">
+    <div class="tor-sheet">
 
-    <!-- HEADER -->
-    <div class="header">
-        <div class="name">@Model.Imie</div>
-    </div>
-
-    <!-- TOP INFO -->
-    <div class="top-info">
-        <div>Rodzima Kultura: @Model.RodzimaKultura</div>
-        <div>Rodzima Korzyść: @Model.RodzimaKorzysc</div>
-        <div>Powołanie: @Model.Powolanie</div>
-        <div>Wiek: <input asp-for="Wiek" /></div>
-        <div>Patron: <input asp-for="Patron" /></div>
-        <div>Ścieżka Cienia: <input asp-for="SciezkaCienia" /></div>
-        <div>Skarb: <input asp-for="Skarb" /></div>
-        <div>PoziomZycia: <input asp-for="PoziomZycia" /></div>
-        <div>Wyróżniki: <input asp-for="Wyrozniki" /></div>
-        <div>Przywary: <input asp-for="Przywary" /></div>
-    </div>
-
-    <!-- MAIN GRID -->
-    <div class="main">
-
-        <!-- SIŁA -->
-        <div class="column">
-            <h3>SIŁA</h3>
-            <div class="attr-block">
-                <div class="field-row">
-                    <label for="WartoscSila">Wartość</label>
-                    <input asp-for="WartoscSila" />
-                </div>
-                <div class="field-row">
-                    <label for="PTSila">PT</label>
-                    <input asp-for="PTSila" />
-                </div>
-                <div class="field-row">
-                    <label for="Wytrzymalosc">Wytrzymałość</label>
-                    <input asp-for="Wytrzymalosc" />
-                </div>
-            </div>
-
-            <div class="skills">
-                @for (int i = 0; i < 6; i++)
-                {
-                    var skill = Model.skills[i];
-                    <div class="skill-row">
-                        <label class="enhance-checkbox">
-                            <input type="checkbox" name="skills[@i].IsEnhanced" value="true" @(skill.IsEnhanced ? "checked" : "") />
-                        </label>
-
-                        <span class="skill-name">@skill.Name</span>
-
-                        <input type="hidden" name="skills[@i].Value" value="0" />
-
-                        <div class="skill-values">
-                            @for (int val = 1; val <= 6; val++)
-                            {
-                                <label>
-                                    <input type="radio" name="skills[@i].Value" value="@val" @(skill.Value == val ? "checked" : "") />
-                                    @val
-                                </label>
-                            }
-                        </div>
-                    </div>
-                }
-            </div>
-            <div class="horizontal-separator"></div>
-            <div class="combat-skills">
-                <h5 style="text-align: center; margin-bottom: 25px;">Biegłości bojowe</h5>
-                @for (int i = 18; i <= 21; i++)
-                {
-                    var skill = Model.skills[i];
-                    <div class="skill-row">
-                        <!-- Nazwa biegłości -->
-                        <span class="skill-name">@skill.Name</span>
-
-                        <!-- Ukryty input dla wartości 0 -->
-                        <input type="hidden" name="skills[@i].Value" value="0" />
-
-                        <!-- Radio 1-6 -->
-                        <div class="skill-values">
-                            @for (int val = 1; val <= 6; val++)
-                            {
-                                <label>
-                                    <input type="radio" name="skills[@i].Value" value="@val" @(skill.Value == val ? "checked" : "") />
-                                    @val
-                                </label>
-                            }
-                        </div>
-                    </div>
-                }
-            </div>
+        <div class="header">
+            <div class="name">@Model.Imie</div>
         </div>
 
-        <!-- SERCE -->
-        <div class="column">
-            <h3>SERCE</h3>
-            <div class="attr-block">
-                <div class="field-row">
-                    <label for="WartoscSerce">Wartość</label>
-                    <input asp-for="WartoscSerce" />
+        <div class="top-info">
+            <input type="hidden" asp-for="Imie" />
+            <input type="hidden" asp-for="RodzimaKultura" />
+            <input type="hidden" asp-for="RodzimaKorzysc" />
+            <input type="hidden" asp-for="Powolanie" />
+            <div>Rodzima Kultura: @Model.RodzimaKultura</div>
+            <div>Rodzima Korzyść: @Model.RodzimaKorzysc</div>
+            <div>Powołanie: @Model.Powolanie</div>
+            <div>Wiek: <input asp-for="Wiek" /></div>
+            <div>Patron: <input asp-for="Patron" /></div>
+            <div>Ścieżka Cienia: <input asp-for="SciezkaCienia" /></div>
+            <div>Skarb: <input asp-for="Skarb" /></div>
+            <div>PoziomZycia: <input asp-for="PoziomZycia" /></div>
+            <div>Wyróżniki: <input asp-for="Wyrozniki" /></div>
+            <div>Przywary: <input asp-for="Przywary" /></div>
+        </div>
+
+        <div class="main">
+
+            <div class="column" style="grid-column: 1; grid-row: 1;">
+                <h3>SIŁA</h3>
+                <div class="attr-block">
+                    <div class="field-row"><label>Wartość</label><input asp-for="WartoscSila" /></div>
+                    <div class="field-row"><label>PT</label><input asp-for="PTSila" /></div>
+                    <div class="field-row"><label>Wytrzymałość</label><input asp-for="Wytrzymalosc" /></div>
                 </div>
-                <div class="field-row">
-                    <label for="PTSerce">PT</label>
-                    <input asp-for="PTSerce" />
+                <div class="skills">
+                    @for (int i = 0; i < 6; i++)
+                    {
+                        var skill = Model.Skills[i];
+                        <div class="skill-row">
+                            <input type="hidden" name="Skills[@i].Id" value="@skill.Id" />
+                            <input type="checkbox" name="Skills[@i].IsEnhanced" value="true" @(skill.IsEnhanced ? "checked" : "") />
+                            <span class="skill-name">@skill.Name</span>
+                            <div class="skill-values">
+                                @for (int val = 1; val <= 6; val++)
+                                {
+                                    <label class="radio-val">
+                                        <input type="radio" name="Skills[@i].Value" value="@val" @(skill.Value == val ? "checked" : "") />
+                                        <span>@val</span>
+                                    </label>
+                                }
+                            </div>
+                        </div>
+                    }
                 </div>
-                <div class="field-row">
-                    <label for="Nadzieja">Nadzieja</label>
-                    <input asp-for="Nadzieja" />
+                <div class="horizontal-separator"></div>
+                <div class="combat-skills">
+                    <h5 style="text-align: center; margin: 10px 0; margin-bottom: 20px;">Biegłości bojowe</h5>
+                    @for (int i = 18; i <= 21; i++)
+                    {
+                        var skill = Model.Skills[i];
+                        <div class="skill-row">
+                            <span class="skill-name" style="margin-left: 20px;">@skill.Name</span>
+                            <div class="skill-values">
+                                @for (int val = 1; val <= 6; val++)
+                                {
+                                    <label class="radio-val">
+                                        <input type="hidden" name="Skills[@i].Id" value="@skill.Id" />
+                                        <input type="radio" name="Skills[@i].Value" value="@val" @(skill.Value == val ? "checked" : "") />
+                                        <span>@val</span>
+                                    </label>
+                                }
+                            </div>
+                        </div>
                 </div>
             </div>
-            <div class="skills">
-                @for (int i = 6; i < 12; i++)
-                {
-                    var skill = Model.skills[i];
-                    <div class="skill-row">
-                        <label class="enhance-checkbox">
-                            <input type="checkbox" name="skills[@i].IsEnhanced" value="true" @(skill.IsEnhanced ? "checked" : "") />
-                        </label>
 
-                        <span class="skill-name">@skill.Name</span>
+            <div class="column" style="grid-column: 2; grid-row: 1;">
+                <h3>SERCE</h3>
+                <div class="attr-block">
+                    <div class="field-row"><label>Wartość</label><input asp-for="WartoscSerce" /></div>
+                    <div class="field-row"><label>PT</label><span style="margin-right: 15px;">@(20-Model.WartoscSerce)</span></div> @* Model.PTSerce *@
+                    <div class="field-row"><label>Nadzieja</label><input asp-for="Nadzieja" /></div>
+                </div>
+                <div class="skills">
+                    @for (int i = 6; i < 12; i++)
+                    {
+                        var skill = Model.Skills[i];
+                        <div class="skill-row">
+                            <input type="hidden" name="Skills[@i].Id" value="@skill.Id" />
+                            <input type="checkbox" name="Skills[@i].IsEnhanced" value="true" @(skill.IsEnhanced ? "checked" : "") />
+                            <span class="skill-name">@skill.Name</span>
+                            <div class="skill-values">
+                                @for (int val = 1; val <= 6; val++)
+                                {
+                                    <label>
+                                        <input type="radio" name="Skills[@i].Value" value="@val" @(skill.Value == val ? "checked" : "") />
+                                        @val
+                                    </label>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="horizontal-separator"></div>
+                <h5 style="text-align: center; margin: 10px 0;">Nagrody</h5>
+                <textarea class="rew" asp-for="Nagrody" style="width: 100%; height: 150px;"></textarea>
+            </div>
 
-                        <input type="hidden" name="skills[@i].Value" value="0" />
+            <div class="column" style="grid-column: 3; grid-row: 1; border-right: none;">
+                <h3>ROZUM</h3>
+                <div class="attr-block">
+                    <div class="field-row"><label>Wartość</label><input asp-for="WartoscRozum" /></div>
+                    <div class="field-row"><label>PT</label><input asp-for="PTRozum" /></div>
+                    <div class="field-row"><label>Obrona</label><input asp-for="Obrona" /></div>
+                </div>
+                <div class="skills">
+                    @for (int i = 12; i < 18; i++)
+                    {
+                        var skill = Model.Skills[i];
+                        <div class="skill-row">
+                            <input type="hidden" name="Skills[@i].Id" value="@skill.Id" />
+                            <input type="checkbox" name="Skills[@i].IsEnhanced" value="true" @(skill.IsEnhanced ? "checked" : "") />
+                            <span class="skill-name">@skill.Name</span>
+                            <div class="skill-values">
+                                @for (int val = 1; val <= 6; val++)
+                                {
+                                    <label class="radio-val">
+                                        <input type="radio" name="Skills[@i].Value" value="@val" @(skill.Value == val ? "checked" : "") />
+                                        <span>@val</span>
+                                    </label>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="horizontal-separator"></div>
+                <h5 style="text-align: center; margin: 10px 0;">Przymioty</h5>
+                <textarea class="rew" asp-for="Przymioty" style="width: 100%; height: 150px;"></textarea>
+            </div>
 
-                        <div class="skill-values">
-                            @for (int val = 1; val <= 6; val++)
-                            {
-                                <label>
-                                    <input type="radio" name="skills[@i].Value" value="@val" @(skill.Value == val ? "checked" : "") />
-                                    @val
-                                </label>
-                            }
+            <div class="side" style="grid-column: 4; grid-row: 1 / span 2; border-left: 2px solid #333; padding-left: 15px;">
+                <div class="box">
+                    <h4>Punkty</h4>
+                    <div class="field-row"><label>Punkty Przygody</label><input asp-for="PunktyPrzygody" /></div>
+                    <div class="field-row"><label>Punkty Umiejętności</label><input asp-for="PunktyUmiejetnosci" /></div>
+                    <div class="field-row"><label>Punkty Zażyłości</label><input asp-for="PunktyZazylosci" /></div>
+                </div>
+                <div class="box">
+                
+                    <div class="field-row"><h5>Obecna Wytrzymałość</h5><input asp-for="ObecnaWytrzymalosc" /></div>
+                    <div class="field-row"><label>Obciążenie</label><input asp-for="Obciazenie" /></div>
+                    <div class="field-row"><label>Znużenie</label><input asp-for="Znuzenie" /></div>
+                </div>
+                <div class="box">
+                    <div class="field-row"><h5>Obecna Nadzieja</h5><input asp-for="ObecnaNadzieja" /></div>
+                    <div class="field-row"><label>Cień</label><input asp-for="Cien" /></div>
+                    <div class="field-row"><label>Piętno Cienia</label><input asp-for="PietnoCienia" /></div>
+                </div>
+                <div class="box">
+                    <h4>Ograniczenia</h4>
+                    <div class="field-row"><label><input type="checkbox" asp-for="Wyczerpanie" /> Wyczerpanie</label></div>
+                    <div class="field-row"><label><input type="checkbox" asp-for="Przygnebienie" /> Przygnębienie</label></div>
+                    <div class="field-row"><label><input type="checkbox" asp-for="Rana" /> Rana</label></div>
+                    <div class="field-row"><label>Stopień rany: </label><input type="text" asp-for="StopienRany" style="width: 150px;" /> </div>
+                </div>
+                <div class="box">
+                    <h4>Ekwipunek</h4>
+                    <textarea class="eq" asp-for="Ekwipunek" style="width: 100%; height: 180px;"></textarea>
+                </div>
+                <div class="box">
+                    <h4>Notatki</h4>
+                    <textarea class="eq" asp-for="Notatki" style="width: 100%; height: 80px;"></textarea>
+                </div>
+            </div>
+
+            <div class="equipment-armor-grid" style="grid-column: 1 / span 3; grid-row: 2; border-top: 2px solid #333; padding-top: 15px; display: grid; grid-template-columns: 2fr 1fr; gap: 20px;">
+                <div>
+                    <h4 style="text-align: left;">RYNSZTUNEK</h4>
+                    <div class="box">
+                    <div class="weapon-row" style="font-weight: bold; border-bottom: 1px solid #aaa;">
+                        <span>Broń</span><span>Obr.</span><span>Prz.</span><span>Obc.</span><span>Uwagi</span>
+                    </div>
+                    @for (int i = 0; i < 4; i++)
+                    {
+                        <div class="weapon-row">
+                            <input type="hidden" name="weapons[@i].Id" value="@(i<Model.Weapons.Count? Model.Weapons[i].Id : 0)" />
+                            <input name="weapons[@i].Name" value="@(i<Model.Weapons.Count? Model.Weapons[i].Name : "")" />
+                            <input name="weapons[@i].Damage" value="@(i<Model.Weapons.Count? Model.Weapons[i].Damage : 0)" />
+                            <input name="weapons[@i].Injury" value="@(i<Model.Weapons.Count? Model.Weapons[i].Injury : 0)" />
+                            <input name="weapons[@i].Load" value="@(i<Model.Weapons.Count? Model.Weapons[i].Load : 0)" />
+                            <input name="weapons[@i].Notes" value="@(i<Model.Weapons.Count? Model.Weapons[i].Notes : "")" />
+                        </div>
+                    }
+                    </div>
+                </div>
+                <div>
+                    <h4 style="text-align: center;">OCHRONA</h4>
+                    <div class="box">
+                    <div class="armor-row" style="font-weight: bold; border-bottom: 1px solid #aaa; display: grid; grid-template-columns: 2fr 1fr 1fr;">
+                        <span>Zbroja</span><span>Panc.</span><span>Obc.</span>
+                    </div>
+                    <div class="armor-row" style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 5px; margin-bottom: 5px;">
+                        <input type="hidden" asp-for="Zbroja.Id" /><input asp-for="Zbroja.Nazwa" placeholder="Zbroja" /><input asp-for="Zbroja.Pancerz" /><input asp-for="Zbroja.Obciazenie" />
+                    </div>
+                    <div class="armor-row" style="font-weight: bold; border-bottom: 1px solid #aaa; display: grid; grid-template-columns: 2fr 1fr 1fr;">
+                        <span>Hełm</span><span></span><span></span>
+                    </div>
+                    <div class="armor-row" style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 5px; margin-bottom: 5px;">
+                        <input type="hidden" asp-for="Helm.Id" /><input asp-for="Helm.Nazwa" placeholder="Hełm" /><input asp-for="Helm.Pancerz" /><input asp-for="Helm.Obciazenie" />
+                    </div>
+                    <div class="armor-row" style="font-weight: bold; border-bottom: 1px solid #aaa; display: grid; grid-template-columns: 2fr 1fr 1fr;">
+                        <span>Tarcza</span><span>Obr.</span><span>Obc.</span>
+                    </div>
+                        <div class="armor-row" style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 5px; margin-bottom: 5px;">
+                            <input type="hidden" asp-for="Tarcza.Id" />
+                            <input asp-for="Tarcza.Nazwa" placeholder="Tarcza" />
+                            <input asp-for="Tarcza.Obrona" />
+                            <input asp-for="Tarcza.Obciazenie" />
                         </div>
                     </div>
-                }
-            </div>        
-            <div class="horizontal-separator"></div>
-            <h5 style="text-align: center">Nagrody</h5>
-            <div class="attr-block">
-                <div class="field-row">
-                    <label for="Mestwo">Męstwo</label>
-                    <input asp-for="Mestwo" />
                 </div>
-
-                <label>Nagrody</label>
-                <textarea class="rew" asp-for="Nagrody" rows="4" placeholder="Wpisz nagrody"></textarea>
             </div>
         </div>
-        <!-- ROZUM -->
-        <div class="column">
-            <h3>ROZUM</h3>
-            <div class="attr-block">
-                <div class="field-row">
-                    <label for="WartoscRozum">Wartość</label>
-                    <input asp-for="WartoscRozum" />
-                </div>
-                <div class="field-row">
-                    <label for="PTSerce">PT</label>
-                    <input asp-for="PTRozum" />
-                </div>
-                <div class="field-row">
-                    <label for="Obrona">Obrona</label>
-                    <input asp-for="Obrona" />
-                </div>
-            </div>
-
-            <div class="skills">
-                @for (int i = 12; i < 18; i++)
-                {
-                    var skill = Model.skills[i];
-                    <div class="skill-row">
-                        <label class="enhance-checkbox">
-                            <input type="checkbox" name="skills[@i].IsEnhanced" value="true" @(skill.IsEnhanced ? "checked" : "") />
-                        </label>
-
-                        <span class="skill-name">@skill.Name</span>
-
-                        <input type="hidden" name="skills[@i].Value" value="0" />
-
-                        <div class="skill-values">
-                            @for (int val = 1; val <= 6; val++)
-                            {
-                                <label>
-                                    <input type="radio" name="skills[@i].Value" value="@val" @(skill.Value == val ? "checked" : "") />
-                                    @val
-                                </label>
-                            }
-                        </div>
-                    </div>
-                }
-            </div>
-            <div class="horizontal-separator"></div>
-            <h5 style="text-align: center">Przymioty</h5>
-            <div class="attr-block">
-                <div class="field-row">
-                    <label for="Madrosc">Mądrość</label>
-                    <input asp-for="Madrosc" />
-                </div>
-
-                <label>Przymioty</label>
-                <textarea class="rew" asp-for="Przymioty" rows="4" placeholder="Wpisz przymioty"></textarea>
-            </div>
-        </div>
-        <!-- PRAWA KOLUMNA -->
-        <div class="side">
-
-            <div class="box">
-                <h4>Punkty</h4>
-
-                <div class="field-row">
-                    <label for="PunktyPrzygody">Punkty Przygody</label>
-                    <input asp-for="PunktyPrzygody" />
-                </div>
-
-                <div class="field-row">
-                    <label for="PunktyUmiejetnosci">Punkty Umiejętności</label>
-                    <input asp-for="PunktyUmiejetnosci" />
-                </div>
-
-                <div class="field-row">
-                    <label for="PunktyZazylosci">Poziom Zażyłości</label>
-                    <input asp-for="PunktyZazylosci" />
-                </div>
-            </div>
-
-            <div class="box">
-                <h4>Stan</h4>
-
-                <div class="field-row">
-                    <label for="ObecnaWytrzymalosc">Obecna Wytrzymałość</label>
-                    <input asp-for="ObecnaWytrzymalosc" />
-                </div>
-
-                <div class="field-row">
-                    <label for="ObecnaNadzieja">Obecna Nadzieja</label>
-                    <input asp-for="ObecnaNadzieja" />
-                </div>
-
-                <div class="field-row">
-                    <label for="Cien">Cień</label>
-                    <input asp-for="Cien" />
-                </div>
-
-                <div class="field-row">
-                    <label for="PietnoCienia">Piętno Cienia</label>
-                    <input asp-for="PietnoCienia" />
-                </div>
-            </div>
-            <div class="box">
-                <h4>Ograniczenia</h4>
-
-                <div class="field-row">
-                    <label><input asp-for="Wyczerpanie" /> Wyczerpanie</label>
-                </div>
-
-                <div class="field-row">
-                    <label><input asp-for="Przygnebienie" /> Przygnębienie</label>
-                </div>
-
-                <div class="field-row">
-                    <label><input asp-for="Rana" /> Rana</label>
-                </div>
-
-                <div class="field-row">
-                    <label for="StopienRany">Stopień rany:</label>
-                    <input asp-for="StopienRany" style="width: 150px"/>
-                </div>
-            </div>
-
-            <div class="box">
-                <h4>Ekwipunek</h4>
-                <textarea class="eq" asp-for="Ekwipunek" placeholder="Wpisz ekwipunek"></textarea>
-            </div>
-
-        </div>
-
     </div>
+</form>
+<script>
+    const form = document.getElementById("characterForm");
 
-    <!-- RYNSZTUNEK -->
-    <div class="equipment">
-        <h3>Rynsztunek</h3>
+    let timeout = null;
 
-        @for (int i = 0; i < 4; i++)
-        {
-            <div class="weapon-row">
-                <input type="hidden" name="weapons[@i].Id" value="@(i<Model.weapons.Count? Model.weapons[i].Id : 0)" />
-                <input type="hidden" name="weapons[@i].CharacterId" value="@Model.Id" />
+    form.addEventListener("change", function () {
+        clearTimeout(timeout);
 
-                <input name="weapons[@i].Name" value="@(i<Model.weapons.Count? Model.weapons[i].Name : "")" placeholder="Nazwa" />
-                <input name="weapons[@i].Damage" value="@(i<Model.weapons.Count? Model.weapons[i].Damage : 0)" />
-                <input name="weapons[@i].Injury" value="@(i<Model.weapons.Count? Model.weapons[i].Injury : 0)" />
-                <input name="weapons[@i].Load" value="@(i<Model.weapons.Count? Model.weapons[i].Load : 0)" />
-                <input name="weapons[@i].Notes" placeholder="Uwagi" value="@(i<Model.weapons.Count? Model.weapons[i].Notes : "")" />
-            </div>
-        }
-    </div>
-    <div class="armor-section">
-        <h4>Zbroja</h4>
-        <input asp-for="ZbrojaNazwa" placeholder="Nazwa" />
-        <input asp-for="ZbrojaPancerz" placeholder="Pancerz" />
-        <input asp-for="ZbrojaObciazenie" placeholder="Obciążenie" />
+        timeout = setTimeout(function () {
+            const formData = new FormData(form);
 
-        <h4>Hełm</h4>
-        <input asp-for="HelmNazwa" placeholder="Nazwa" />
-        <input asp-for="HelmPancerz" placeholder="Pancerz" />
-        <input asp-for="HelmObciazenie" placeholder="Obciążenie" />
-
-        <h4>Tarcza</h4>
-        <input asp-for="TarczaNazwa" placeholder="Nazwa" />
-        <input asp-for="TarczaObrona" placeholder="Obrona" />
-        <input asp-for="TarczaObciazenie" placeholder="Obciążenie" />
-    </div>
-</div>
+            fetch('/Character/SaveCharacter', {
+                method: 'POST',
+                body: formData
+            });
+        }, 500); //500 = 0,5s opóźnienia zapisu od zmiany
+    });
+</script>

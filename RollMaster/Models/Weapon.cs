@@ -17,10 +17,10 @@
             this.Notes = Notes;
         }
         public int Id { get; set; }
-        public string Name { get; set; } = string.Empty;
-        public int Damage { get; set; }
-        public int Injury { get; set; }
-        public int Load { get; set; }
+        public string? Name { get; set; } = string.Empty;
+        public int? Damage { get; set; }
+        public int? Injury { get; set; }
+        public int? Load { get; set; }
         public string? Notes { get; set; }
 
         //Relacja z postacią

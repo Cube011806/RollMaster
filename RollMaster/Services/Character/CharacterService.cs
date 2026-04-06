@@ -27,9 +27,13 @@ namespace RollMaster.Services.Character
         public async Task<Models.Character?> GetByIdAsync(int id)
         {
             var character = await _context.Characters
-                .Include(c => c.skills)
-                .Include(c => c.weapons)
+                .Include(c => c.Skills)
+                .Include(c => c.Weapons)
+                .Include(c => c.Zbroja)
+                .Include(c => c.Helm)
+                .Include(c => c.Tarcza)
                 .FirstOrDefaultAsync(c => c.Id == id);
+
             return character;
         }
         public Models.Character? GetById(int id)
@@ -52,17 +56,101 @@ namespace RollMaster.Services.Character
         {
             character.UserId = userId;
 
-            if (character.weapons != null)
+            if (character.Weapons != null)
             {
-                character.weapons = character.weapons
+                character.Weapons = character.Weapons
                     .Where(w => !string.IsNullOrWhiteSpace(w.Name))
                     .ToList();
             }
+
+            if (character.Zbroja?.Nazwa == null)
+                character.Zbroja = null;
+
+            if (character.Helm?.Nazwa == null)
+                character.Helm = null;
+
+            if (character.Tarcza?.Nazwa == null)
+                character.Tarcza = null;
 
             _context.Characters.Add(character);
             await _context.SaveChangesAsync();
         }
 
+        public async Task UpdateAsync(Models.Character model)
+        {
+            var character = await _context.Characters
+                .Include(c => c.Zbroja)
+                .Include(c => c.Helm)
+                .Include(c => c.Tarcza)
+                .Include(c => c.Skills)
+                .Include(c => c.Weapons)
+                .FirstOrDefaultAsync(c => c.Id == model.Id);
+
+            if (character == null) return;
+
+            // --- proste pola ---
+            _context.Entry(character).CurrentValues.SetValues(model);
+
+
+            if (model.Zbroja != null)
+            {
+                if (character.Zbroja == null)
+                    character.Zbroja = new BodyArmor();
+
+                character.Zbroja.Nazwa = model.Zbroja.Nazwa;
+                character.Zbroja.Pancerz = model.Zbroja.Pancerz;
+                character.Zbroja.Obciazenie = model.Zbroja.Obciazenie;
+            }
+            if (model.Helm != null)
+            {
+                if (character.Helm == null)
+                    character.Helm = new Helmet();
+
+                character.Helm.Nazwa = model.Helm.Nazwa;
+                character.Helm.Pancerz = model.Helm.Pancerz;
+                character.Helm.Obciazenie = model.Helm.Obciazenie;
+            }
+            if (model.Tarcza != null)
+            {
+                if (character.Tarcza == null)
+                    character.Tarcza = new Shield();
+
+                character.Tarcza.Nazwa = model.Tarcza.Nazwa;
+                character.Tarcza.Obrona = model.Tarcza.Obrona;
+                character.Tarcza.Obciazenie = model.Tarcza.Obciazenie;
+            }
+
+            // --- SKILLS ---
+            foreach (var skill in model.Skills)
+            {
+                var existing = character.Skills.FirstOrDefault(s => s.Id == skill.Id);
+                if (existing != null)
+                {
+                    existing.Value = skill.Value;
+                    existing.IsEnhanced = skill.IsEnhanced;
+                }
+            }
+
+            // --- WEAPONS ---
+            foreach (var weapon in model.Weapons)
+            {
+                var existing = character.Weapons.FirstOrDefault(w => w.Id == weapon.Id);
+                if (existing != null)
+                {
+                    existing.Name = weapon.Name;
+                    existing.Damage = weapon.Damage;
+                    existing.Injury = weapon.Injury;
+                    existing.Load = weapon.Load;
+                    existing.Notes = weapon.Notes;
+                }
+                else
+                {
+                    character.Weapons.Add(weapon);
+                }
+            }
+
+            await _context.SaveChangesAsync();
+        }
 
         public async Task DeleteAsync(int id)
         {

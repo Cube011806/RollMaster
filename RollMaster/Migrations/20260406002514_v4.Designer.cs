@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RollMaster.Data;
 
@@ -11,9 +12,11 @@ using RollMaster.Data;
 namespace RollMaster.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260406002514_v4")]
+    partial class v4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -318,9 +321,11 @@ namespace RollMaster.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Powolanie")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PoziomZycia")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Przygnebienie")
@@ -345,15 +350,18 @@ namespace RollMaster.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("RodzimaKorzysc")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RodzimaKultura")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SciezkaCienia")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Skarb")
+                    b.Property<int>("Skarb")
                         .HasColumnType("int");
 
                     b.Property<string>("StopienRany")
@@ -455,16 +463,17 @@ namespace RollMaster.Migrations
                     b.Property<int>("CharacterId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Damage")
+                    b.Property<int>("Damage")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Injury")
+                    b.Property<int>("Injury")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Load")
+                    b.Property<int>("Load")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Notes")
@@ -681,13 +690,13 @@ namespace RollMaster.Migrations
                 {
                     b.Navigation("Helm");
 
-                    b.Navigation("Skills");
-
                     b.Navigation("Tarcza");
 
-                    b.Navigation("Weapons");
-
                     b.Navigation("Zbroja");
+
+                    b.Navigation("Skills");
+
+                    b.Navigation("Weapons");
                 });
 
             modelBuilder.Entity("RollMaster.Models.Game", b =>
