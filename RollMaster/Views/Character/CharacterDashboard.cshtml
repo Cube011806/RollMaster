@@ -76,7 +76,7 @@
             <h3>SERCE</h3>
             <div class="attr-block">
                 <div class="field-row"><label>Wartość</label><input asp-for="WartoscSerce" /></div>
-                <div class="field-row"><label>PT</label><input asp-for="PTSerce" /></div>
+                <div class="field-row"><label>PT</label><span style="margin-right: 15px;">@(20-Model.WartoscSerce)</span></div> @* Model.PTSerce *@
                 <div class="field-row"><label>Nadzieja</label><input asp-for="Nadzieja" /></div>
             </div>
             <div class="skills">
