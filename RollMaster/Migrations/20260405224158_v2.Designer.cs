@@ -617,7 +617,7 @@ namespace RollMaster.Migrations
             modelBuilder.Entity("RollMaster.Models.Skill", b =>
                 {
                     b.HasOne("RollMaster.Models.Character", "Character")
-                        .WithMany("skills")
+                        .WithMany("Skills")
                         .HasForeignKey("CharacterId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -628,7 +628,7 @@ namespace RollMaster.Migrations
             modelBuilder.Entity("RollMaster.Models.Weapon", b =>
                 {
                     b.HasOne("RollMaster.Models.Character", "Character")
-                        .WithMany("weapons")
+                        .WithMany("Weapons")
                         .HasForeignKey("CharacterId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -695,9 +695,9 @@ namespace RollMaster.Migrations
 
                     b.Navigation("Zbroja");
 
-                    b.Navigation("skills");
+                    b.Navigation("Skills");
 
-                    b.Navigation("weapons");
+                    b.Navigation("Weapons");
                 });
 
             modelBuilder.Entity("RollMaster.Models.Game", b =>

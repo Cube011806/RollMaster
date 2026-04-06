@@ -36,7 +36,7 @@ namespace RollMaster.Controllers
         {
             var model = new Character();
 
-            model.skills = new List<Skill>
+            model.Skills = new List<Skill>
             {
                 new Skill("Czujność", 0, false),
                 new Skill("Pieśni", 0, false),
@@ -64,7 +64,7 @@ namespace RollMaster.Controllers
                 new Skill("Topory", 0, false),
                 new Skill("Włócznie", 0, false)
             };
-            model.weapons = new List<Weapon>
+            model.Weapons = new List<Weapon>
             {
                 new Weapon(),
                 new Weapon(),
@@ -88,6 +88,13 @@ namespace RollMaster.Controllers
         public async Task<IActionResult> CharacterDashboard(int id)
         {
             return View(await _CharacterService.GetByIdAsync(id));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SaveCharacter(Character model)
+        {
+            await _CharacterService.UpdateAsync(model);
+            return Ok();
         }
         public IActionResult ImportCharacter()
         {

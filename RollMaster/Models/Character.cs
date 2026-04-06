@@ -6,14 +6,14 @@
 
         //Informacje podstawowe
         public string Imie { get; set; } = String.Empty;
-        public string RodzimaKultura { get; set; } = String.Empty;
-        public string RodzimaKorzysc { get; set; } = String.Empty;
-        public string Powolanie { get; set; } = String.Empty;
+        public string? RodzimaKultura { get; set; } = String.Empty;
+        public string? RodzimaKorzysc { get; set; } = String.Empty;
+        public string? Powolanie { get; set; } = String.Empty;
         public int Wiek { get; set; }
-        public string PoziomZycia { get; set; } = String.Empty;
+        public string? PoziomZycia { get; set; } = String.Empty;
         public string? Patron { get; set; }
-        public string SciezkaCienia { get; set; } = String.Empty;
-        public int Skarb { get; set; }
+        public string? SciezkaCienia { get; set; } = String.Empty;
+        public int? Skarb { get; set; }
         public string? Wyrozniki { get; set; } = String.Empty;
         public string? Przywary { get; set; }
 
@@ -33,7 +33,7 @@
         public int? Obrona { get; set; }
 
         //Relacja z umiejętnościami
-        public IList<Skill> skills { get; set; } = new List<Skill>();
+        public IList<Skill> Skills { get; set; } = new List<Skill>();
 
         //Nagrody
         public int? Mestwo { get; set; } = 0;
@@ -44,7 +44,7 @@
         public string? Przymioty { get; set; } = String.Empty;
 
         //Relacja z broniami
-        public List<Weapon> weapons { get; set; } = new List<Weapon>();
+        public List<Weapon> Weapons { get; set; } = new List<Weapon>();
         public BodyArmor? Zbroja { get; set; }
         public Helmet? Helm { get; set; }
         public Shield? Tarcza { get; set; }

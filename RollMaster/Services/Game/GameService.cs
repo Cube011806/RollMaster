@@ -45,9 +45,9 @@ namespace RollMaster.Services.Game
         {
             return await _context.Games
                 .Include(g => g.Characters)
-                .ThenInclude(c => c.skills)
+                .ThenInclude(c => c.Skills)
                 .Include(g => g.Characters)
-                .ThenInclude(c => c.weapons) 
+                .ThenInclude(c => c.Weapons) 
                 .FirstOrDefaultAsync(g => g.Id == id);
         }
         public async Task UpdateGameAsync(Models.Game model)

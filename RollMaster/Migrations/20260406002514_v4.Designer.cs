@@ -12,8 +12,8 @@ using RollMaster.Data;
 namespace RollMaster.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260405231512_v3")]
-    partial class v3
+    [Migration("20260406002514_v4")]
+    partial class v4
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -245,10 +245,9 @@ namespace RollMaster.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Nazwa")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Obciazenie")
+                    b.Property<int?>("Obciazenie")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -504,7 +503,7 @@ namespace RollMaster.Migrations
                     b.Property<int>("CharacterId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Pancerz")
+                    b.Property<int?>("Pancerz")
                         .HasColumnType("int");
 
                     b.HasIndex("CharacterId")
@@ -521,7 +520,7 @@ namespace RollMaster.Migrations
                     b.Property<int>("CharacterId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Pancerz")
+                    b.Property<int?>("Pancerz")
                         .HasColumnType("int");
 
                     b.HasIndex("CharacterId")
@@ -538,7 +537,7 @@ namespace RollMaster.Migrations
                     b.Property<int>("CharacterId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Obrona")
+                    b.Property<int?>("Obrona")
                         .HasColumnType("int");
 
                     b.HasIndex("CharacterId")

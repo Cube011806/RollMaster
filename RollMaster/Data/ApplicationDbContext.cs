@@ -21,13 +21,13 @@ namespace RollMaster.Data
 
             modelBuilder.Entity<Skill>()
                 .HasOne(s => s.Character)
-                .WithMany(c => c.skills)
+                .WithMany(c => c.Skills)
                 .HasForeignKey(s => s.CharacterId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Weapon>()
                 .HasOne(w => w.Character)
-                .WithMany(c => c.weapons)
+                .WithMany(c => c.Weapons)
                 .HasForeignKey(w => w.CharacterId)
                 .OnDelete(DeleteBehavior.Cascade);
 

@@ -12,8 +12,8 @@ using RollMaster.Data;
 namespace RollMaster.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260405231512_v3")]
-    partial class v3
+    [Migration("20260406002807_v5")]
+    partial class v5
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -245,10 +245,9 @@ namespace RollMaster.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Nazwa")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Obciazenie")
+                    b.Property<int?>("Obciazenie")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -464,17 +463,16 @@ namespace RollMaster.Migrations
                     b.Property<int>("CharacterId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Damage")
+                    b.Property<int?>("Damage")
                         .HasColumnType("int");
 
-                    b.Property<int>("Injury")
+                    b.Property<int?>("Injury")
                         .HasColumnType("int");
 
-                    b.Property<int>("Load")
+                    b.Property<int?>("Load")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Notes")
@@ -504,7 +502,7 @@ namespace RollMaster.Migrations
                     b.Property<int>("CharacterId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Pancerz")
+                    b.Property<int?>("Pancerz")
                         .HasColumnType("int");
 
                     b.HasIndex("CharacterId")
@@ -521,7 +519,7 @@ namespace RollMaster.Migrations
                     b.Property<int>("CharacterId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Pancerz")
+                    b.Property<int?>("Pancerz")
                         .HasColumnType("int");
 
                     b.HasIndex("CharacterId")
@@ -538,7 +536,7 @@ namespace RollMaster.Migrations
                     b.Property<int>("CharacterId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Obrona")
+                    b.Property<int?>("Obrona")
                         .HasColumnType("int");
 
                     b.HasIndex("CharacterId")

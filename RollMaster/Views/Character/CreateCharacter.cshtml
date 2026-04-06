@@ -108,26 +108,26 @@
     @for (int i = 0; i < 18; i++)
     {
         <div class="form-group mb-3">
-            <label>@Model.skills[i].Name</label>
-            <input asp-for="skills[i].Name" type="hidden" />
+            <label>@Model.Skills[i].Name</label>
+            <input asp-for="Skills[i].Name" type="hidden" />
             <div class="input-group">
-                <input asp-for="skills[i].Value" class="form-control" type="hidden" />
+                <input asp-for="Skills[i].Value" class="form-control" type="hidden" />
 
                 <div class="input-group-text">
-                    <input asp-for="skills[i].IsEnhanced" type="hidden" class="form-check-input" />
+                    <input asp-for="Skills[i].IsEnhanced" type="hidden" class="form-check-input" />
                     @* <label class="ms-1 mb-0">Wzmocnione</label> *@
                 </div>
             </div>
         </div>
     }
 @*     <h3>Biegłości bojowe</h3> *@
-    @for (int i = 18; i < Model.skills.Count; i++)
+    @for (int i = 18; i < Model.Skills.Count; i++)
     {
         <div class="form-group mb-3">
             @* <label>@Model.skills[i].Name</label> *@
-            <input asp-for="skills[i].Name" type="hidden" />
+            <input asp-for="Skills[i].Name" type="hidden" />
             <div class="input-group">
-                <input asp-for="skills[i].Value" class="form-control" type="hidden" />
+                <input asp-for="Skills[i].Value" class="form-control" type="hidden" />
             </div>
         </div>
     }
