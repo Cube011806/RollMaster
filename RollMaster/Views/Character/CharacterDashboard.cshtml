@@ -11,6 +11,10 @@
         </div>
 
         <div class="top-info">
+            <input type="hidden" asp-for="Imie" />
+            <input type="hidden" asp-for="RodzimaKultura" />
+            <input type="hidden" asp-for="RodzimaKorzysc" />
+            <input type="hidden" asp-for="Powolanie" />
             <div>Rodzima Kultura: @Model.RodzimaKultura</div>
             <div>Rodzima Korzyść: @Model.RodzimaKorzysc</div>
             <div>Powołanie: @Model.Powolanie</div>
@@ -38,10 +42,8 @@
                         var skill = Model.Skills[i];
                         <div class="skill-row">
                             <input type="hidden" name="Skills[@i].Id" value="@skill.Id" />
-                            <input type="hidden" name="Skills[@i].IsEnhanced" value="false" />
                             <input type="checkbox" name="Skills[@i].IsEnhanced" value="true" @(skill.IsEnhanced ? "checked" : "") />
                             <span class="skill-name">@skill.Name</span>
-@*                             <input type="hidden" name="Skills[@i].Value" value="@skill.Value" /> *@
                             <div class="skill-values">
                                 @for (int val = 1; val <= 6; val++)
                                 {
@@ -90,7 +92,6 @@
                         var skill = Model.Skills[i];
                         <div class="skill-row">
                             <input type="hidden" name="Skills[@i].Id" value="@skill.Id" />
-                            <input type="hidden" name="Skills[@i].IsEnhanced" value="false" />
                             <input type="checkbox" name="Skills[@i].IsEnhanced" value="true" @(skill.IsEnhanced ? "checked" : "") />
                             <span class="skill-name">@skill.Name</span>
                             <div class="skill-values">
@@ -123,7 +124,6 @@
                         var skill = Model.Skills[i];
                         <div class="skill-row">
                             <input type="hidden" name="Skills[@i].Id" value="@skill.Id" />
-                            <input type="hidden" name="Skills[@i].IsEnhanced" value="false" />
                             <input type="checkbox" name="Skills[@i].IsEnhanced" value="true" @(skill.IsEnhanced ? "checked" : "") />
                             <span class="skill-name">@skill.Name</span>
                             <div class="skill-values">
