@@ -41,7 +41,7 @@
                             <input type="hidden" name="Skills[@i].IsEnhanced" value="false" />
                             <input type="checkbox" name="Skills[@i].IsEnhanced" value="true" @(skill.IsEnhanced ? "checked" : "") />
                             <span class="skill-name">@skill.Name</span>
-                            <input type="hidden" name="Skills[@i].Value" value="@skill.Value" />
+@*                             <input type="hidden" name="Skills[@i].Value" value="@skill.Value" /> *@
                             <div class="skill-values">
                                 @for (int val = 1; val <= 6; val++)
                                 {
@@ -93,7 +93,6 @@
                             <input type="hidden" name="Skills[@i].IsEnhanced" value="false" />
                             <input type="checkbox" name="Skills[@i].IsEnhanced" value="true" @(skill.IsEnhanced ? "checked" : "") />
                             <span class="skill-name">@skill.Name</span>
-                            <input type="hidden" name="Skills[@i].Value" value="0" />
                             <div class="skill-values">
                                 @for (int val = 1; val <= 6; val++)
                                 {
