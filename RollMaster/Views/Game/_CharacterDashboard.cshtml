@@ -1,7 +1,7 @@
 ﻿@model RollMaster.Models.Character
 
-<form id="characterForm">
-    <input type="hidden" asp-for="Id" />
+<form class="characterForm">
+    <input type="hidden" name="Id" value="@Model.Id" />
     <link rel="stylesheet" href="~/css/character.css" />
 
     <div class="tor-sheet">
@@ -84,7 +84,7 @@
                 <h3>SERCE</h3>
                 <div class="attr-block">
                     <div class="field-row"><label>Wartość</label><input asp-for="WartoscSerce" /></div>
-                    <div class="field-row"><label>PT</label><span style="margin-right: 15px;">@(20-Model.WartoscSerce)</span></div> @* Model.PTSerce *@
+                    <div class="field-row"><label>PT</label><span style="margin-right: 15px;">@(20 - Model.WartoscSerce)</span></div> @* Model.PTSerce *@
                     <div class="field-row"><label>Nadzieja</label><input asp-for="Nadzieja" /></div>
                 </div>
                 <div class="skills">
@@ -183,40 +183,40 @@
                 <div>
                     <h4 style="text-align: left;">RYNSZTUNEK</h4>
                     <div class="box">
-                    <div class="weapon-row" style="font-weight: bold; border-bottom: 1px solid #aaa;">
-                        <span>Broń</span><span>Obr.</span><span>Prz.</span><span>Obc.</span><span>Uwagi</span>
-                    </div>
-                    @for (int i = 0; i < 4; i++)
-                    {
-                        <div class="weapon-row">
-                            <input type="hidden" name="weapons[@i].Id" value="@(i<Model.Weapons.Count? Model.Weapons[i].Id : 0)" />
-                            <input name="weapons[@i].Name" value="@(i<Model.Weapons.Count? Model.Weapons[i].Name : "")" />
-                            <input name="weapons[@i].Damage" value="@(i<Model.Weapons.Count? Model.Weapons[i].Damage : 0)" />
-                            <input name="weapons[@i].Injury" value="@(i<Model.Weapons.Count? Model.Weapons[i].Injury : 0)" />
-                            <input name="weapons[@i].Load" value="@(i<Model.Weapons.Count? Model.Weapons[i].Load : 0)" />
-                            <input name="weapons[@i].Notes" value="@(i<Model.Weapons.Count? Model.Weapons[i].Notes : "")" />
+                        <div class="weapon-row" style="font-weight: bold; border-bottom: 1px solid #aaa;">
+                            <span>Broń</span><span>Obr.</span><span>Prz.</span><span>Obc.</span><span>Uwagi</span>
                         </div>
-                    }
+                        @for (int i = 0; i < 4; i++)
+                        {
+                            <div class="weapon-row">
+                                <input type="hidden" name="weapons[@i].Id" value="@(i<Model.Weapons.Count? Model.Weapons[i].Id : 0)" />
+                                <input name="weapons[@i].Name" value="@(i<Model.Weapons.Count? Model.Weapons[i].Name : "")" />
+                                <input name="weapons[@i].Damage" value="@(i<Model.Weapons.Count? Model.Weapons[i].Damage : 0)" />
+                                <input name="weapons[@i].Injury" value="@(i<Model.Weapons.Count? Model.Weapons[i].Injury : 0)" />
+                                <input name="weapons[@i].Load" value="@(i<Model.Weapons.Count? Model.Weapons[i].Load : 0)" />
+                                <input name="weapons[@i].Notes" value="@(i<Model.Weapons.Count? Model.Weapons[i].Notes : "")" />
+                            </div>
+                        }
                     </div>
                 </div>
                 <div>
                     <h4 style="text-align: center;">OCHRONA</h4>
                     <div class="box">
-                    <div class="armor-row" style="font-weight: bold; border-bottom: 1px solid #aaa; display: grid; grid-template-columns: 2fr 1fr 1fr;">
-                        <span>Zbroja</span><span>Panc.</span><span>Obc.</span>
-                    </div>
-                    <div class="armor-row" style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 5px; margin-bottom: 5px;">
-                        <input type="hidden" asp-for="Zbroja.Id" /><input asp-for="Zbroja.Nazwa" placeholder="Zbroja" /><input asp-for="Zbroja.Pancerz" /><input asp-for="Zbroja.Obciazenie" />
-                    </div>
-                    <div class="armor-row" style="font-weight: bold; border-bottom: 1px solid #aaa; display: grid; grid-template-columns: 2fr 1fr 1fr;">
-                        <span>Hełm</span><span></span><span></span>
-                    </div>
-                    <div class="armor-row" style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 5px; margin-bottom: 5px;">
-                        <input type="hidden" asp-for="Helm.Id" /><input asp-for="Helm.Nazwa" placeholder="Hełm" /><input asp-for="Helm.Pancerz" /><input asp-for="Helm.Obciazenie" />
-                    </div>
-                    <div class="armor-row" style="font-weight: bold; border-bottom: 1px solid #aaa; display: grid; grid-template-columns: 2fr 1fr 1fr;">
-                        <span>Tarcza</span><span>Obr.</span><span>Obc.</span>
-                    </div>
+                        <div class="armor-row" style="font-weight: bold; border-bottom: 1px solid #aaa; display: grid; grid-template-columns: 2fr 1fr 1fr;">
+                            <span>Zbroja</span><span>Panc.</span><span>Obc.</span>
+                        </div>
+                        <div class="armor-row" style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 5px; margin-bottom: 5px;">
+                            <input type="hidden" asp-for="Zbroja.Id" /><input asp-for="Zbroja.Nazwa" placeholder="Zbroja" /><input asp-for="Zbroja.Pancerz" /><input asp-for="Zbroja.Obciazenie" />
+                        </div>
+                        <div class="armor-row" style="font-weight: bold; border-bottom: 1px solid #aaa; display: grid; grid-template-columns: 2fr 1fr 1fr;">
+                            <span>Hełm</span><span></span><span></span>
+                        </div>
+                        <div class="armor-row" style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 5px; margin-bottom: 5px;">
+                            <input type="hidden" asp-for="Helm.Id" /><input asp-for="Helm.Nazwa" placeholder="Hełm" /><input asp-for="Helm.Pancerz" /><input asp-for="Helm.Obciazenie" />
+                        </div>
+                        <div class="armor-row" style="font-weight: bold; border-bottom: 1px solid #aaa; display: grid; grid-template-columns: 2fr 1fr 1fr;">
+                            <span>Tarcza</span><span>Obr.</span><span>Obc.</span>
+                        </div>
                         <div class="armor-row" style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 5px; margin-bottom: 5px;">
                             <input type="hidden" asp-for="Tarcza.Id" />
                             <input asp-for="Tarcza.Nazwa" placeholder="Tarcza" />
@@ -229,21 +229,3 @@
         </div>
     </div>
 </form>
-<script>
-    const form = document.getElementById("characterForm");
-
-    let timeout = null;
-
-    form.addEventListener("change", function () {
-        clearTimeout(timeout);
-
-        timeout = setTimeout(function () {
-            const formData = new FormData(form);
-
-            fetch('/Character/SaveCharacter', {
-                method: 'POST',
-                body: formData
-            });
-        }, 500); //500 = 0,5s opóźnienia zapisu od zmiany
-    });
-</script>

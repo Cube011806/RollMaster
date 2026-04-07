@@ -51,13 +51,11 @@ namespace RollMaster.Controllers
             var game = await _gameService.GetGameWithCharactersAsync(id);
             return View(game);
         }
-
         [HttpPost]
         public async Task<IActionResult> GMDashboard(Game model)
         {
             await _gameService.UpdateGameAsync(model);
-            return RedirectToAction("Dashboard", new { id = model.Id });
+            return RedirectToAction("GMDashboard", new { id = model.Id });
         }
-
     }
 }

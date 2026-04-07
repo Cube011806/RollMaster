@@ -43,12 +43,19 @@ namespace RollMaster.Services.Game
         }
         public async Task<Models.Game> GetGameWithCharactersAsync(int id)
         {
-            return await _context.Games
+            var games = _context.Games
                 .Include(g => g.Characters)
-                .ThenInclude(c => c.Skills)
+                    .ThenInclude(c => c.Zbroja)
                 .Include(g => g.Characters)
-                .ThenInclude(c => c.Weapons) 
+                    .ThenInclude(c => c.Helm)
+                .Include(g => g.Characters)
+                    .ThenInclude(c => c.Tarcza)
+                .Include(g => g.Characters)
+                    .ThenInclude(c => c.Skills)
+                .Include(g => g.Characters)
+                    .ThenInclude(c => c.Weapons)
                 .FirstOrDefaultAsync(g => g.Id == id);
+            return await games;
         }
         public async Task UpdateGameAsync(Models.Game model)
         {
