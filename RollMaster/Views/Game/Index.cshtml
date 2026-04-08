@@ -34,8 +34,7 @@
                     </td>
                     <td>
                         <a asp-action="AddPlayers" asp-route-id="@item.Id">Dodaj postaci</a> |
-                        <a asp-action="PlayerDashboard" asp-route-id="@item.Id">Join</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+@*                         <a asp-action="Details" asp-route-id="@item.Id">Details</a> | *@
                         <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                         @* @if (User.HasClaim("AccessLevel", "1")) 
                         {*@
