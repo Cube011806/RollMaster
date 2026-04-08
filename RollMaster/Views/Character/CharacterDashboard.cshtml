@@ -1,6 +1,7 @@
 ﻿@model RollMaster.Models.Character
 
-<form id="characterForm">
+<script src="~/js/signalr.min.js"></script>
+<form class="characterForm" data-character-id="@Model.Id">
     <input type="hidden" asp-for="Id" />
     <link rel="stylesheet" href="~/css/character.css" />
 
@@ -229,21 +230,27 @@
         </div>
     </div>
 </form>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+
+@* @await Html.PartialAsync("_CharacterDashboard", Model) *@
+
 <script>
-    const form = document.getElementById("characterForm");
+    (function() {
+    const form = document.querySelector(".characterForm[data-character-id='@Model.Id']");
+    if (!form) return;
 
     let timeout = null;
 
     form.addEventListener("change", function () {
-        clearTimeout(timeout);
+    clearTimeout(timeout);
 
-        timeout = setTimeout(function () {
-            const formData = new FormData(form);
-
-            fetch('/Character/SaveCharacter', {
-                method: 'POST',
-                body: formData
-            });
-        }, 500); //500 = 0,5s opóźnienia zapisu od zmiany
+    timeout = setTimeout(function () {
+    const formData = new FormData(form);
+    fetch('/Character/SaveCharacter', {
+    method: 'POST',
+    body: formData
     });
+    }, 500);
+    });
+    })();
 </script>

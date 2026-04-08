@@ -5,8 +5,7 @@
 <div class="tabs">
     @for (int i = 0; i < Model.Characters.Count; i++)
     {
-        <button class="tab-btn @(i == 0 ? "active" : "")"
-                onclick="openTab(@i)">
+        <button class="tab-btn @(i == 0 ? "active" : "")" onclick="openTab(@i)">
             @Model.Characters[i].Imie
         </button>
     }
@@ -16,38 +15,57 @@
     @for (int i = 0; i < Model.Characters.Count; i++)
     {
         <div class="tab-pane @(i == 0 ? "active" : "")" id="tab-@i">
-
             @await Html.PartialAsync("_CharacterDashboard", Model.Characters[i])
-
         </div>
     }
 </div>
+
+<script src="~/js/signalr.min.js"></script>
 <script>
-    const forms = document.querySelectorAll(".characterForm");
     function openTab(index) {
         const tabs = document.querySelectorAll(".tab-pane");
         const buttons = document.querySelectorAll(".tab-btn");
-
         tabs.forEach(t => t.classList.remove("active"));
         buttons.forEach(b => b.classList.remove("active"));
-
         document.getElementById("tab-" + index).classList.add("active");
         buttons[index].classList.add("active");
     }
-    forms.forEach(form => {
-        let timeout = null;
 
-        form.addEventListener("change", function () {
-            clearTimeout(timeout);
-
-            timeout = setTimeout(function () {
-                const formData = new FormData(form);
-
-                fetch('/Character/SaveCharacter', {
-                    method: 'POST',
-                    body: formData
-                });
-            }, 500);
+    function initForms() {
+        const forms = document.querySelectorAll(".characterForm");
+        forms.forEach(form => {
+            let timeout = null;
+            form.addEventListener("change", function () {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => {
+                    fetch('/Character/SaveCharacter', { method: 'POST', body: new FormData(form) });
+                }, 500);
+            });
         });
+    }
+
+    initForms();
+
+    // SIGNALR
+    const connection = new signalR.HubConnectionBuilder()
+        .withUrl("/characterHub")
+        .build();
+
+    connection.start().then(() => {
+        console.log("SignalR connected");
+        const gameId = document.querySelector("input[name='GameId']").value;
+        connection.invoke("JoinGame", gameId);
     });
-</script>    
+
+    connection.on("ReceiveCharacterUpdate", (character) => {
+        const form = document.querySelector(`.characterForm[data-character-id='${character.id}']`);
+        if (!form) return;
+        const container = form.closest(".tab-pane");
+        fetch(`/Character/CharacterPartial?id=${character.id}`)
+            .then(res => res.text())
+            .then(html => {
+                container.innerHTML = html;
+                initForms();
+            });
+    });
+</script>

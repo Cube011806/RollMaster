@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using RollMaster.Data;
+using RollMaster.Hubs;
 using RollMaster.Models;
 using RollMaster.Services.Character;
 using System.Data.Common;
@@ -11,10 +14,13 @@ namespace RollMaster.Controllers
     {
         private readonly CharacterService _CharacterService;
         private readonly UserManager<User> _userManager;
-        public CharacterController(CharacterService service, UserManager<User> userManager)
+        private readonly IHubContext<CharacterHub> _hubContext;
+
+        public CharacterController(CharacterService service, UserManager<User> userManager, IHubContext<CharacterHub> hubContext)
         {
             _CharacterService = service;
             _userManager = userManager;
+            _hubContext = hubContext;
         }
 
         public async Task<IActionResult> Index()
@@ -94,7 +100,17 @@ namespace RollMaster.Controllers
         public async Task<IActionResult> SaveCharacter(Character model)
         {
             await _CharacterService.UpdateAsync(model);
+
+            // 🔥 WYŚLIJ UPDATE DO INNYCH
+            await _hubContext.Clients.Group($"game-{model.GameId}")
+                .SendAsync("ReceiveCharacterUpdate", model);
+
             return Ok();
+        }
+        public async Task<IActionResult> CharacterPartial(int id)
+        {
+            var character = await _CharacterService.GetByIdAsync(id);
+            return PartialView("_CharacterDashboard", character);
         }
         public IActionResult ImportCharacter()
         {

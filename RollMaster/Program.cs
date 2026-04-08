@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using RollMaster.Data;
+using RollMaster.Hubs;
 using RollMaster.Models;
 using RollMaster.Services.Character;
 using RollMaster.Services.Game;
@@ -14,7 +15,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddScoped<CharacterService>();
 builder.Services.AddScoped<GameService>();
-
+builder.Services.AddSignalR();
 builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
@@ -35,7 +36,7 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapStaticAssets();
-
+app.MapHub<CharacterHub>("/characterHub");
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}")
