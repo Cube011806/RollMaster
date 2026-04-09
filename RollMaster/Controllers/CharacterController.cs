@@ -7,6 +7,7 @@ using RollMaster.Hubs;
 using RollMaster.Models;
 using RollMaster.Services.Character;
 using System.Data.Common;
+using System.Security.Claims;
 
 namespace RollMaster.Controllers
 {
@@ -25,7 +26,8 @@ namespace RollMaster.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return View(await _CharacterService.GetAllAsync());
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return View(await _CharacterService.GetAllUserAsync(userId));
         }
         public IActionResult DownloadJsonCharacter(int id)
         {

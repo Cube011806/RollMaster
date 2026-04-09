@@ -41,6 +41,25 @@ namespace RollMaster.Services.Game
 
             _context.SaveChanges();
         }
+        public void DeleteGame(int id)
+        {
+            var game = _context.Games.FirstOrDefault(g=>g.Id == id);
+            if(game != null)
+            {
+                _context.Remove(game);
+                _context.SaveChanges();
+            }
+
+
+            //foreach (var id in characterIds)
+            //{
+            //    var character = _context.Characters.FirstOrDefault(c => c.Id == id);
+            //    if (character != null)
+            //    {
+            //        character.GameId = game.Id;
+            //    }
+            //}
+        }
         public async Task<Models.Game> GetGameWithCharactersAsync(int id)
         {
             var games = _context.Games

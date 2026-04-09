@@ -34,7 +34,11 @@ else
 app.UseRouting();
 
 app.UseAuthorization();
-
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    dbContext.Database.Migrate();
+}
 app.MapStaticAssets();
 app.MapHub<CharacterHub>("/characterHub");
 app.MapControllerRoute(

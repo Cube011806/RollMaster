@@ -5,28 +5,28 @@
 }
 
 <h1>Utwórz nową postać</h1>
-<h2 style="color:red;">PROTOTYP</h2>
+@* <h2 style="color:red;">PROTOTYP</h2> *@
 <form asp-action="CreateCharacter" method="post">
 
     <h3>Informacje podstawowe</h3>
 
     <div class="form-group">
-        <label asp-for="Imie"></label>
+        <label asp-for="Imie">Imię:</label>
         <input asp-for="Imie" class="form-control" />
     </div>
 
     <div class="form-group">
-        <label asp-for="RodzimaKultura"></label>
+        <label asp-for="RodzimaKultura">Rodzima Kultura:</label>
         <input asp-for="RodzimaKultura" class="form-control" />
     </div>
 
     <div class="form-group">
-        <label asp-for="RodzimaKorzysc"></label>
+        <label asp-for="RodzimaKorzysc">Rodzima Korzyść:</label>
         <input asp-for="RodzimaKorzysc" class="form-control" />
     </div>
 
     <div class="form-group">
-        <label asp-for="Powolanie"></label>
+        <label asp-for="Powolanie">Powołanie:</label>
         <input asp-for="Powolanie" class="form-control" />
     </div>
     @* 
@@ -107,29 +107,29 @@
     <hr />*@
     @for (int i = 0; i < 18; i++)
     {
-        <div class="form-group mb-3">
-            <label>@Model.Skills[i].Name</label>
+        @* <div class="form-group mb-3">
+            <label>@Model.Skills[i].Name</label> *@
             <input asp-for="Skills[i].Name" type="hidden" />
-            <div class="input-group">
+            @* <div class="input-group"> *@
                 <input asp-for="Skills[i].Value" class="form-control" type="hidden" />
 
-                <div class="input-group-text">
+                @* <div class="input-group-text"> *@
                     <input asp-for="Skills[i].IsEnhanced" type="hidden" class="form-check-input" />
                     @* <label class="ms-1 mb-0">Wzmocnione</label> *@
-                </div>
+        @*         </div>
             </div>
-        </div>
+        </div> *@
     }
 @*     <h3>Biegłości bojowe</h3> *@
     @for (int i = 18; i < Model.Skills.Count; i++)
     {
-        <div class="form-group mb-3">
+        @* <div class="form-group mb-3"> *@
             @* <label>@Model.skills[i].Name</label> *@
             <input asp-for="Skills[i].Name" type="hidden" />
-            <div class="input-group">
+            @* <div class="input-group"> *@
                 <input asp-for="Skills[i].Value" class="form-control" type="hidden" />
-            </div>
-        </div>
+        @*     </div>
+        </div> *@
     }
     @*
     <hr />

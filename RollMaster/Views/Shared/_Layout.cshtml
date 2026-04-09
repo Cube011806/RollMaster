@@ -1,4 +1,10 @@
-﻿<!DOCTYPE html>
+﻿﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<User> UserManager
+@{
+    var id = UserManager.GetUserId(User);
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -23,12 +29,23 @@
                         @* <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li> *@
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Character" asp-action="Index">Postacie</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Game" asp-action="Index">Gry</a>
-                        </li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Character" asp-action="Index">Postacie</a>
+                            </li>                
+                        }
+                            @{
+                            int accessLevel = 0;
+                            int.TryParse(User.FindFirst("AccessLevel")?.Value, out accessLevel);
+                        }
+
+                        @if (User.Identity.IsAuthenticated && UserManager.FindByIdAsync(id).Result.AccessLevel == 1)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Game" asp-action="Index">Gry</a>
+                            </li>
+                        }
                     </ul>
                     <partial name="_LoginPartial" />
                     <button id="toggleDarkMode" class="btn btn-secondary">🌙</button>

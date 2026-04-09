@@ -41,7 +41,11 @@ namespace RollMaster.Controllers
             _gameService.CreateGame(vm.Game, vm.SelectedCharacterIds);
             return RedirectToAction("Index");
         }
-
+        public IActionResult DeleteGame(int id)
+        {
+            _gameService.DeleteGame(id);
+            return RedirectToAction("Index");
+        }
         public async Task<IActionResult> PlayerDashboardAsync(int id)
         {
             return View(await _gameService.GetGameByIdAsync(id));

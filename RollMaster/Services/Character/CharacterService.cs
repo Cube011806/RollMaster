@@ -21,7 +21,14 @@ namespace RollMaster.Services.Character
 
         public async Task<List<Models.Character>> GetAllAsync()
         {
-            return await _context.Characters.ToListAsync();
+            return await _context.Characters.Include(u => u.User).ToListAsync();
+        }
+
+        public async Task<List<Models.Character>> GetAllUserAsync(string userId)
+        {
+            return await _context.Characters
+                .Where(c => c.UserId == userId)
+                .ToListAsync();
         }
 
         public async Task<Models.Character?> GetByIdAsync(int id)
