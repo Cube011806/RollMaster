@@ -47,6 +47,12 @@ namespace RollMaster.Data
                 .HasOne(c => c.Tarcza)
                 .WithOne(s => s.Character)
                 .HasForeignKey<Shield>(s => s.CharacterId);
+
+            modelBuilder.Entity<Character>()
+                .HasOne(c => c.Game)
+                .WithMany(g => g.Characters)
+                .HasForeignKey(c => c.GameId)
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }
 

@@ -35,7 +35,7 @@
                 <h3>SIŁA</h3>
                 <div class="attr-block">
                     <div class="field-row"><label>Wartość</label><input asp-for="WartoscSila" /></div>
-                    <div class="field-row"><label>PT</label><input asp-for="PTSila" /></div>
+                    <div class="field-row"><label>PT</label><span style="margin-right: 15px;">@(20 - Model.WartoscSila)</span></div>
                     <div class="field-row"><label>Wytrzymałość</label><input asp-for="Wytrzymalosc" /></div>
                 </div>
 
@@ -115,6 +115,10 @@
                 </div>
 
                 <div class="horizontal-separator"></div>
+                <div class="field-row">
+                    <label for="Mestwo">Męstwo</label>
+                    <input asp-for="Mestwo" />
+                </div>
                 <h5 style="text-align: center; margin: 10px 0;">Nagrody</h5>
                 <textarea class="rew" asp-for="Nagrody" style="width: 100%; height: 150px;"></textarea>
             </div>
@@ -124,7 +128,7 @@
                 <h3>ROZUM</h3>
                 <div class="attr-block">
                     <div class="field-row"><label>Wartość</label><input asp-for="WartoscRozum" /></div>
-                    <div class="field-row"><label>PT</label><input asp-for="PTRozum" /></div>
+                    <div class="field-row"><label>PT</label><span style="margin-right: 15px;">@(20 - Model.WartoscRozum)</span></div>
                     <div class="field-row"><label>Obrona</label><input asp-for="Obrona" /></div>
                 </div>
 
@@ -150,6 +154,10 @@
                 </div>
 
                 <div class="horizontal-separator"></div>
+                <div class="field-row">
+                    <label for="Madrosc">Mądrość</label>
+                    <input asp-for="Madrosc" />
+                </div>
                 <h5 style="text-align: center; margin: 10px 0;">Przymioty</h5>
                 <textarea class="rew" asp-for="Przymioty" style="width: 100%; height: 150px;"></textarea>
             </div>

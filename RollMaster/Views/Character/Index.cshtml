@@ -26,27 +26,34 @@
                         @item.Powolanie
                     </td>
                     <td>
-                        @item.GameId
+                        @if (item.GameId == null)
+                        {
+                            <span style="color: red">Brak przypisanej gry!</span>
+                        }
+                        else
+                        {
+                            @item.GameId
+                        }
                     </td>
                     <td>
                         @* <a asp-action="EditCharacter" asp-route-id="@item.Id">Edit</a> | *@
-                        <a asp-action="CharacterDashboard" asp-route-id="@item.Id">Karta postaci</a> |
-                        <a asp-action="DeleteCharacter" asp-route-id="@item.Id">Delete</a> |
+                        <a class="btn btn-success" asp-action="CharacterDashboard" asp-route-id="@item.Id">Karta postaci</a> 
+                        <a asp-action="DeleteCharacter" asp-route-id="@item.Id">Usuń</a> |
                         <a asp-action="DownloadJsonCharacter" asp-route-id="@item.Id">Pobierz postać</a>
                     </td>
                 </tr>
             }
             <p>
-                <a asp-action="CreateCharacter">Utwórz</a> | 
-@*                 <a asp-action="ImportCharacter" disabled>Import</a> *@
+                <a class="btn btn-danger" asp-action="CreateCharacter">Utwórz</a> @*|
+                 <a asp-action="ImportCharacter" disabled>Import</a> *@
             </p>
         }
         else
         {
             <p>Brak postaci</p>
             <p>
-            <a asp-action="CreateCharacter">Utwórz</a> | 
-@*                 <a asp-action="ImportCharacter">Import</a> *@
+                <a class="btn btn-danger" asp-action="CreateCharacter">Utwórz</a> @* |
+                <a asp-action="ImportCharacter">Import</a> *@
             </p>
         }
     </tbody>
