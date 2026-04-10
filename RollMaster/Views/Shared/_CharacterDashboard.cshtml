@@ -48,7 +48,7 @@
                             <input type="checkbox" name="Skills[@i].IsEnhanced" value="true" @(skill.IsEnhanced ? "checked" : "") />
                             <span class="skill-name">@skill.Name</span>
                             <div class="skill-values">
-                                @for (int val = 1; val <= 6; val++)
+                                @for (int val = 0; val <= 6; val++)
                                 {
                                     <label class="radio-val">
                                         <input type="radio" name="Skills[@i].Value" value="@val" @(skill.Value == val ? "checked" : "") />
@@ -70,7 +70,7 @@
                         <div class="skill-row">
                             <span class="skill-name" style="margin-left: 20px;">@skill.Name</span>
                             <div class="skill-values">
-                                @for (int val = 1; val <= 6; val++)
+                                @for (int val = 0; val <= 6; val++)
                                 {
                                     <label class="radio-val">
                                         <input type="hidden" name="Skills[@i].Id" value="@skill.Id" />
@@ -102,7 +102,7 @@
                             <input type="checkbox" name="Skills[@i].IsEnhanced" value="true" @(skill.IsEnhanced ? "checked" : "") />
                             <span class="skill-name">@skill.Name</span>
                             <div class="skill-values">
-                                @for (int val = 1; val <= 6; val++)
+                                @for (int val = 0; val <= 6; val++)
                                 {
                                     <label>
                                         <input type="radio" name="Skills[@i].Value" value="@val" @(skill.Value == val ? "checked" : "") />
@@ -141,7 +141,7 @@
                             <input type="checkbox" name="Skills[@i].IsEnhanced" value="true" @(skill.IsEnhanced ? "checked" : "") />
                             <span class="skill-name">@skill.Name</span>
                             <div class="skill-values">
-                                @for (int val = 1; val <= 6; val++)
+                                @for (int val = 0; val <= 6; val++)
                                 {
                                     <label class="radio-val">
                                         <input type="radio" name="Skills[@i].Value" value="@val" @(skill.Value == val ? "checked" : "") />

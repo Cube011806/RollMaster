@@ -97,7 +97,8 @@ namespace RollMaster.Services.Character
 
             // --- proste pola ---
             _context.Entry(character).CurrentValues.SetValues(model);
-
+            _context.Entry(character).Property(x => x.GameId).IsModified = false; //Naprawa gubienia GameId - do sprawdzenia.
+            _context.Entry(character).Property(x => x.UserId).IsModified = false;
 
             if (model.Zbroja != null)
             {
