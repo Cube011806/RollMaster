@@ -25,12 +25,16 @@
     @foreach (var character in Model.Characters)
     {
         <div>
-            <input type="checkbox"
-                   name="SelectedCharacterIds"
-                   value="@character.Id" />
+            @character.Imie
 
-            @character.Imie (@character.Powolanie)
-            [@character.User.Email]
+            @if (character.User == null)
+            {
+                <span style="color:red;">BRAK USERA</span>
+            }
+            else
+            {
+                <span>@character.User.Email</span>
+            }
         </div>
     }
 
