@@ -1,7 +1,9 @@
 ﻿@model RollMaster.Models.Game
 
 <h1>@Model.Name – Panel MG</h1>
+<link rel="stylesheet" href="~/css/sidepanels.css" />
 
+@await Html.PartialAsync("_SidePanels")
 <div class="tabs">
     @for (int i = 0; i < Model.Characters.Count; i++)
     {
@@ -25,10 +27,14 @@
     function openTab(index) {
         const tabs = document.querySelectorAll(".tab-pane");
         const buttons = document.querySelectorAll(".tab-btn");
+
         tabs.forEach(t => t.classList.remove("active"));
         buttons.forEach(b => b.classList.remove("active"));
+
         document.getElementById("tab-" + index).classList.add("active");
         buttons[index].classList.add("active");
+
+        localStorage.setItem("gmSelectedTab", index);
     }
 
     function initForms() {
@@ -45,6 +51,16 @@
     }
 
     initForms();
+
+    const savedTab = localStorage.getItem("gmSelectedTab");
+
+    if (savedTab !== null) {
+        const index = parseInt(savedTab);
+
+        if (!isNaN(index) && index < document.querySelectorAll(".tab-pane").length) {
+            openTab(index);
+        }
+    }
 
     // SIGNALR
     const connection = new signalR.HubConnectionBuilder()
@@ -69,3 +85,4 @@
             });
     });
 </script>
+<script src="~/js/sidepanels.js"></script>

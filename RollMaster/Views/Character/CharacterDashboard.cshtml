@@ -1,8 +1,11 @@
 ﻿@model RollMaster.Models.Character
 
 <script src="~/js/signalr.min.js"></script>
+<link rel="stylesheet" href="~/css/sidepanels.css" />
+
+@await Html.PartialAsync("_SidePanels")
 <form class="characterForm" data-character-id="@Model.Id">
-    <input type="hidden" asp-for="Id" />,
+    <input type="hidden" asp-for="Id" />
     <input type="hidden" asp-for="UserId" />
     <link rel="stylesheet" href="~/css/character.css" />
 
@@ -263,3 +266,4 @@
     });
     })();
 </script>
+<script src="~/js/sidepanels.js"></script>
