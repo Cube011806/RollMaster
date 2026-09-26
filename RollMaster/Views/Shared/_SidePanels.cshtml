@@ -1,4 +1,5 @@
-﻿<div id="logDrawer" class="drawer drawer-left">
+﻿@model RollMaster.Models.Character
+<div id="logDrawer" class="drawer drawer-left">
     <button type="button"
             class="drawer-tab"
             onclick="toggleDrawer('logDrawer')">
@@ -12,6 +13,7 @@
     </div>
 </div>
 
+
 <div id="diceDrawer" class="drawer drawer-right">
     <button type="button"
             class="drawer-tab"
@@ -22,8 +24,40 @@
     <div class="drawer-content">
         <h3>Rzuty kostkami</h3>
 
-        <button id="rollD12Button" class="btn btn-primary">
-            Rzuć 1d12
+        <div class="dice-field">
+
+            <label for="skillSelect">
+                Umiejętność
+            </label>
+
+            <select id="skillSelect">
+
+                @for (int i = 0; i < Model.Skills.Count; i++)
+                {
+                    var skill = Model.Skills[i];
+
+                    <option value="@skill.Id"
+                            data-value="@skill.Value"
+                            data-enhanced="@skill.IsEnhanced">
+                        @skill.Name (@skill.Value)
+                    </option>
+                }
+
+            </select>
+
+        </div>
+
+        <button type="button"
+                id="rollD12Button"
+                class="btn btn-primary">
+            Rzuć
         </button>
+
+        <div id="diceResult" class="dice-result">
+        </div>
+
+        <div id="diceHistory" class="dice-history">
+        </div>
+
     </div>
 </div>

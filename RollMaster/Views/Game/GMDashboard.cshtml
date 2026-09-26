@@ -3,7 +3,10 @@
 <h1>@Model.Name – Panel MG</h1>
 <link rel="stylesheet" href="~/css/sidepanels.css" />
 
-@await Html.PartialAsync("_SidePanels")
+@if (Model.Characters != null && Model.Characters.Count > 0)
+{
+    @await Html.PartialAsync("_SidePanels", Model.Characters[0])
+}
 <div class="tabs">
     @for (int i = 0; i < Model.Characters.Count; i++)
     {

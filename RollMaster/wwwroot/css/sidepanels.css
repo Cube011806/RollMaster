@@ -75,3 +75,67 @@
     background: #f7f7f7;
     border-left: 4px solid #795548;
 }
+
+.dice-field {
+    margin-bottom: 15px;
+}
+
+    .dice-field label {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+#skillSelect {
+    width: 100%;
+    padding: 8px;
+}
+
+#rollD12Button {
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.dice-result {
+    margin-top: 15px;
+}
+
+.dice-result-entry {
+    padding: 12px;
+    border: 1px solid #aaa;
+    border-radius: 6px;
+}
+
+.dice-result-skill {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.dice-result-info {
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.dice-result-roll {
+    margin: 5px 0;
+}
+
+.dice-result-total {
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid #aaa;
+    font-size: 18px;
+}
+
+    .dice-result-total strong {
+        font-size: 24px;
+    }
+
+.dice-history {
+    margin-top: 20px;
+}
+
+.dice-history-entry {
+    padding: 8px;
+    border-bottom: 1px solid #ccc;
+}
