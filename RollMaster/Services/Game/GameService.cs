@@ -18,7 +18,7 @@ namespace RollMaster.Services.Game
         }
         public async Task<List<Models.Game>> GetAllAsync()
         {
-            return await _context.Games.ToListAsync();
+            return await _context.Games.Include(c=>c.Characters).ToListAsync();
         }
         public async Task<Models.Game> GetGameByIdAsync(int id)
         {

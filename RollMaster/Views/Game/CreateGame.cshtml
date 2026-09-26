@@ -25,6 +25,7 @@
     @foreach (var character in Model.Characters)
     {
         <div>
+            <input type="checkbox" name="SelectedCharacterIds" value="@character.Id" />
             @character.Imie
 
             @if (character.User == null)

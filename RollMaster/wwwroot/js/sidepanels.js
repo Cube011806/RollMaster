@@ -5,7 +5,7 @@
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    const button = document.getElementById("rollD12Button");
+    const button = document.getElementById("rollButton");
     const skillSelect = document.getElementById("skillSelect");
 
     const diceResult = document.getElementById("diceResult");
