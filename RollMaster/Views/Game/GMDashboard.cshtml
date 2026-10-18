@@ -172,7 +172,7 @@
 
             return connection.invoke(
                 "JoinGame",
-                gameIdInput.value
+                Number(gameIdInput.value)
             );
         })
         .catch(error => {

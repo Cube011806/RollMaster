@@ -1,6 +1,8 @@
 ﻿@model RollMaster.Models.Character
 
-<div id="logDrawer" class="drawer drawer-left">
+<div id="logDrawer"
+     class="drawer drawer-left"
+     data-game-id="@Model.GameId">
     <button type="button"
             class="drawer-tab"
             onclick="toggleDrawer('logDrawer')">

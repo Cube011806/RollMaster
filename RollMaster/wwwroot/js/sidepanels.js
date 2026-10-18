@@ -2,9 +2,88 @@
     document.getElementById(id).classList.toggle("open");
 }
 
+let diceConnection = null;
+
+function renderDiceLog(entry) {
+    addLog(entry.description);
+}
+
+async function initializeDiceSignalR() {
+    const logDrawer = document.getElementById("logDrawer");
+
+    if (!logDrawer || typeof signalR === "undefined") {
+        console.error("Brak panelu logu lub biblioteki SignalR.");
+        return;
+    }
+
+    const gameId = Number(logDrawer.dataset.gameId);
+
+    if (!Number.isInteger(gameId) || gameId <= 0) {
+        console.error("Nieprawidłowy identyfikator gry.");
+        return;
+    }
+
+    diceConnection = new signalR.HubConnectionBuilder()
+        .withUrl("/characterHub")
+        .withAutomaticReconnect()
+        .build();
+
+    diceConnection.on("ReceiveDiceLog", renderDiceLog);
+
+    try {
+        await diceConnection.start();
+
+        await diceConnection.invoke("JoinGame", gameId);
+
+        const history =
+            await diceConnection.invoke("GetRecentDiceLogs", gameId);
+
+        // Serwer zwraca wpisy od najnowszego.
+        // addLog dodaje wpis na początek, więc odwracamy kolejność.
+        history.reverse().forEach(renderDiceLog);
+
+        console.log("Połączono z logiem gry:", gameId);
+    } catch (error) {
+        console.error("Błąd inicjalizacji logu:", error);
+    }
+}
+
+async function sendDiceLog(message) {
+    if (!diceConnection ||
+        diceConnection.state !== signalR.HubConnectionState.Connected) {
+        console.error("Połączenie z logiem gry nie jest aktywne.");
+        return;
+    }
+
+    const activeForm =
+        document.querySelector(".tab-pane.active .characterForm") ||
+        document.querySelector(".characterForm");
+
+    if (!activeForm) {
+        console.error("Nie znaleziono formularza aktywnej postaci.");
+        return;
+    }
+
+    const characterId = Number(activeForm.dataset.characterId);
+
+    if (!Number.isInteger(characterId) || characterId <= 0) {
+        console.error("Nieprawidłowy identyfikator postaci.");
+        return;
+    }
+
+    try {
+        await diceConnection.invoke(
+            "SendDiceLog",
+            characterId,
+            message
+        );
+    } catch (error) {
+        console.error("Nie udało się zapisać rzutu:", error);
+    }
+}
 
 document.addEventListener("DOMContentLoaded", () => {
-
+    initializeDiceSignalR();
     const button = document.getElementById("rollButton");
     const skillSelect = document.getElementById("skillSelect");
 
@@ -142,7 +221,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 : "";
 
 
-        addLog(
+        sendDiceLog(
             `${characterName} rzuca ${skillName}${enhancedText}: ` +
             `D12: ${d12Text}, ` +
             `D6: ${d6Text}, ` +
@@ -266,7 +345,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
             // Dodanie do istniejącego logu
-            addLog(
+            sendDiceLog(
                 `${characterName} rzuca ` +
                 `${d12Count}D12 (${d12Text} = ${d12Total}), ` +
                 `${d6Count}D6 (${d6Text} = ${d6Total}), ` +
