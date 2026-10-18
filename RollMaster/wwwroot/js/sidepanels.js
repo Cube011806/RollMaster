@@ -144,8 +144,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         addLog(
             `${characterName} rzuca ${skillName}${enhancedText}: ` +
-            `d12: ${d12Text}, ` +
-            `d6: ${d6Text}, ` +
+            `D12: ${d12Text}, ` +
+            `D6: ${d6Text}, ` +
             `wynik: ${total}`
         );
 
@@ -173,7 +173,14 @@ document.addEventListener("DOMContentLoaded", () => {
         customDiceResult) {
 
         customRollButton.addEventListener("click", () => {
+            let characterName = "Nieznana postać";
 
+            const characterNameElement =
+                document.querySelector(".header .name");
+
+            if (characterNameElement)
+                characterName =
+                    characterNameElement.textContent.trim();
             const d12Count = Number(customD12Count.value);
             const d6Count = Number(customD6Count.value);
 
@@ -260,7 +267,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // Dodanie do istniejącego logu
             addLog(
-                `Dowolny rzut: ` +
+                `${characterName} rzuca ` +
                 `${d12Count}D12 (${d12Text} = ${d12Total}), ` +
                 `${d6Count}D6 (${d6Text} = ${d6Total}), ` +
                 `wynik: ${total}`
