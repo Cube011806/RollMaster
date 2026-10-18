@@ -151,6 +151,123 @@ document.addEventListener("DOMContentLoaded", () => {
 
     });
 
+    // -----------------------------------------
+    // DOWOLNY RZUT KOŚĆMI
+    // -----------------------------------------
+
+    const customRollButton =
+        document.getElementById("customRollButton");
+
+    const customD12Count =
+        document.getElementById("customD12Count");
+
+    const customD6Count =
+        document.getElementById("customD6Count");
+
+    const customDiceResult =
+        document.getElementById("customDiceResult");
+
+    if (customRollButton &&
+        customD12Count &&
+        customD6Count &&
+        customDiceResult) {
+
+        customRollButton.addEventListener("click", () => {
+
+            const d12Count = Number(customD12Count.value);
+            const d6Count = Number(customD6Count.value);
+
+            // Walidacja liczby kości
+            if (
+                !Number.isInteger(d12Count) ||
+                !Number.isInteger(d6Count) ||
+                d12Count < 0 ||
+                d6Count < 0 ||
+                d12Count > 100 ||
+                d6Count > 100 ||
+                d12Count + d6Count === 0
+            ) {
+                alert(
+                    "Podaj liczbę kości od 0 do 100. " +
+                    "Musisz wybrać przynajmniej jedną kość."
+                );
+                return;
+            }
+
+            // Rzuty D12
+            const d12Rolls = [];
+
+            for (let i = 0; i < d12Count; i++) {
+                d12Rolls.push(rollDice(12));
+            }
+
+            // Rzuty D6
+            const d6Rolls = [];
+
+            for (let i = 0; i < d6Count; i++) {
+                d6Rolls.push(rollDice(6));
+            }
+
+            // Sumy poszczególnych rodzajów kości
+            const d12Total = d12Rolls.reduce(
+                (sum, value) => sum + value, 0
+            );
+
+            const d6Total = d6Rolls.reduce(
+                (sum, value) => sum + value, 0
+            );
+
+            // Wynik końcowy
+            const total = d12Total + d6Total;
+
+            const d12Text = d12Rolls.length > 0
+                ? d12Rolls.join(" + ")
+                : "brak";
+
+            const d6Text = d6Rolls.length > 0
+                ? d6Rolls.join(" + ")
+                : "brak";
+
+            // Wyświetlenie wyniku
+
+            customDiceResult.innerHTML = `
+            <div class="dice-result-entry">
+                <div class="dice-result-skill">
+                    Dowolny rzut
+                </div>
+
+                <div class="dice-result-info">
+                    Liczba kości: ${d12Count}D12 + ${d6Count}D6
+                </div>
+
+                <div class="dice-result-roll">
+                    <strong>D12:</strong>
+                    ${d12Text}
+                </div>
+
+                <div class="dice-result-roll">
+                    <strong>D6:</strong>
+                    ${d6Text}
+                </div>
+
+                <div class="dice-result-total">
+                    Wynik:
+                    <strong>${total}</strong>
+                </div>
+            </div>
+        `;
+
+
+            // Dodanie do istniejącego logu
+            addLog(
+                `Dowolny rzut: ` +
+                `${d12Count}D12 (${d12Text} = ${d12Total}), ` +
+                `${d6Count}D6 (${d6Text} = ${d6Total}), ` +
+                `wynik: ${total}`
+            );
+        });
+    }
+
 });
 
 

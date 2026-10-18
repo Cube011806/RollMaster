@@ -1,4 +1,5 @@
 ﻿@model RollMaster.Models.Character
+
 <div id="logDrawer" class="drawer drawer-left">
     <button type="button"
             class="drawer-tab"
@@ -8,11 +9,9 @@
 
     <div class="drawer-content">
         <h3>Log</h3>
-
         <div id="logMessages"></div>
     </div>
 </div>
-
 
 <div id="diceDrawer" class="drawer drawer-right">
     <button type="button"
@@ -24,40 +23,74 @@
     <div class="drawer-content">
         <h3>Rzuty kostkami</h3>
 
-        <div class="dice-field">
+        <!-- Rzut umiejętności -->
+        <div class="dice-section">
+            <div class="dice-field">
+                <label for="skillSelect">
+                    Test umiejętności
+                </label>
 
-            <label for="skillSelect">
-                Test umiejętności
-            </label>
+                <select id="skillSelect">
+                    @for (int i = 0; i < 18; i++)
+                    {
+                        var skill = Model.Skills[i];
 
-            <select id="skillSelect">
+                        <option value="@skill.Id"
+                                data-value="@skill.Value"
+                                data-enhanced="@skill.IsEnhanced">
+                            @skill.Name (@skill.Value)
+                        </option>
+                    }
+                </select>
+            </div>
 
-                @for (int i = 0; i < 18; i++)
-                {
-                    var skill = Model.Skills[i];
+            <button type="button"
+                    id="rollButton"
+                    class="btn btn-primary">
+                Rzuć
+            </button>
 
-                    <option value="@skill.Id"
-                            data-value="@skill.Value"
-                            data-enhanced="@skill.IsEnhanced">
-                        @skill.Name (@skill.Value)
-                    </option>
-                }
-
-            </select>
-
+            <div id="diceResult" class="dice-result"></div>
+            <div id="diceHistory" class="dice-history"></div>
         </div>
 
-        <button type="button"
-                id="rollButton"
-                class="btn btn-primary">
-            Rzuć
-        </button>
+        <hr class="dice-separator" />
 
-        <div id="diceResult" class="dice-result">
+        <!-- Dowolny rzut -->
+        <div class="dice-section">
+            <h4>Dowolny rzut</h4>
+
+            <div class="dice-field">
+                <label for="customD12Count">
+                    Liczba kości D12
+                </label>
+
+                <input type="number"
+                       id="customD12Count"
+                       min="0"
+                       max="100"
+                       value="1" />
+            </div>
+
+            <div class="dice-field">
+                <label for="customD6Count">
+                    Liczba kości D6
+                </label>
+
+                <input type="number"
+                       id="customD6Count"
+                       min="0"
+                       max="100"
+                       value="0" />
+            </div>
+
+            <button type="button"
+                    id="customRollButton"
+                    class="btn btn-primary">
+                Rzuć
+            </button>
+
+            <div id="customDiceResult" class="dice-result"></div>
         </div>
-
-        <div id="diceHistory" class="dice-history">
-        </div>
-
     </div>
 </div>

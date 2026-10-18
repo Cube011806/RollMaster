@@ -1,19 +1,28 @@
 ﻿.drawer {
     position: fixed;
     top: 0;
+    bottom: 0;
     height: 100vh;
     width: 320px;
+    max-width: calc(100vw - 45px);
+    box-sizing: border-box;
     background: #f5f0dd;
     border: 2px solid #333;
     z-index: 9999;
     transition: transform .3s ease;
-    box-shadow: 0 0 15px rgba(0,0,0,.3);
+    box-shadow: 0 0 15px rgba(0, 0, 0, .3);
 }
 
 .drawer-content {
+    box-sizing: border-box;
+    height: 100%;
     padding: 20px;
-    margin-top: 50px;
+    padding-top: 70px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    overscroll-behavior: contain;
 }
+
 
 .drawer-left {
     left: 0;
@@ -76,24 +85,23 @@
     border-left: 4px solid #795548;
 }
 
-.dice-field {
-    margin-bottom: 15px;
-}
 
-    .dice-field label {
-        display: block;
-        margin-bottom: 5px;
-    }
-
-#skillSelect {
+#skillSelect,
+#customD12Count,
+#customD6Count {
+    box-sizing: border-box;
     width: 100%;
     padding: 8px;
 }
 
-#rollD12Button {
+
+
+#rollButton,
+#customRollButton {
     width: 100%;
     margin-bottom: 15px;
 }
+
 
 .dice-result {
     margin-top: 15px;
@@ -139,25 +147,6 @@
     padding: 8px;
     border-bottom: 1px solid #ccc;
 }
-.dice-section {
-    margin-bottom: 24px;
-}
-
-    .dice-section h4 {
-        margin-bottom: 12px;
-    }
-
-.dice-field {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    margin-bottom: 12px;
-}
-
-    .dice-field input,
-    .dice-field select {
-        width: 100%;
-    }
 
 .dice-checkboxes {
     display: flex;
@@ -178,34 +167,75 @@
     opacity: 0.8;
 }
 
-.dice-separator {
-    margin: 24px 0;
-}
-
-.dice-result-entry {
-    margin-top: 15px;
-    padding: 12px;
-    border: 1px solid #777;
-    border-radius: 6px;
-}
-
-.dice-result-skill {
-    margin-bottom: 8px;
-    font-weight: bold;
-}
-
-.dice-result-info,
-.dice-result-roll {
-    margin-bottom: 6px;
-}
-
-.dice-result-total {
-    margin-top: 10px;
-    font-size: 1.2rem;
-}
-
 .dice-history-entry,
 .log-entry {
     padding: 6px 0;
     border-bottom: 1px solid rgba(128, 128, 128, 0.4);
+}
+
+
+/* Sekcje rzutów */
+.dice-section {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    margin-bottom: 24px;
+}
+
+    .dice-section h4 {
+        margin-top: 0;
+        margin-bottom: 12px;
+    }
+
+/* Pola formularza */
+.dice-field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 100%;
+    margin-bottom: 12px;
+}
+
+    .dice-field label {
+        display: block;
+    }
+
+    .dice-field input,
+    .dice-field select {
+        box-sizing: border-box;
+        width: 100%;
+        max-width: 100%;
+    }
+
+/* Przyciski */
+#rollButton,
+#customRollButton {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 15px;
+}
+
+/* Wyniki rzutów */
+.dice-result {
+    width: 100%;
+    min-width: 0;
+    margin-top: 15px;
+}
+
+.dice-result-entry {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    margin-top: 15px;
+    padding: 12px;
+    border: 1px solid #777;
+    border-radius: 6px;
+    overflow-wrap: anywhere;
+}
+
+.dice-separator {
+    margin: 24px 0;
 }
