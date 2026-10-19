@@ -91,6 +91,16 @@
         });
     }
 
+    
+    function configureGmDice() {
+        const skillSection = document.getElementById("skillRollSection");
+
+        if (skillSection) {
+            skillSection.style.display = "none";
+        }
+
+        document.body.classList.add("gm-view");
+    }
 
 
     function initializeSelectedTab() {
@@ -121,6 +131,7 @@
     // Inicjalizacja widoku.
     setGmCardsReadOnly();
     initializeSelectedTab();
+    configureGmDice();
 
     const connection = new signalR.HubConnectionBuilder()
         .withUrl("/characterHub")
