@@ -16,12 +16,15 @@ namespace RollMaster.Controllers
         private readonly CharacterService _CharacterService;
         private readonly UserManager<User> _userManager;
         private readonly IHubContext<CharacterHub> _hubContext;
+        private readonly ApplicationDbContext _context;
 
-        public CharacterController(CharacterService service, UserManager<User> userManager, IHubContext<CharacterHub> hubContext)
+
+        public CharacterController(CharacterService service, UserManager<User> userManager, ApplicationDbContext context,IHubContext<CharacterHub> hubContext)
         {
             _CharacterService = service;
             _userManager = userManager;
             _hubContext = hubContext;
+            _context = context;
         }
 
         public async Task<IActionResult> Index()
@@ -101,11 +104,50 @@ namespace RollMaster.Controllers
         [HttpPost]
         public async Task<IActionResult> SaveCharacter(Character model)
         {
+            if (!User.Identity?.IsAuthenticated ?? true)
+            {
+                return Unauthorized();
+            }
+
+            var currentUserId = _userManager.GetUserId(User);
+
+            if (string.IsNullOrEmpty(currentUserId))
+            {
+                return Unauthorized();
+            }
+
+            // Pobieramy istniejącą postać z bazy.
+            var character = await _context.Characters
+                .FirstOrDefaultAsync(c => c.Id == model.Id);
+
+            if (character == null)
+            {
+                return NotFound();
+            }
+
+            // Gracz może edytować wyłącznie własną postać.
+            if (character.UserId != currentUserId)
+            {
+                return Forbid();
+            }
+
+            // Zachowujemy przypisanie do gry z bazy,
+            // zamiast ufać GameId przesłanemu przez formularz.
+            model.GameId = character.GameId;
+
             await _CharacterService.UpdateAsync(model);
 
-            // 🔥 WYŚLIJ UPDATE DO INNYCH
-            await _hubContext.Clients.Group($"game-{model.GameId}")
-                .SendAsync("ReceiveCharacterUpdate", model);
+            // Powiadom pozostałych uczestników gry o zmianie.
+            if (character.GameId.HasValue)
+            {
+                await _hubContext.Clients
+                    .Group($"game-{character.GameId.Value}")
+                    .SendAsync("ReceiveCharacterUpdate", new
+                    {
+                        id = character.Id,
+                        gameId = character.GameId
+                    });
+            }
 
             return Ok();
         }

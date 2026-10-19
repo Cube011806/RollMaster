@@ -239,3 +239,28 @@
 .dice-separator {
     margin: 24px 0;
 }
+
+
+
+/* Karta postaci MG jest tylko do odczytu */
+.gm-readonly-form .gm-readonly-control,
+.gm-readonly-form input[type="radio"],
+.gm-readonly-form input[type="checkbox"],
+.gm-readonly-form select,
+.gm-readonly-form button,
+.gm-readonly-form label,
+.gm-readonly-form textarea {
+    pointer-events: none !important;
+    cursor: default !important;
+}
+
+/* Zachowaj kolory i wygląd pól */
+.gm-readonly-form input,
+.gm-readonly-form select,
+.gm-readonly-form textarea,
+.gm-readonly-form button {
+    opacity: 1 !important;
+    filter: none !important;
+    -webkit-text-fill-color: currentColor;
+}
+
