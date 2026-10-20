@@ -2,7 +2,8 @@
 
 <div id="logDrawer"
      class="drawer drawer-left"
-     data-game-id="@Model.GameId">
+     data-game-id="@Model.GameId"
+     data-is-gm="@(ViewContext.RouteData.Values["action"]?.ToString() == "GMDashboard" ? "true" : "false")">
     <button type="button"
             class="drawer-tab"
             onclick="toggleDrawer('logDrawer')">

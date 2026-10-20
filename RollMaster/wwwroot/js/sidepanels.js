@@ -254,12 +254,20 @@ document.addEventListener("DOMContentLoaded", () => {
         customRollButton.addEventListener("click", () => {
             let characterName = "Nieznana postać";
 
-            const characterNameElement =
-                document.querySelector(".header .name");
+            const logDrawer = document.getElementById("logDrawer");
+            const isGM = logDrawer?.dataset.isGm === "true";
 
-            if (characterNameElement)
-                characterName =
-                    characterNameElement.textContent.trim();
+            if (isGM) {
+                characterName = "GM";
+            } else {
+                const characterNameElement =
+                    document.querySelector(".header .name");
+
+                if (characterNameElement) {
+                    characterName =
+                        characterNameElement.textContent.trim();
+                }
+            }
             const d12Count = Number(customD12Count.value);
             const d6Count = Number(customD6Count.value);
 
