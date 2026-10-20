@@ -31,13 +31,12 @@
                 <label for="skillSelect">
                     <h3>Test umiejętności</h3>
                 </label>
-
                 <select id="skillSelect">
-                    @for (int i = 0; i < 18; i++)
+                    @for (int i = 0; i < 22; i++)
                     {
                         var skill = Model.Skills[i];
-
                         <option value="@skill.Id"
+                                data-skill-name="@skill.Name"
                                 data-value="@skill.Value"
                                 data-enhanced="@skill.IsEnhanced">
                             @skill.Name (@skill.Value)

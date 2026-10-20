@@ -81,6 +81,57 @@ async function sendDiceLog(message) {
         console.error("Nie udało się zapisać rzutu:", error);
     }
 }
+function updateSkillSelectFromForm(form) {
+    if (!form) return;
+
+    const skillSelect = document.getElementById("skillSelect");
+    if (!skillSelect) return;
+
+    // Aktualizujemy listę tylko dla aktywnej postaci.
+    const activeForm = document.querySelector(
+        ".tab-pane.active .characterForm"
+    );
+
+    if (activeForm && activeForm !== form) return;
+
+    const skillInputs = form.querySelectorAll(
+        'input[type="radio"][name^="Skills["][name$="].Value"]'
+    );
+
+    skillInputs.forEach(input => {
+        if (!input.checked) return;
+
+        const match = input.name.match(/^Skills\[(\d+)\]\.Value$/);
+        if (!match) return;
+
+        const index = Number(match[1]);
+        const option = skillSelect.options[index];
+
+        if (!option) return;
+
+        const value = input.value;
+
+        option.dataset.value = value;
+        option.textContent =
+            `${option.dataset.skillName} (${value})`;
+    });
+}
+
+document.addEventListener("change", function (event) {
+    const input = event.target;
+
+    if (
+        !input.matches(
+            'input[type="radio"][name^="Skills["][name$="].Value"]'
+        )
+    ) {
+        return;
+    }
+
+    const form = input.closest(".characterForm");
+
+    updateSkillSelectFromForm(form);
+});
 
 document.addEventListener("DOMContentLoaded", () => {
     initializeDiceSignalR();
