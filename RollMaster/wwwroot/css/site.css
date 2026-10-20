@@ -901,3 +901,25 @@ a {
     object-fit: contain;
     flex-shrink: 0;
 }
+
+.rm-build-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+}
+
+.rm-build-debug {
+    color: #842029;
+    background: #f8d7da;
+    border: 1px solid #f1aeb5;
+}
+
+.rm-build-release {
+    color: #0f5132;
+    background: #d1e7dd;
+    border: 1px solid #a3cfbb;
+}

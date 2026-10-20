@@ -1,7 +1,14 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using RollMaster.Models
 @inject UserManager<User> UserManager
+@{
+#if DEBUG
+    var IsDebugBuild = true;
+#else
+    var IsDebugBuild = false;
+#endif
 
+}
 @{
     var userId = UserManager.GetUserId(User);
 
@@ -24,6 +31,7 @@
         var currentUser = await UserManager.GetUserAsync(User);
         isAdmin = currentUser?.AccessLevel == 1;
     }
+
 
 }
 
@@ -125,13 +133,13 @@
                                 </a>
                             </li>
 
-                            <li class="nav-item">
+                            @* <li class="nav-item">
                                 <a class="nav-link @(currentController == "Debug" ? "active" : "")"
                                    asp-controller="Debug"
                                    asp-action="Index">
                                     DEBUG
                                 </a>
-                            </li>
+                            </li> *@
                         }
 
                     </ul>
@@ -166,12 +174,29 @@
         <div class="container">
             <span>© 2026 RollMaster</span>
             <span class="rm-footer-separator">·</span>
-            <span>v0.2.0 · Build 21.10.2026</span>
-            <span class="rm-footer-separator">·</span>
+            <span>
+                v0.2.0 · 
+                @if (IsDebugBuild)
+                {
+                    <a class="rm-build-badge rm-build-debug"
+                       asp-controller="Debug"
+                       asp-action="Index">
+                        DEBUG
+                    </a>
+                }
+                else
+                {
+                    <span class="rm-build-badge rm-build-release">
+                        RELEASE
+                    </span>
+                }
+                 · Build 21.10.2026
+            </span>
+            @* <span class="rm-footer-separator">·</span>
             <a asp-controller="Changelog"
                asp-action="Index">
                 Historia zmian
-            </a>
+            </a> *@
         </div>
     </footer>
 

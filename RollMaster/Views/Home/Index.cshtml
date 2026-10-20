@@ -14,8 +14,16 @@
 <div class="quick-start">
     <header class="quick-start-header">
         <span class="quick-start-eyebrow">ROLLMASTER</span>
+        @if (lastCharacter != null)
+        {
         <h1>Twoja przygoda trwa dalej</h1>
         <p>Wybierz postać i wróć do swojej historii.</p>
+        }
+        else
+        {
+            <h1>Czas zacząć swoją przygodę</h1>
+            <p>Utwórz postać i wskakuj do gry.</p>
+        }
     </header>
 
     <section class="last-played">

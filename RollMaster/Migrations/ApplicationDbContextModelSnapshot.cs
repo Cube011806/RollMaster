@@ -513,6 +513,9 @@ namespace RollMaster.Migrations
                     b.Property<int>("AccessLevel")
                         .HasColumnType("int");
 
+                    b.Property<int?>("LastPlayedCharacterId")
+                        .HasColumnType("int");
+
                     b.HasDiscriminator().HasValue("User");
                 });
 

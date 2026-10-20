@@ -112,7 +112,17 @@ namespace RollMaster.Controllers
             if (character.UserId != userId)
                 return Forbid();
 
-            HttpContext.Session.SetInt32("LastPlayedCharacterId", character.Id);
+            var user = await _userManager.GetUserAsync(User);
+
+            if (user == null)
+                return Challenge();
+
+            user.LastPlayedCharacterId = character.Id;
+
+            var updateResult = await _userManager.UpdateAsync(user);
+
+            if (!updateResult.Succeeded)
+                return StatusCode(500, "Nie udało się zapisać ostatnio używanej postaci.");
 
             return View(character);
         }

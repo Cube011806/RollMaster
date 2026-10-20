@@ -17,28 +17,36 @@ namespace RollMaster.Controllers
             _context = context;
         }
 
+
         public async Task<IActionResult> Index()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var characterId = HttpContext.Session.GetInt32(
-                "LastPlayedCharacterId"
-            );
 
             Character? lastCharacter = null;
 
-            if (!string.IsNullOrEmpty(userId) && characterId.HasValue)
+            if (!string.IsNullOrEmpty(userId))
             {
-                lastCharacter = await _context.Characters
+                var characterId = await _context.Users
                     .AsNoTracking()
-                    .FirstOrDefaultAsync(c =>
-                        c.Id == characterId.Value &&
-                        c.UserId == userId);
+                    .Where(u => u.Id == userId)
+                    .Select(u => u.LastPlayedCharacterId)
+                    .FirstOrDefaultAsync();
+
+                if (characterId.HasValue)
+                {
+                    lastCharacter = await _context.Characters
+                        .AsNoTracking()
+                        .FirstOrDefaultAsync(c =>
+                            c.Id == characterId.Value &&
+                            c.UserId == userId);
+                }
             }
 
             ViewBag.LastPlayedCharacter = lastCharacter;
 
             return View();
         }
+
 
         [ResponseCache(
             Duration = 0,
