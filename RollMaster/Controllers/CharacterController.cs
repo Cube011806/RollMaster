@@ -96,10 +96,27 @@ namespace RollMaster.Controllers
             await _CharacterService.CreateCharacterAsync(character, userId);
             return RedirectToAction("Index");
         }
+
         public async Task<IActionResult> CharacterDashboard(int id)
         {
-            return View(await _CharacterService.GetByIdAsync(id));
+            var userId = _userManager.GetUserId(User);
+
+            if (string.IsNullOrEmpty(userId))
+                return Challenge();
+
+            var character = await _CharacterService.GetByIdAsync(id);
+
+            if (character == null)
+                return NotFound();
+
+            if (character.UserId != userId)
+                return Forbid();
+
+            HttpContext.Session.SetInt32("LastPlayedCharacterId", character.Id);
+
+            return View(character);
         }
+
 
         [HttpPost]
         public async Task<IActionResult> SaveCharacter(Character model)

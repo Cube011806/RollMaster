@@ -1,90 +1,232 @@
-﻿﻿@using Microsoft.AspNetCore.Identity
+﻿@using Microsoft.AspNetCore.Identity
+@using RollMaster.Models
 @inject UserManager<User> UserManager
+
 @{
-    var id = UserManager.GetUserId(User);
+    var userId = UserManager.GetUserId(User);
+
+    var currentController =
+        ViewContext.RouteData.Values["controller"]?.ToString();
+
+    var currentAction =
+        ViewContext.RouteData.Values["action"]?.ToString();
+
+    var isHome = currentController == "Home";
+    var isCharacter = currentController == "Character";
+    var isCreateCharacter =
+        isCharacter && currentAction == "CreateCharacter";
+
+
+    var isAdmin = false;
+
+    if (User.Identity?.IsAuthenticated == true)
+    {
+        var currentUser = await UserManager.GetUserAsync(User);
+        isAdmin = currentUser?.AccessLevel == 1;
+    }
+
 }
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="~/images/rollmaster-logo.png" asp-append-version="true" />
     <title>@ViewData["Title"] - RollMaster</title>
+
     <script type="importmap"></script>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/RollMaster.styles.css" asp-append-version="true" />
+
+    <link rel="stylesheet"
+          href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <link rel="stylesheet"
+          href="~/css/site.css"
+          asp-append-version="true" />
+
+    <link rel="stylesheet"
+          href="~/RollMaster.styles.css"
+          asp-append-version="true" />
 </head>
+
 <body class="@ViewBag.DarkMode">
+
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">RollMaster</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+        <nav class="navbar navbar-expand-lg navbar-light bg-white rm-navbar">
+            <div class="container">
+
+                <!-- Logo -->
+                <a class="navbar-brand rm-brand"
+                   asp-area=""
+                   asp-controller="Home"
+                   asp-action="Index">
+                    <img src="~/images/rollmaster-logo.png"
+                         asp-append-version="true"
+                         alt="RollMaster"
+                         class="rm-brand-logo" />
+                    <span>RollMaster</span>
+                </a>
+
+                <!-- Menu mobilne -->
+                <button class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#rollMasterNavbar"
+                        aria-controls="rollMasterNavbar"
+                        aria-expanded="false"
+                        aria-label="Otwórz menu">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        @* <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li> *@
-                        @if (User.Identity.IsAuthenticated)
+
+                <div class="collapse navbar-collapse"
+                     id="rollMasterNavbar">
+
+                    <!-- Nawigacja -->
+                    <ul class="navbar-nav me-auto">
+
+                        <li class="nav-item">
+                            <a class="nav-link @(isHome ? "active" : "")"
+                               aria-current="@(isHome ? "page" : null)"
+                               asp-area=""
+                               asp-controller="Home"
+                               asp-action="Index">
+                                Strona główna
+                            </a>
+                        </li>
+
+                        @if (User.Identity?.IsAuthenticated == true)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Character" asp-action="Index">Postacie</a>
-                            </li>                
-                        }
-                            @{
-                            int accessLevel = 0;
-                            int.TryParse(User.FindFirst("AccessLevel")?.Value, out accessLevel);
+                                <a class="nav-link @(isCharacter && !isCreateCharacter ? "active" : "")"
+                                   aria-current="@(isCharacter && !isCreateCharacter ? "page" : null)"
+                                   asp-controller="Character"
+                                   asp-action="Index">
+                                    Postacie
+                                </a>
+                            </li>
+
+                            @* <li class="nav-item">
+                                <a class="nav-link @(isCreateCharacter ? "active" : "")"
+                                   aria-current="@(isCreateCharacter ? "page" : null)"
+                                   asp-controller="Character"
+                                   asp-action="CreateCharacter">
+                                    Nowa postać
+                                </a>
+                            </li> *@
                         }
 
-                        @if (User.Identity.IsAuthenticated && UserManager.FindByIdAsync(id).Result.AccessLevel == 1)
+                        @if (isAdmin)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Game" asp-action="Index">Gry</a>
+                                <a class="nav-link @(currentController == "Game" ? "active" : "")"
+                                   asp-controller="Game"
+                                   asp-action="Index">
+                                    Gry
+                                </a>
                             </li>
+
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Debug" asp-action="Index">DEBUG</a>
+                                <a class="nav-link @(currentController == "Debug" ? "active" : "")"
+                                   asp-controller="Debug"
+                                   asp-action="Index">
+                                    DEBUG
+                                </a>
                             </li>
                         }
+
                     </ul>
-                    <partial name="_LoginPartial" />
-                    <button id="toggleDarkMode" class="btn btn-secondary">🌙</button>
+
+                    <!-- Konto i ustawienia -->
+                    <div class="rm-navbar-actions">
+                        <partial name="_LoginPartial" />
+
+                        @* <button id="toggleDarkMode"
+                                type="button"
+                                class="btn rm-theme-toggle"
+                                aria-label="Przełącz motyw"
+                                title="Przełącz jasny/ciemny motyw">
+                            <span id="themeIcon" aria-hidden="true">🌙</span>
+                        </button> *@
+                    </div>
+
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
+    <!-- Główna zawartość strony -->
+    <main role="main" class="rm-main">
         <div class="container">
-            &copy; 2026 - RollMaster v0.1.2 - Build 20.10.2026 - <a asp-controller="Changelog" asp-action="Index">Changelog</a>
+            @RenderBody()
+        </div>
+    </main>
+
+    <!-- Stopka -->
+    <footer class="rm-footer">
+        <div class="container">
+            <span>© 2026 RollMaster</span>
+            <span class="rm-footer-separator">·</span>
+            <span>v0.2.0 · Build 21.10.2026</span>
+            <span class="rm-footer-separator">·</span>
+            <a asp-controller="Changelog"
+               asp-action="Index">
+                Historia zmian
+            </a>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
     <script>
-        const body = document.body;
+            (() => {
+                const body = document.body;
+                const toggle = document.getElementById("toggleDarkMode");
+                const themeIcon = document.getElementById("themeIcon");
 
-        // wczytaj zapisany tryb
-        if (localStorage.getItem("darkMode") === "true") {
-            body.classList.add("dark-mode");
-        }
+                function updateThemeIcon() {
+                    const isDark = body.classList.contains("dark-mode");
 
-        document.getElementById("toggleDarkMode").addEventListener("click", () => {
-            body.classList.toggle("dark-mode");
+                    themeIcon.textContent = isDark ? "☀️" : "🌙";
 
-            // zapisz stan
-            localStorage.setItem("darkMode", body.classList.contains("dark-mode"));
-        });
+                    toggle.setAttribute(
+                        "aria-label",
+                        isDark
+                            ? "Przełącz na jasny motyw"
+                            : "Przełącz na ciemny motyw"
+                    );
+                }
+
+                // Przywróć zapisany motyw.
+                try {
+                    if (localStorage.getItem("darkMode") === "true") {
+                        body.classList.add("dark-mode");
+                    }
+                } catch (error) {
+                    // Aplikacja nadal działa, jeśli localStorage jest niedostępny.
+                }
+
+                updateThemeIcon();
+
+                toggle.addEventListener("click", () => {
+                    body.classList.toggle("dark-mode");
+
+                    try {
+                        localStorage.setItem(
+                            "darkMode",
+                            body.classList.contains("dark-mode")
+                        );
+                    } catch (error) {
+                        // Brak możliwości zapisania ustawienia nie blokuje przełącznika.
+                    }
+
+                    updateThemeIcon();
+                });
+            })();
     </script>
 
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>
