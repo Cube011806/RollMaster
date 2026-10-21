@@ -1,4 +1,5 @@
-@inject SignInManager<ApplicationUser> SignInManager
+@using RollMaster.Models
+@inject SignInManager<User> SignInManager
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
 }

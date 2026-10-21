@@ -12,16 +12,17 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using RollMaster.Data;
+using RollMaster.Models;
 
 namespace RollMaster.Areas.Identity.Pages.Account.Manage;
 
 public class DownloadPersonalDataModel : PageModel
 {
-    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly UserManager<User> _userManager;
     private readonly ILogger<DownloadPersonalDataModel> _logger;
 
     public DownloadPersonalDataModel(
-        UserManager<ApplicationUser> userManager,
+        UserManager<User> userManager,
         ILogger<DownloadPersonalDataModel> logger)
     {
         _userManager = userManager;
@@ -45,7 +46,7 @@ public class DownloadPersonalDataModel : PageModel
 
         // Only include personal data for download
         var personalData = new Dictionary<string, string?>();
-        var personalDataProps = typeof(ApplicationUser).GetProperties().Where(
+        var personalDataProps = typeof(User).GetProperties().Where(
                         prop => Attribute.IsDefined(prop, typeof(PersonalDataAttribute)));
         foreach (var p in personalDataProps)
         {

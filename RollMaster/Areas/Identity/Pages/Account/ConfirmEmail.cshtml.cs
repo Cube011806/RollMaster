@@ -11,14 +11,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using RollMaster.Data;
+using RollMaster.Models;
 
 namespace RollMaster.Areas.Identity.Pages.Account;
 
 public class ConfirmEmailModel : PageModel
 {
-    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly UserManager<User> _userManager;
 
-    public ConfirmEmailModel(UserManager<ApplicationUser> userManager)
+    public ConfirmEmailModel(UserManager<User> userManager)
     {
         _userManager = userManager;
     }

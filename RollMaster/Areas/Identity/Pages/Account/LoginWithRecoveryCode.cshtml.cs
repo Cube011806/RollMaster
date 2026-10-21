@@ -10,18 +10,19 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using RollMaster.Data;
+using RollMaster.Models;
 
 namespace RollMaster.Areas.Identity.Pages.Account;
 
 public class LoginWithRecoveryCodeModel : PageModel
 {
-    private readonly SignInManager<ApplicationUser> _signInManager;
-    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly SignInManager<User> _signInManager;
+    private readonly UserManager<User> _userManager;
     private readonly ILogger<LoginWithRecoveryCodeModel> _logger;
 
     public LoginWithRecoveryCodeModel(
-        SignInManager<ApplicationUser> signInManager,
-        UserManager<ApplicationUser> userManager,
+        SignInManager<User> signInManager,
+        UserManager<User> userManager,
         ILogger<LoginWithRecoveryCodeModel> logger)
     {
         _signInManager = signInManager;
