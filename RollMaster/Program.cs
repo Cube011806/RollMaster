@@ -19,7 +19,13 @@ builder.Services.AddSignalR();
 builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromDays(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -32,7 +38,7 @@ else
     app.UseExceptionHandler("/Home/Error");
 }
 app.UseRouting();
-
+app.UseSession();
 app.UseAuthorization();
 using (var scope = app.Services.CreateScope())
 {

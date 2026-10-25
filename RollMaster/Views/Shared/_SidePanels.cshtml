@@ -1,0 +1,122 @@
+﻿@model RollMaster.Models.Character
+
+<div id="logDrawer"
+     class="drawer drawer-left"
+     data-game-id="@Model.GameId"
+     data-is-gm="@(ViewContext.RouteData.Values["action"]?.ToString() == "GMDashboard" ? "true" : "false")">
+    <button type="button"
+            class="drawer-tab"
+            onclick="toggleDrawer('logDrawer')">
+        Log
+    </button>
+
+    <div class="drawer-content">
+        <h3>Log</h3>
+        <div id="logMessages"></div>
+    </div>
+</div>
+
+<div id="diceDrawer" class="drawer drawer-right">
+    <button type="button"
+            class="drawer-tab"
+            onclick="toggleDrawer('diceDrawer')">
+        Rzuty kostkami
+    </button>
+
+    <div class="drawer-content">
+
+        <!-- Rzut umiejętności -->
+        <div class="dice-section" id="skillRollSection">
+            <div class="dice-field">
+                <label for="skillSelect">
+                    <h3>Test umiejętności</h3>
+                </label>
+                <select id="skillSelect">
+                    @for (int i = 0; i < 22; i++)
+                    {
+                        var skill = Model.Skills[i];
+                        <option value="@skill.Id"
+                                data-skill-name="@skill.Name"
+                                data-value="@skill.Value"
+                                data-enhanced="@skill.IsEnhanced">
+                            @skill.Name (@skill.Value)
+                        </option>
+                    }
+                </select>
+            </div>
+
+            <button type="button"
+                    id="rollButton"
+                    class="btn btn-primary">
+                Rzuć
+            </button>
+
+            <div id="diceResult" class="dice-result"></div>
+            <div id="diceHistory" class="dice-history"></div>
+        </div>
+
+        <hr class="dice-separator" />
+
+        <!-- Dowolny rzut -->
+        <div class="dice-section">
+            <h4>Dowolny rzut</h4>
+
+            <div class="dice-field">
+                <label for="customD12Count">
+                    Liczba kości D12
+                </label>
+
+                <input type="number"
+                       id="customD12Count"
+                       min="0"
+                       max="100"
+                       value="1" />
+            </div>
+
+            <div class="dice-field">
+                <label for="customD6Count">
+                    Liczba kości D6
+                </label>
+
+                <input type="number"
+                       id="customD6Count"
+                       min="0"
+                       max="100"
+                       value="0" />
+            </div>
+
+            <button type="button"
+                    id="customRollButton"
+                    class="btn btn-primary">
+                Rzuć
+            </button>
+
+            <div id="customDiceResult" class="dice-result"></div>
+        </div>
+    </div>
+</div>
+@if (ViewContext.RouteData.Values["action"]?.ToString() != "GMDashboard")
+{
+    <div id="charactersDrawer"
+         class="drawer drawer-right characters-drawer"
+         data-current-character-id="@Model.Id">
+
+        <button type="button"
+                class="drawer-tab"
+                onclick="toggleDrawer('charactersDrawer')">
+            Postacie
+        </button>
+
+        <div class="drawer-content">
+            <h3>Postacie w drużynie</h3>
+
+            <div id="otherCharactersList" class="other-characters-list">
+                <p>Ładowanie postaci...</p>
+            </div>
+
+            <div id="characterPreview" class="character-preview">
+                <p>Wybierz postać, aby zobaczyć jej kartę.</p>
+            </div>
+        </div>
+    </div>
+}

@@ -16,12 +16,15 @@ namespace RollMaster.Controllers
         private readonly CharacterService _CharacterService;
         private readonly UserManager<User> _userManager;
         private readonly IHubContext<CharacterHub> _hubContext;
+        private readonly ApplicationDbContext _context;
 
-        public CharacterController(CharacterService service, UserManager<User> userManager, IHubContext<CharacterHub> hubContext)
+
+        public CharacterController(CharacterService service, UserManager<User> userManager, ApplicationDbContext context,IHubContext<CharacterHub> hubContext)
         {
             _CharacterService = service;
             _userManager = userManager;
             _hubContext = hubContext;
+            _context = context;
         }
 
         public async Task<IActionResult> Index()
@@ -93,19 +96,85 @@ namespace RollMaster.Controllers
             await _CharacterService.CreateCharacterAsync(character, userId);
             return RedirectToAction("Index");
         }
+
         public async Task<IActionResult> CharacterDashboard(int id)
         {
-            return View(await _CharacterService.GetByIdAsync(id));
+            var userId = _userManager.GetUserId(User);
+
+            if (string.IsNullOrEmpty(userId))
+                return Challenge();
+
+            var character = await _CharacterService.GetByIdAsync(id);
+
+            if (character == null)
+                return NotFound();
+
+            if (character.UserId != userId)
+                return Forbid();
+
+            var user = await _userManager.GetUserAsync(User);
+
+            if (user == null)
+                return Challenge();
+
+            user.LastPlayedCharacterId = character.Id;
+
+            var updateResult = await _userManager.UpdateAsync(user);
+
+            if (!updateResult.Succeeded)
+                return StatusCode(500, "Nie udało się zapisać ostatnio używanej postaci.");
+
+            return View(character);
         }
+
 
         [HttpPost]
         public async Task<IActionResult> SaveCharacter(Character model)
         {
+            if (!User.Identity?.IsAuthenticated ?? true)
+            {
+                return Unauthorized();
+            }
+
+            var currentUserId = _userManager.GetUserId(User);
+
+            if (string.IsNullOrEmpty(currentUserId))
+            {
+                return Unauthorized();
+            }
+
+            // Pobieramy istniejącą postać z bazy.
+            var character = await _context.Characters
+                .FirstOrDefaultAsync(c => c.Id == model.Id);
+
+            if (character == null)
+            {
+                return NotFound();
+            }
+
+            // Gracz może edytować wyłącznie własną postać.
+            if (character.UserId != currentUserId)
+            {
+                return Forbid();
+            }
+
+            // Zachowujemy przypisanie do gry z bazy,
+            // zamiast ufać GameId przesłanemu przez formularz.
+            model.GameId = character.GameId;
+
             await _CharacterService.UpdateAsync(model);
 
-            // 🔥 WYŚLIJ UPDATE DO INNYCH
-            await _hubContext.Clients.Group($"game-{model.GameId}")
-                .SendAsync("ReceiveCharacterUpdate", model);
+            // Powiadom pozostałych uczestników gry o zmianie.
+            if (character.GameId.HasValue)
+            {
+                await _hubContext.Clients
+                    .Group($"game-{character.GameId.Value}")
+                    .SendAsync("ReceiveCharacterUpdate", new
+                    {
+                        id = character.Id,
+                        gameId = character.GameId
+                    });
+            }
 
             return Ok();
         }
@@ -127,6 +196,74 @@ namespace RollMaster.Controllers
         {
             await _CharacterService.DeleteAsync(id);    
             return RedirectToAction("Index");
+        }
+        [HttpGet]
+        public async Task<IActionResult> OtherCharacters(int currentCharacterId)
+        {
+            var userId = _userManager.GetUserId(User);
+
+            if (string.IsNullOrEmpty(userId))
+                return Unauthorized();
+
+            var currentCharacter = await _context.Characters
+                .AsNoTracking()
+                .FirstOrDefaultAsync(c =>
+                    c.Id == currentCharacterId &&
+                    c.UserId == userId);
+
+            if (currentCharacter == null || !currentCharacter.GameId.HasValue)
+                return NotFound();
+
+            var characters = await _context.Characters
+                .AsNoTracking()
+                .Where(c =>
+                    c.GameId == currentCharacter.GameId &&
+                    c.Id != currentCharacter.Id)
+                .OrderBy(c => c.Imie)
+                .Select(c => new
+                {
+                    c.Id,
+                    c.Imie
+                })
+                .ToListAsync();
+
+            return Json(characters);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> CharacterPreview(
+            int id,
+            int currentCharacterId)
+        {
+            var userId = _userManager.GetUserId(User);
+
+            if (string.IsNullOrEmpty(userId))
+                return Unauthorized();
+
+            var currentCharacter = await _context.Characters
+                .AsNoTracking()
+                .FirstOrDefaultAsync(c =>
+                    c.Id == currentCharacterId &&
+                    c.UserId == userId);
+
+            if (currentCharacter == null || !currentCharacter.GameId.HasValue)
+                return NotFound();
+
+            var character = await _context.Characters
+                .AsNoTracking()
+                .Include(c => c.Skills)
+                .Include(c => c.Weapons)
+                .Include(c => c.Zbroja)
+                .Include(c => c.Helm)
+                .Include(c => c.Tarcza)
+                .FirstOrDefaultAsync(c =>
+                    c.Id == id &&
+                    c.GameId == currentCharacter.GameId);
+
+            if (character == null)
+                return NotFound();
+
+            return PartialView("_CharacterPreview", character);
         }
     }
 }

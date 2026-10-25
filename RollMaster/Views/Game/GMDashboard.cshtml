@@ -2,10 +2,19 @@
 
 <h1>@Model.Name – Panel MG</h1>
 
+<link rel="stylesheet" href="~/css/sidepanels.css" />
+
+@if (Model.Characters != null && Model.Characters.Count > 0)
+{
+    @await Html.PartialAsync("_SidePanels", Model.Characters[0])
+}
+
 <div class="tabs">
     @for (int i = 0; i < Model.Characters.Count; i++)
     {
-        <button class="tab-btn @(i == 0 ? "active" : "")" onclick="openTab(@i)">
+        <button type="button"
+                class="tab-btn @(i == 0 ? "active" : "")"
+                onclick="openTab(@i)">
             @Model.Characters[i].Imie
         </button>
     }
@@ -21,51 +30,210 @@
 </div>
 
 <script src="~/js/signalr.min.js"></script>
+
 <script>
     function openTab(index) {
         const tabs = document.querySelectorAll(".tab-pane");
         const buttons = document.querySelectorAll(".tab-btn");
-        tabs.forEach(t => t.classList.remove("active"));
-        buttons.forEach(b => b.classList.remove("active"));
-        document.getElementById("tab-" + index).classList.add("active");
-        buttons[index].classList.add("active");
+
+        if (index < 0 || index >= tabs.length) {
+            return;
+        }
+
+        tabs.forEach(tab => {
+            tab.classList.remove("active");
+        });
+
+        buttons.forEach(button => {
+            button.classList.remove("active");
+        });
+
+        const selectedTab = tabs[index];
+        const selectedButton = buttons[index];
+
+        selectedTab.classList.add("active");
+
+        if (selectedButton) {
+            selectedButton.classList.add("active");
+        }
+
+        if (typeof updateDicePanel === "function") {
+            updateDicePanel(selectedTab);
+        }
+
+        localStorage.setItem("gmSelectedTab", index.toString());
     }
 
-    function initForms() {
-        const forms = document.querySelectorAll(".characterForm");
-        forms.forEach(form => {
-            let timeout = null;
-            form.addEventListener("change", function () {
-                clearTimeout(timeout);
-                timeout = setTimeout(() => {
-                    fetch('/Character/SaveCharacter', { method: 'POST', body: new FormData(form) });
-                }, 500);
+    
+    
+    function setGmCardsReadOnly() {
+        document.querySelectorAll(".tab-pane .characterForm").forEach(form => {
+            form.dataset.gmReadOnly = "true";
+
+            form.querySelectorAll(
+                'input:not([type="hidden"]), select, textarea, button'
+            ).forEach(control => {
+                control.classList.add("gm-readonly-control");
+                control.setAttribute("tabindex", "-1");
+
+                // Pola tekstowe nadal zachowują kolory.
+                if (
+                    control.matches(
+                        'input:not([type="radio"]):not([type="checkbox"]), textarea'
+                    )
+                ) {
+                    control.readOnly = true;
+                }
             });
+
+            // Blokada interakcji z całą kartą, również radio i checkboxami.
+            form.classList.add("gm-readonly-form");
         });
     }
 
-    initForms();
+    
+    function configureGmDice() {
+        const skillSection = document.getElementById("skillRollSection");
 
-    // SIGNALR
+        if (skillSection) {
+            skillSection.style.display = "none";
+        }
+
+        document.body.classList.add("gm-view");
+    }
+
+
+    function initializeSelectedTab() {
+        const tabs = document.querySelectorAll(".tab-pane");
+
+        if (tabs.length === 0) {
+            return;
+        }
+
+        const savedTab = localStorage.getItem("gmSelectedTab");
+        let initialTabIndex = 0;
+
+        if (savedTab !== null) {
+            const savedIndex = Number.parseInt(savedTab, 10);
+
+            if (
+                !Number.isNaN(savedIndex) &&
+                savedIndex >= 0 &&
+                savedIndex < tabs.length
+            ) {
+                initialTabIndex = savedIndex;
+            }
+        }
+
+        openTab(initialTabIndex);
+    }
+
+    // Inicjalizacja widoku.
+    setGmCardsReadOnly();
+    initializeSelectedTab();
+    configureGmDice();
+
     const connection = new signalR.HubConnectionBuilder()
         .withUrl("/characterHub")
+        .withAutomaticReconnect()
         .build();
 
-    connection.start().then(() => {
-        console.log("SignalR connected");
-        const gameId = document.querySelector("input[name='GameId']").value;
-        connection.invoke("JoinGame", gameId);
-    });
+    connection.on("ReceiveCharacterUpdate", character => {
+        if (!character || character.id == null) {
+            return;
+        }
 
-    connection.on("ReceiveCharacterUpdate", (character) => {
-        const form = document.querySelector(`.characterForm[data-character-id='${character.id}']`);
-        if (!form) return;
+        const form = document.querySelector(
+            `.characterForm[data-character-id="${character.id}"]`
+        );
+
+        if (!form) {
+            return;
+        }
+
         const container = form.closest(".tab-pane");
+
+        if (!container) {
+            return;
+        }
+
         fetch(`/Character/CharacterPartial?id=${character.id}`)
-            .then(res => res.text())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+
+                return response.text();
+            })
             .then(html => {
                 container.innerHTML = html;
-                initForms();
+
+                // Ponownie blokujemy edycję po podmianie karty.
+                setGmCardsReadOnly();
+
+                if (
+                    container.classList.contains("active") &&
+                    typeof updateDicePanel === "function"
+                ) {
+                    updateDicePanel(container);
+                }
+            })
+            .catch(error => {
+                console.error(
+                    "Nie udało się odświeżyć postaci:",
+                    error
+                );
             });
     });
+
+    async function startConnection() {
+        try {
+            await connection.start();
+            console.log("SignalR connected");
+
+            const activeTab = document.querySelector(".tab-pane.active");
+
+            const gameIdInput =
+                activeTab?.querySelector('input[name="GameId"]') ||
+                document.querySelector('input[name="GameId"]');
+
+            if (!gameIdInput) {
+                console.error("Nie znaleziono pola GameId.");
+                return;
+            }
+
+            await connection.invoke(
+                "JoinGame",
+                Number(gameIdInput.value)
+            );
+
+            console.log("Dołączono do gry:", gameIdInput.value);
+        } catch (error) {
+            console.error("Błąd połączenia SignalR:", error);
+        }
+    }
+
+    connection.onreconnected(async () => {
+        const activeTab = document.querySelector(".tab-pane.active");
+
+        const gameIdInput =
+            activeTab?.querySelector('input[name="GameId"]') ||
+            document.querySelector('input[name="GameId"]');
+
+        if (gameIdInput) {
+            try {
+                await connection.invoke(
+                    "JoinGame",
+                    Number(gameIdInput.value)
+                );
+            } catch (error) {
+                console.error("Nie udało się ponownie dołączyć do gry:", error);
+            }
+        }
+    });
+
+    startConnection();
 </script>
+
+<script src="~/js/sidepanels.js"></script>
+```

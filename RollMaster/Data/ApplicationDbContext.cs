@@ -15,6 +15,7 @@ namespace RollMaster.Data
         public DbSet<BodyArmor> BodyArmors { get; set; }
         public DbSet<Helmet> Helmets { get; set; }
         public DbSet<Shield> Shields { get; set; }
+        public DbSet<DiceLog> DiceLogs { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -53,6 +54,15 @@ namespace RollMaster.Data
                 .WithMany(g => g.Characters)
                 .HasForeignKey(c => c.GameId)
                 .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<DiceLog>()
+                .HasOne(d => d.Game)
+                .WithMany()
+                .HasForeignKey(d => d.GameId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<DiceLog>()
+                .HasIndex(d => new { d.GameId, d.CreatedAt });
         }
     }
 

@@ -30,7 +30,12 @@
                         @item.Description
                     </td>
                     <td>
-                        @item.Characters
+                        <ul>
+                        @foreach (var character in item.Characters)
+                        {
+                           <li>@character.Imie</li>    
+                        }
+                        </ul>
                     </td>
                     <td>
                         <a asp-action="AddPlayers" asp-route-id="@item.Id">Dodaj postaci</a> |

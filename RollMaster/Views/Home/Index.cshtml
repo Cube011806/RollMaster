@@ -1,8 +1,120 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Szybki start";
+    var lastCharacter = ViewBag.LastPlayedCharacter as RollMaster.Models.Character;
+    var isAuthenticated = User.Identity?.IsAuthenticated == true;
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-@*     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p> *@
+<div class="quick-start">
+    <header class="quick-start-header">
+        <span class="quick-start-eyebrow">ROLLMASTER</span>
+
+        @if (!isAuthenticated)
+        {
+            <h1>Twoja przygoda zaczyna się tutaj</h1>
+            <p>Zaloguj się, aby wrócić do swojej historii i zarządzać postaciami.</p>
+        }
+        else if (lastCharacter != null)
+        {
+            <h1>Twoja przygoda trwa dalej</h1>
+            <p>Wybierz postać i wróć do swojej historii.</p>
+        }
+        else
+        {
+            <h1>Czas zacząć swoją przygodę</h1>
+            <p>Utwórz postać i wskakuj do gry.</p>
+        }
+    </header>
+
+    <section class="last-played">
+        <div class="last-played-content">
+            @if (!isAuthenticated)
+            {
+                <span class="section-label">DOŁĄCZ DO PRZYGODY</span>
+
+                <h2>Twoja historia zaczyna się tutaj</h2>
+                <p>
+                    Zaloguj się, aby uzyskać dostęp do swoich postaci
+                    i kontynuować rozpoczęte przygody.
+                </p>
+
+                <a asp-area="Identity"
+                   asp-page="/Account/Login"
+                   class="quick-button quick-button-primary">
+                    Zaloguj się
+                    <span aria-hidden="true">→</span>
+                </a>
+
+                <a asp-area="Identity"
+                   asp-page="/Account/Register"
+                   class="quick-button quick-button-secondary">
+                    Utwórz konto
+                </a>
+            }
+            else if (lastCharacter != null)
+            {
+                <span class="section-label">OSTATNIO GRAŁEŚ</span>
+
+                <h2>@lastCharacter.Imie</h2>
+                <p>Twoja przygoda czeka na kontynuację.</p>
+
+                <a asp-controller="Character"
+                   asp-action="CharacterDashboard"
+                   asp-route-id="@lastCharacter.Id"
+                   class="quick-button quick-button-primary">
+                    Karta postaci
+                    <span aria-hidden="true">→</span>
+                </a>
+            }
+            else
+            {
+                <span class="section-label">PIERWSZY KROK</span>
+
+                <h2>Twoja historia zaczyna się tutaj</h2>
+                <p>
+                    Nie masz jeszcze ostatnio używanej postaci.
+                    Stwórz swojego pierwszego bohatera i rozpocznij przygodę.
+                </p>
+
+                <a asp-controller="Character"
+                   asp-action="CreateCharacter"
+                   class="quick-button quick-button-primary">
+                    Stwórz postać
+                    <span aria-hidden="true">→</span>
+                </a>
+            }
+        </div>
+
+        <div class="last-played-symbol" aria-hidden="true">⚔</div>
+    </section>
+
+    @if (isAuthenticated)
+    {
+        <section class="quick-actions">
+            <h2>Co chcesz zrobić?</h2>
+
+            <div class="quick-actions-grid">
+                <a asp-controller="Character"
+                   asp-action="Index"
+                   class="action-card">
+                    <span class="action-icon" aria-hidden="true">♙</span>
+                    <span class="action-title">Wszystkie postaci</span>
+                    <span class="action-description">
+                        Przeglądaj swoje postaci i wybierz, kim zagrasz.
+                    </span>
+                    <span class="action-arrow" aria-hidden="true">→</span>
+                </a>
+
+                <a asp-controller="Character"
+                   asp-action="CreateCharacter"
+                   class="action-card">
+                    <span class="action-icon" aria-hidden="true">✦</span>
+                    <span class="action-title">Stwórz nową postać</span>
+                    <span class="action-description">
+                        Przygotuj nowego bohatera do kolejnej przygody.
+                    </span>
+                    <span class="action-arrow" aria-hidden="true">→</span>
+                </a>
+            </div>
+        </section>
+    }
 </div>
