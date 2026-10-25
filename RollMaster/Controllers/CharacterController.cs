@@ -197,5 +197,73 @@ namespace RollMaster.Controllers
             await _CharacterService.DeleteAsync(id);    
             return RedirectToAction("Index");
         }
+        [HttpGet]
+        public async Task<IActionResult> OtherCharacters(int currentCharacterId)
+        {
+            var userId = _userManager.GetUserId(User);
+
+            if (string.IsNullOrEmpty(userId))
+                return Unauthorized();
+
+            var currentCharacter = await _context.Characters
+                .AsNoTracking()
+                .FirstOrDefaultAsync(c =>
+                    c.Id == currentCharacterId &&
+                    c.UserId == userId);
+
+            if (currentCharacter == null || !currentCharacter.GameId.HasValue)
+                return NotFound();
+
+            var characters = await _context.Characters
+                .AsNoTracking()
+                .Where(c =>
+                    c.GameId == currentCharacter.GameId &&
+                    c.Id != currentCharacter.Id)
+                .OrderBy(c => c.Imie)
+                .Select(c => new
+                {
+                    c.Id,
+                    c.Imie
+                })
+                .ToListAsync();
+
+            return Json(characters);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> CharacterPreview(
+            int id,
+            int currentCharacterId)
+        {
+            var userId = _userManager.GetUserId(User);
+
+            if (string.IsNullOrEmpty(userId))
+                return Unauthorized();
+
+            var currentCharacter = await _context.Characters
+                .AsNoTracking()
+                .FirstOrDefaultAsync(c =>
+                    c.Id == currentCharacterId &&
+                    c.UserId == userId);
+
+            if (currentCharacter == null || !currentCharacter.GameId.HasValue)
+                return NotFound();
+
+            var character = await _context.Characters
+                .AsNoTracking()
+                .Include(c => c.Skills)
+                .Include(c => c.Weapons)
+                .Include(c => c.Zbroja)
+                .Include(c => c.Helm)
+                .Include(c => c.Tarcza)
+                .FirstOrDefaultAsync(c =>
+                    c.Id == id &&
+                    c.GameId == currentCharacter.GameId);
+
+            if (character == null)
+                return NotFound();
+
+            return PartialView("_CharacterPreview", character);
+        }
     }
 }

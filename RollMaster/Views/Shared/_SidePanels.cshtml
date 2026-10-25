@@ -95,3 +95,28 @@
         </div>
     </div>
 </div>
+@if (ViewContext.RouteData.Values["action"]?.ToString() != "GMDashboard")
+{
+    <div id="charactersDrawer"
+         class="drawer drawer-right characters-drawer"
+         data-current-character-id="@Model.Id">
+
+        <button type="button"
+                class="drawer-tab"
+                onclick="toggleDrawer('charactersDrawer')">
+            Postacie
+        </button>
+
+        <div class="drawer-content">
+            <h3>Postacie w drużynie</h3>
+
+            <div id="otherCharactersList" class="other-characters-list">
+                <p>Ładowanie postaci...</p>
+            </div>
+
+            <div id="characterPreview" class="character-preview">
+                <p>Wybierz postać, aby zobaczyć jej kartę.</p>
+            </div>
+        </div>
+    </div>
+}

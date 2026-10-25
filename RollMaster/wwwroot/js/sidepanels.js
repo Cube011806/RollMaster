@@ -1,11 +1,51 @@
-﻿function toggleDrawer(id) {
-    document.getElementById(id).classList.toggle("open");
+﻿
+function toggleDrawer(id) {
+    const drawer = document.getElementById(id);
+    if (!drawer) return;
+
+    const willOpen = !drawer.classList.contains("open");
+
+    // Przy otwieraniu panelu zamknij pozostałe panele po prawej.
+    if (willOpen && drawer.classList.contains("drawer-right")) {
+        document.querySelectorAll(".drawer-right.open").forEach(otherDrawer => {
+            if (otherDrawer !== drawer) {
+                otherDrawer.classList.remove("open");
+            }
+        });
+    }
+
+    drawer.classList.toggle("open", willOpen);
+
+    // Ukryj przycisk „Postacie”, gdy otwarty jest panel kości.
+    const diceDrawer = document.getElementById("diceDrawer");
+    const charactersDrawer = document.getElementById("charactersDrawer");
+
+    if (diceDrawer && charactersDrawer) {
+        const charactersTab = charactersDrawer.querySelector(".drawer-tab");
+        const diceIsOpen = diceDrawer.classList.contains("open");
+
+        if (charactersTab) {
+            charactersTab.style.display = diceIsOpen ? "none" : "";
+        }
+    }
+
+    // Po otwarciu logu usuń powiadomienie o nowych wpisach.
+    if (id === "logDrawer" && willOpen) {
+        drawer.classList.remove("has-new-log");
+
+        const tab = drawer.querySelector(".drawer-tab");
+        if (tab) {
+            tab.removeAttribute("data-unread");
+            tab.removeAttribute("aria-label");
+        }
+    }
 }
+
 
 let diceConnection = null;
 
-function renderDiceLog(entry) {
-    addLog(entry.description);
+function renderDiceLog(entry, notify = true) {
+    addLog(entry.description, notify);
 }
 
 async function initializeDiceSignalR() {
@@ -40,7 +80,9 @@ async function initializeDiceSignalR() {
 
         // Serwer zwraca wpisy od najnowszego.
         // addLog dodaje wpis na początek, więc odwracamy kolejność.
-        history.reverse().forEach(renderDiceLog);
+        history.reverse().forEach(entry => {
+            renderDiceLog(entry, false);
+        });
 
         console.log("Połączono z logiem gry:", gameId);
     } catch (error) {
@@ -485,25 +527,109 @@ function displayDiceResult(
 /*
  * Log rzutów
  */
-function addLog(message) {
+function addLog(message, notify = true) {
+    const log = document.getElementById("logMessages");
+    if (!log) return;
 
-    const log =
-        document.getElementById("logMessages");
-
-    if (!log)
-        return;
-
-
-    const entry =
-        document.createElement("div");
-
-    entry.className =
-        "log-entry";
-
-    entry.textContent =
-        message;
-
-
+    const entry = document.createElement("div");
+    entry.className = "log-entry";
+    entry.textContent = message;
     log.prepend(entry);
 
+    // Powiadomienie tylko dla rzeczywiście nowych wpisów
+    if (!notify) return;
+
+    const drawer = document.getElementById("logDrawer");
+    if (!drawer || drawer.classList.contains("open")) return;
+
+    drawer.classList.add("has-new-log");
+
+    const tab = drawer.querySelector(".drawer-tab");
+    if (tab) {
+        tab.dataset.unread = "true";
+        tab.setAttribute("aria-label", "Log — nowe wpisy");
+    }
 }
+
+(function () {
+    async function initializeOtherCharactersPanel() {
+        const drawer = document.getElementById("charactersDrawer");
+        const list = document.getElementById("otherCharactersList");
+        const preview = document.getElementById("characterPreview");
+
+        if (!drawer || !list || !preview) return;
+
+        const currentCharacterId = drawer.dataset.currentCharacterId;
+
+        if (!currentCharacterId) {
+            list.textContent = "Nie można ustalić aktualnej postaci.";
+            return;
+        }
+
+        try {
+            const url = `/Character/OtherCharacters?currentCharacterId=${encodeURIComponent(currentCharacterId)}`;
+            console.log("Adres listy postaci:", url);
+
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`HTTP ${ response.status }`);
+            }
+
+            const characters = await response.json();
+            list.replaceChildren();
+
+            if (characters.length === 0) {
+                list.textContent = "Brak innych postaci w tej grze.";
+                return;
+            }
+
+            characters.forEach(character => {
+                const button = document.createElement("button");
+                button.type = "button";
+                button.className = "other-character-button";
+                button.textContent = character.imie ?? character.Imie ?? "Postać";
+
+                button.addEventListener("click", async () => {
+                    list.querySelectorAll("button").forEach(item => {
+                        item.classList.toggle("selected", item === button);
+                    });
+
+                    preview.textContent = "Wczytywanie karty...";
+
+                    try {
+                        const url =
+                            `/Character/CharacterPreview?id=${encodeURIComponent(character.id ?? character.Id)}` +
+                            `&currentCharacterId=${encodeURIComponent(currentCharacterId)}`;
+
+                        console.log("Adres karty postaci:", url);
+
+                        const previewResponse = await fetch(url);
+
+                        if (!previewResponse.ok) {
+                            throw new Error(`HTTP ${ previewResponse.status }`);
+                        }
+
+                        preview.innerHTML = await previewResponse.text();
+                    } catch (error) {
+                        console.error("Nie udało się pobrać karty postaci:", error);
+                        preview.textContent = "Nie udało się wczytać karty postaci.";
+                    }
+                });
+
+                list.appendChild(button);
+            });
+        } catch (error) {
+            console.error("Nie udało się pobrać listy postaci:", error);
+            list.textContent = "Nie udało się pobrać listy postaci.";
+        }
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener(
+            "DOMContentLoaded",
+            initializeOtherCharactersPanel
+        );
+    } else {
+        initializeOtherCharactersPanel();
+    }
+})();

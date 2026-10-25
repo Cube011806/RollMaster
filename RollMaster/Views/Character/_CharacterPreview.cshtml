@@ -1,0 +1,187 @@
+﻿@model RollMaster.Models.Character
+
+<div class="preview-sheet">
+    <h3>@Model.Imie</h3>
+
+    <section class="preview-section">
+        <h4>Informacje podstawowe</h4>
+        <dl>
+            <dt>Rodzima kultura</dt>
+            <dd>@Model.RodzimaKultura</dd>
+            <dt>Rodzima korzyść</dt>
+            <dd>@Model.RodzimaKorzysc</dd>
+            <dt>Powołanie</dt>
+            <dd>@Model.Powolanie</dd>
+            <dt>Wiek</dt>
+            <dd>@Model.Wiek</dd>
+            <dt>Poziom życia</dt>
+            <dd>@Model.PoziomZycia</dd>
+            <dt>Patron</dt>
+            <dd>@Model.Patron</dd>
+            <dt>Ścieżka Cienia</dt>
+            <dd>@Model.SciezkaCienia</dd>
+            <dt>Skarb</dt>
+            <dd>@Model.Skarb</dd>
+            <dt>Wyróżniki</dt>
+            <dd>@Model.Wyrozniki</dd>
+            <dt>Przywary</dt>
+            <dd>@Model.Przywary</dd>
+        </dl>
+    </section>
+
+    <section class="preview-section">
+        <h4>Podstawowe atrybuty</h4>
+        <dl>
+            <dt>Siła</dt>
+            <dd>@Model.WartoscSila</dd>
+            <dt>Wytrzymałość</dt>
+            <dd>@Model.Wytrzymalosc</dd>
+            <dt>Serce</dt>
+            <dd>@Model.WartoscSerce</dd>
+            <dt>Nadzieja</dt>
+            <dd>@Model.Nadzieja</dd>
+            <dt>Rozum</dt>
+            <dd>@Model.WartoscRozum</dd>
+            <dt>Obrona</dt>
+            <dd>@Model.Obrona</dd>
+            <dt>Męstwo</dt>
+            <dd>@Model.Mestwo</dd>
+            <dt>Mądrość</dt>
+            <dd>@Model.Madrosc</dd>
+        </dl>
+    </section>
+
+    <section class="preview-section">
+        <h4>Umiejętności</h4>
+        @if (Model.Skills != null)
+        {
+            <div class="preview-skills">
+                @foreach (var skill in Model.Skills)
+                {
+                    <div class="preview-skill">
+                        <span>@skill.Name</span>
+                        <strong>
+                            @skill.Value
+                            @(skill.IsEnhanced ? " ★" : "")
+                        </strong>
+                    </div>
+                }
+            </div>
+        }
+    </section>
+
+    <section class="preview-section">
+        <h4>Aktualny stan</h4>
+        <dl>
+            <dt>Obecna wytrzymałość</dt>
+            <dd>@Model.ObecnaWytrzymalosc</dd>
+            <dt>Obciążenie</dt>
+            <dd>@Model.Obciazenie</dd>
+            <dt>Znużenie</dt>
+            <dd>@Model.Znuzenie</dd>
+            <dt>Obecna nadzieja</dt>
+            <dd>@Model.ObecnaNadzieja</dd>
+            <dt>Cień</dt>
+            <dd>@Model.Cien</dd>
+            <dt>Piętno Cienia</dt>
+            <dd>@Model.PietnoCienia</dd>
+        </dl>
+        <p>
+            <strong>Ograniczenia:</strong>
+            @(Model.Wyczerpanie ? "Wyczerpanie; " : "")
+            @(Model.Przygnebienie ? "Przygnębienie; " : "")
+            @(Model.Rana ? $"Rana ({Model.StopienRany}); " : "")
+        </p>
+    </section>
+
+    <section class="preview-section">
+        <h4>Rozwój</h4>
+        <dl>
+            <dt>Punkty przygody</dt>
+            <dd>@Model.PunktyPrzygody</dd>
+            <dt>Punkty umiejętności</dt>
+            <dd>@Model.PunktyUmiejetnosci</dd>
+            <dt>Punkty zażyłości</dt>
+            <dd>@Model.PunktyZazylosci</dd>
+        </dl>
+    </section>
+
+    <section class="preview-section">
+        <h4>Rynsztunek</h4>
+
+        @if (Model.Weapons != null && Model.Weapons.Count > 0)
+        {
+            <ul>
+                @foreach (var weapon in Model.Weapons)
+                {
+                    <li>
+                        @weapon.Name — obrażenia: @weapon.Damage,
+                        przebicie: @weapon.Injury,
+                        obciążenie: @weapon.Load
+                        @if (!string.IsNullOrWhiteSpace(weapon.Notes))
+                        {
+                            <span> (@weapon.Notes)</span>
+                        }
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p>Brak broni.</p>
+        }
+
+        <dl>
+            <dt>Zbroja</dt>
+            <dd>
+                @(Model.Zbroja?.Nazwa ?? "Brak")
+                @if (Model.Zbroja != null)
+                {
+                    <span>
+                        — pancerz: @Model.Zbroja.Pancerz,
+                        obciążenie: @Model.Zbroja.Obciazenie
+                    </span>
+                }
+            </dd>
+
+            <dt>Hełm</dt>
+            <dd>
+                @(Model.Helm?.Nazwa ?? "Brak")
+                @if (Model.Helm != null)
+                {
+                    <span>
+                        — pancerz: @Model.Helm.Pancerz,
+                        obciążenie: @Model.Helm.Obciazenie
+                    </span>
+                }
+            </dd>
+
+            <dt>Tarcza</dt>
+            <dd>
+                @(Model.Tarcza?.Nazwa ?? "Brak")
+                @if (Model.Tarcza != null)
+                {
+                    <span>
+                        — obrona: @Model.Tarcza.Obrona,
+                        obciążenie: @Model.Tarcza.Obciazenie
+                    </span>
+                }
+            </dd>
+        </dl>
+    </section>
+
+    <section class="preview-section">
+        <h4>Ekwipunek</h4>
+        <p class="preview-text">@Model.Ekwipunek</p>
+    </section>
+
+    <section class="preview-section">
+        <h4>Nagrody</h4>
+        <p class="preview-text">@Model.Nagrody</p>
+    </section>
+
+    <section class="preview-section">
+        <h4>Przymioty</h4>
+        <p class="preview-text">@Model.Przymioty</p>
+    </section>
+</div>
