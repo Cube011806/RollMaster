@@ -68,6 +68,35 @@ async function initializeDiceSignalR() {
         .withAutomaticReconnect()
         .build();
 
+    
+    diceConnection.onreconnecting(error => {
+        console.warn("SignalR: utracono połączenie. Próba ponownego połączenia...", error);
+    });
+
+    diceConnection.onreconnected(async connectionId => {
+        console.log("SignalR: połączenie przywrócone:", connectionId);
+
+        try {
+            await diceConnection.invoke("JoinGame", gameId);
+
+            console.log("SignalR: ponownie dołączono do gry:", gameId);
+            const history = await diceConnection.invoke("GetRecentDiceLogs", gameId);
+
+            if (Array.isArray(history)) {
+                history.reverse().forEach(entry => {
+                    addLog(entry.description, false);
+                });
+            }
+        } catch (error) {
+            console.error("Błąd przywracania logu gry:", error);
+        }
+    });
+
+    diceConnection.onclose(error => {
+        console.error("SignalR: połączenie zostało zamknięte.", error);
+    });
+
+
     diceConnection.on("ReceiveDiceLog", renderDiceLog);
 
     try {
@@ -187,7 +216,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     button.addEventListener("click", () => {
-
+        if (isDiceOnCooldown()) {
+            return;
+        }
         // Wybrana umiejętność
         const selectedOption =
             skillSelect.options[skillSelect.selectedIndex];
@@ -320,7 +351,7 @@ document.addEventListener("DOMContentLoaded", () => {
             `D6: ${d6Text}, ` +
             `wynik: ${total}`
         );
-
+        startDiceCooldown();
     });
 
     // -----------------------------------------
@@ -345,6 +376,9 @@ document.addEventListener("DOMContentLoaded", () => {
         customDiceResult) {
 
         customRollButton.addEventListener("click", () => {
+            if (isDiceOnCooldown()) {
+                return;
+            }
             let characterName = "Nieznana postać";
 
             const logDrawer = document.getElementById("logDrawer");
@@ -452,6 +486,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 `${d6Count}D6 (${d6Text} = ${d6Total}), ` +
                 `wynik: ${total}`
             );
+            startDiceCooldown();
         });
     }
 
@@ -633,3 +668,42 @@ function addLog(message, notify = true) {
         initializeOtherCharactersPanel();
     }
 })();
+
+
+const DICE_COOLDOWN_MS = 5000;
+let diceCooldownUntil = 0;
+let diceCooldownTimer = null;
+
+function startDiceCooldown() {
+    diceCooldownUntil = Date.now() + DICE_COOLDOWN_MS;
+
+    const skillSelect = document.getElementById("rollButton");
+    const customRollButton = document.getElementById("customRollButton");
+
+    // Dostosuj selektor do faktycznego przycisku rzutu za umiejętność.
+    const skillRollButton = document.getElementById("skillRollButton");
+
+    if (skillSelect) skillSelect.disabled = true;
+    if (customRollButton) customRollButton.disabled = true;
+    if (skillRollButton) skillRollButton.disabled = true;
+
+    if (diceCooldownTimer) {
+        clearInterval(diceCooldownTimer);
+    }
+
+    diceCooldownTimer = setInterval(() => {
+        if (Date.now() < diceCooldownUntil) return;
+
+        clearInterval(diceCooldownTimer);
+        diceCooldownTimer = null;
+
+        if (skillSelect) skillSelect.disabled = false;
+        if (customRollButton) customRollButton.disabled = false;
+        if (skillRollButton) skillRollButton.disabled = false;
+    }, 100);
+}
+
+function isDiceOnCooldown() {
+    return Date.now() < diceCooldownUntil;
+}
+
